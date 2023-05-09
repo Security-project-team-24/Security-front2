@@ -8,7 +8,7 @@ import {
   useToast,
   Link
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useApplicationStore } from "../../store/application.store";
 import { displayToast } from "../../utils/toast.caller";
 
@@ -27,6 +27,7 @@ export const Header = () => {
 
   return (
     <>
+       <>
       <Box width="100%" bg={"#3d997c"} p={"10px 25px"}>
         <Flex
           w={"100%"}
@@ -39,24 +40,25 @@ export const Header = () => {
               Security
             </Text>
           </Link>
+          { user != null && 
+          <Link href="/profile" mr="5px" color={"white"}>
+            {user.name} {user.surname}
+          </Link>
+          }
           <Flex gap="15px">
             {user ? (
-              <>
-              <Link color={"white"}>
-                {user.name} {user.surname}
-              </Link>
               <Link color={"white"} onClick={handleLogout}>
                 Logout
               </Link>
-              </>
             ) : (
-              <Link color={"white"} href="/login">
+              <Link href="/login" color={"white"}>
                 Login
               </Link>
             )}
           </Flex>
         </Flex>
       </Box>
+    </>
     </>
   );
 };
