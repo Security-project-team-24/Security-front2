@@ -11,6 +11,7 @@ import {
 import { useNavigate} from "react-router-dom";
 import { useApplicationStore } from "../../store/application.store";
 import { displayToast } from "../../utils/toast.caller";
+import { Role } from "../../store/auth-store/model/enums/role.enum";
 
 export const Header = () => {
 
@@ -57,6 +58,15 @@ export const Header = () => {
             )}
           </Flex>
         </Flex>
+        {user?.role == "ADMIN" && (<>
+          <Button onClick={() => navigate("/admin/projects")} mr="5px">
+            Projects
+          </Button>
+          <Button onClick={() => navigate("/admin/employees")} mr="5px">
+          Employees
+        </Button>
+        </>
+        )}
       </Box>
     </>
     </>
