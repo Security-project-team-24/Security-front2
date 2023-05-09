@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApplicationStore } from "../../store/application.store";
 import {
   Button,
@@ -16,6 +16,7 @@ import {
 import { displayToast } from "../../utils/toast.caller";
 import { Project } from "../../store/project-store/types/project.type";
 import { CreateProjectForm } from "../../components/Project/CreateProjectForm";
+import AddEmployee from "../../components/Project/AddEmployee";
 
 export const ProjectPage = () => {
  
@@ -33,17 +34,24 @@ export const ProjectPage = () => {
         onOpen: onOpenCreateProject,
         onClose: onCloseCreateProject,
     } = useDisclosure();
+    const {
+        isOpen: isOpenAddEmployee,
+        onOpen: onOpenAddEmployee,
+        onClose: onCloseAddEmployee,
+    } = useDisclosure();
     const toast = useToast()
     useEffect(() => {
         fetchProjects()
     }, [createProjectRes])
     const fetchProjects = async () => {
         await getProjects();
-        if (createProjectRes.status == "SUCCESS") {
-            displayToast(toast, "Successfully created project", "success")
-        }
     };
-
+    const [projectId, setProjectId] = useState(-1)
+    const addEmployee = (projectId: number) => {
+        setProjectId(projectId)
+        console.log(projectId)
+        onOpenAddEmployee()
+    }
     return (
     <>
         <Button onClick={onOpenCreateProject} mr="5px">
@@ -64,6 +72,7 @@ export const ProjectPage = () => {
                 <Tr key={item.id}>
                     <Td>{item.name}</Td>
                     <Td>{item.duration}</Td>
+                    <Td><Button onClick={() => addEmployee(item.id)}>Add employee</Button></Td>
                 </Tr>
                 ))}
             </Tbody>
@@ -72,7 +81,11 @@ export const ProjectPage = () => {
         <CreateProjectForm
         isOpen={isOpenCreateProject}
         onClose={onCloseCreateProject}
-      />
+        />
+      <AddEmployee
+        isOpen={isOpenAddEmployee}
+        onClose={onCloseAddEmployee}
+        projectId={projectId}/>
     </>
     );
 };

@@ -13,11 +13,13 @@ import {
     Stack,
     Wrap,
     WrapItem,
+    useToast,
   } from '@chakra-ui/react';
   import React, { useEffect, useState } from 'react';
   import { SubmitHandler, useForm } from 'react-hook-form';
   import { useApplicationStore } from '../../store/application.store';
   import { ProjectEmployee } from '../../store/project-store/types/projectEmployee.type';
+import { displayToast } from '../../utils/toast.caller';
   
   interface Props {
     isOpen: boolean;
@@ -35,10 +37,18 @@ import {
     const createProject = useApplicationStore(
       (state) => state.createProject
     );
+    const createProjectRes = useApplicationStore(
+      (state) => state.createProjectRes
+    );
     const { register, handleSubmit } = useForm<Inputs>();
-  
+    const toast = useToast()  
+
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
       await createProject(data);
+      if (createProjectRes.status == "SUCCESS") {
+        displayToast(toast, "Successfully created project", "success")
+        onClose()
+    }
     };
   
   
