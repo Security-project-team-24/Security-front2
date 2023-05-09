@@ -10,10 +10,12 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { displayToast } from "../../utils/toast.caller";
-import { Project } from "../../store/reservation-store/types/project.type";
+import { Project } from "../../store/project-store/types/project.type";
+import { CreateProjectForm } from "../../components/Project/CreateProjectForm";
 
 export const ProjectPage = () => {
  
@@ -23,16 +25,30 @@ export const ProjectPage = () => {
     const getProjectsRes = useApplicationStore(
     (state) => state.getProjectsRes
     );
-
+    const createProjectRes = useApplicationStore(
+        (state) => state.createProjectRes
+    );
+    const {
+        isOpen: isOpenCreateProject,
+        onOpen: onOpenCreateProject,
+        onClose: onCloseCreateProject,
+    } = useDisclosure();
+    const toast = useToast()
     useEffect(() => {
         fetchProjects()
-    }, [])
+    }, [createProjectRes])
     const fetchProjects = async () => {
         await getProjects();
+        if (createProjectRes.status == "SUCCESS") {
+            displayToast(toast, "Successfully created project", "success")
+        }
     };
 
     return (
     <>
+        <Button onClick={onOpenCreateProject} mr="5px">
+            Create project
+        </Button>
         <TableContainer flex={1}>
         <Table variant="striped" colorScheme="teal">
             <TableCaption>Projects</TableCaption>
@@ -53,6 +69,10 @@ export const ProjectPage = () => {
             </Tbody>
         </Table>
         </TableContainer>
+        <CreateProjectForm
+        isOpen={isOpenCreateProject}
+        onClose={onCloseCreateProject}
+      />
     </>
     );
 };

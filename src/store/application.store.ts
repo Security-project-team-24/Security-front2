@@ -2,7 +2,7 @@ import { AuthStore, authStoreSlice } from './auth-store/auth.store';
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import { ProjectStore, projectStoreSlice } from './reservation-store/project.store';
+import { ProjectStore, projectStoreSlice } from './project-store/project.store';
 import { UserStore, userStoreSlice } from './user-store/user.store';
 
 export type AppStore = AuthStore & ProjectStore & UserStore

@@ -12,11 +12,12 @@ import { useNavigate} from "react-router-dom";
 import { useApplicationStore } from "../../store/application.store";
 import { displayToast } from "../../utils/toast.caller";
 import { Role } from "../../store/auth-store/model/enums/role.enum";
+import { CreateProjectForm } from "../Project/CreateProjectForm";
+import { useEffect } from "react";
 
 export const Header = () => {
 
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useApplicationStore((state) => state.user);
   const logout = useApplicationStore((state) => state.logout);
   const toast = useToast()
@@ -27,7 +28,6 @@ export const Header = () => {
   };
 
   return (
-    <>
        <>
       <Box width="100%" bg={"#3d997c"} p={"10px 25px"}>
         <Flex
@@ -69,6 +69,6 @@ export const Header = () => {
         )}
       </Box>
     </>
-    </>
+
   );
 };

@@ -13,7 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { displayToast } from "../../utils/toast.caller";
-import { Project } from "../../store/reservation-store/types/project.type";
+import { Project } from "../../store/project-store/types/project.type";
 import { User } from "../../store/auth-store/model/user.model";
 
 export const EmployeesPage = () => {

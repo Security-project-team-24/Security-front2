@@ -9,14 +9,21 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export type ProjectStoreState = {
     getProjectsRes: ResponseState<Project[]>
+    createProjectRes: ResponseState<any>
 }
 export type ProjectActions = {
     getProjects: () => Promise<void>
+    createProject: (project: Project) => Promise<void>
 }
 
 export const state: ProjectStoreState = {
     getProjectsRes: {
         data: [],
+        status: "IDLE",
+        error: null
+    },
+    createProjectRes: {
+        data: null,
         status: "IDLE",
         error: null
     },
@@ -52,6 +59,37 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
             set(
                 produce((state: ProjectStore) => {
                     state.getProjectsRes.status = "ERROR"
+                    return state
+                })
+            )
+        }
+    },
+    createProject: async (project: Project) => {
+        set(
+            produce((state: ProjectStore) => {
+                state.createProjectRes.status = "LOADING"
+                return state
+            })
+        )
+        try {
+            const res = await axios.post(`${BASE_URL}/project`, project, 
+                {
+                    headers: {
+                        "Authorization": "Bearer " + get().loginStateRes.data
+                    }
+                }
+            )
+            set(
+                produce((state: ProjectStore) => {
+                    state.createProjectRes.status = "SUCCESS"
+                    state.createProjectRes.data = res.data
+                    return state
+                })
+            )
+        } catch (e) {
+            set(
+                produce((state: ProjectStore) => {
+                    state.createProjectRes.status = "ERROR"
                     return state
                 })
             )
