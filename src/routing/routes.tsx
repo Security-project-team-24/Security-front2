@@ -4,6 +4,7 @@ import { LoginPage } from "../pages/Auth/LoginPage";
 import { ProjectPage } from "../pages/ProjectPage/ProjectPages";
 import { EmployeesPage } from "../pages/EmployeesPage/EmployeesPages";
 import { AdminProfilePage } from "../pages/UserProfilePage/AdminProfilePage";
+import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPage";
 
 
 export const routes: RouteObject[] = [
@@ -27,6 +28,10 @@ export const routes: RouteObject[] = [
         path: "/profile",
         element: <AdminProfilePage/>,
       },
+      {
+        path: "/admin/change-password",
+        element: <ChangePasswordPage/>,
+      }
     ],
   },
 ];
