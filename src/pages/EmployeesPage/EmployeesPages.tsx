@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApplicationStore } from "../../store/application.store";
 import {
   Button,
@@ -15,9 +15,11 @@ import {
 import { displayToast } from "../../utils/toast.caller";
 import { Project } from "../../store/project-store/types/project.type";
 import { User } from "../../store/auth-store/model/user.model";
+import ReactPaginate from "react-paginate";
 
 export const EmployeesPage = () => {
  
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const getEmployees = useApplicationStore(
     (state) => state.getEmployees
     );
@@ -26,10 +28,15 @@ export const EmployeesPage = () => {
     );
 
     useEffect(() => {
-        fetchEmoloyees()
+        fetchEmployees(0)
     }, [])
-    const fetchEmoloyees = async () => {
-        await getEmployees();
+    const fetchEmployees = async (pageNumber: number) => {
+        await getEmployees(5, pageNumber);
+    };
+
+    const handlePageClick = async (event: any) => {
+        setCurrentPage(event.selected);
+        fetchEmployees(event.selected)
     };
 
     return (
@@ -48,8 +55,8 @@ export const EmployeesPage = () => {
             </Tr>
             </Thead>
             <Tbody>
-            {getEmployeesRes.data &&
-                getEmployeesRes.data.map((item: User) => (
+            {getEmployeesRes.data.content &&
+                getEmployeesRes.data.content.map((item: User) => (
                 <Tr key={item.id}>
                     <Td>{item.name}</Td>
                     <Td>{item.surname}</Td>
@@ -62,6 +69,23 @@ export const EmployeesPage = () => {
             </Tbody>
         </Table>
         </TableContainer>
+        <ReactPaginate
+          activeClassName={"item active "}
+          forcePage={currentPage}
+          breakClassName={"item break-me "}
+          breakLabel={"..."}
+          containerClassName={"pagination"}
+          disabledClassName={"disabled-page"}
+          marginPagesDisplayed={2}
+          nextClassName={"item next "}
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageCount={getEmployeesRes.data.totalPages}
+          pageClassName={"item pagination-page "}
+          pageRangeDisplayed={2}
+          previousClassName={"item previous"}
+          previousLabel="<"
+        />
     </>
     );
 };

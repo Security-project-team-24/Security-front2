@@ -7,18 +7,19 @@ import { Project } from "./types/project.type";
 import { User } from "../auth-store/model/user.model";
 import { ProjectEmployeeRequest } from "./types/project.employee.request.type";
 import { ProjectEmployee } from "./types/projectEmployee.type";
+import { Page } from "../page.type";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export type ProjectStoreState = {
-    getProjectsRes: ResponseState<Project[]>
+    getProjectsRes: ResponseState<Page<Project>>
     createProjectRes: ResponseState<any>
     getAvailableEmployeesRes: ResponseState<User[]>
     addEmployeeRes: ResponseState<any>
     getProjectEngineersRes: ResponseState<ProjectEmployee[]>
 }
 export type ProjectActions = {
-    getProjects: () => Promise<void>
+    getProjects: (pageSize: number, pageNumber: number) => Promise<void>
     createProject: (project: Project) => Promise<void>
     getAvailableEmployees: (projectId: number) => Promise<void>
     addEmployee: (request: ProjectEmployeeRequest) => Promise<void>
@@ -27,7 +28,7 @@ export type ProjectActions = {
 
 export const state: ProjectStoreState = {
     getProjectsRes: {
-        data: [],
+        data: {content: [], totalPages: 0},
         status: "IDLE",
         error: null
     },
@@ -57,7 +58,7 @@ export type ProjectStore = ProjectStoreState & ProjectActions
 
 export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (set, get) => ({
     ...state,
-    getProjects: async () => {
+    getProjects: async (pageSize: number, pageNumber: number) => {
         set(
             produce((state: ProjectStore) => {
                 state.getProjectsRes.status = "LOADING"
@@ -65,7 +66,7 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
             })
         )
         try {
-            const res = await axios.get(`${BASE_URL}/project`, 
+            const res = await axios.get(`${BASE_URL}/project/${pageSize}/${pageNumber}`, 
                 {
                     headers: {
                         "Authorization": "Bearer " + get().loginStateRes.data

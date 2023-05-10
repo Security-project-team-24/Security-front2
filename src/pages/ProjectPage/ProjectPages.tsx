@@ -18,9 +18,12 @@ import { Project } from "../../store/project-store/types/project.type";
 import { CreateProjectForm } from "../../components/Project/CreateProjectForm";
 import AddEmployee from "../../components/Project/AddEmployee";
 import ProjectEngineersDisplay from "../../components/Project/ProjectEngineersDisplay";
+import ReactPaginate from "react-paginate";
+import "../../styles/pagination.css";
 
 export const ProjectPage = () => {
- 
+
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const getProjects = useApplicationStore(
     (state) => state.getProjects
     );
@@ -47,10 +50,10 @@ export const ProjectPage = () => {
     } = useDisclosure();
     const toast = useToast()
     useEffect(() => {
-        fetchProjects()
+        fetchProjects(0)
     }, [createProjectRes])
-    const fetchProjects = async () => {
-        await getProjects();
+    const fetchProjects = async (pageNumber: number) => {
+        await getProjects(5, pageNumber);
     };
     const [projectId, setProjectId] = useState(-1)
     const addEmployee = (projectId: number) => {
@@ -61,6 +64,13 @@ export const ProjectPage = () => {
         setProjectId(projectId)
         onOpenEngineersDisplay()
     }
+
+    const handlePageClick = async (event: any) => {
+        setCurrentPage(event.selected);
+        fetchProjects(event.selected)
+      };
+    
+
     return (
     <>
         <Button onClick={onOpenCreateProject} mr="5px">
@@ -76,8 +86,8 @@ export const ProjectPage = () => {
             </Tr>
             </Thead>
             <Tbody>
-            {getProjectsRes.data &&
-                getProjectsRes.data.map((item: Project) => (
+            {getProjectsRes.data.content &&
+                getProjectsRes.data.content.map((item: Project) => (
                 <Tr key={item.id}>
                     <Td>{item.name}</Td>
                     <Td>{item.duration}</Td>
@@ -88,6 +98,23 @@ export const ProjectPage = () => {
             </Tbody>
         </Table>
         </TableContainer>
+        <ReactPaginate
+          activeClassName={"item active "}
+          forcePage={currentPage}
+          breakClassName={"item break-me "}
+          breakLabel={"..."}
+          containerClassName={"pagination"}
+          disabledClassName={"disabled-page"}
+          marginPagesDisplayed={2}
+          nextClassName={"item next "}
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageCount={getProjectsRes.data.totalPages}
+          pageClassName={"item pagination-page "}
+          pageRangeDisplayed={2}
+          previousClassName={"item previous"}
+          previousLabel="<"
+        />
         <CreateProjectForm
         isOpen={isOpenCreateProject}
         onClose={onCloseCreateProject}

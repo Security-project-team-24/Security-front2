@@ -4,21 +4,22 @@ import produce from "immer"
 import {AppStore} from "../application.store"
 import { ResponseState } from "../response-state.type";
 import { User } from "../auth-store/model/user.model";
+import { Page } from "../page.type";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export type UserStoreState = {
-    getEmployeesRes: ResponseState<User[]>
+    getEmployeesRes: ResponseState<Page<User>>
     updatePersonalInfoRes: ResponseState<User | null>
 }
 export type UserActions = {
-    getEmployees: () => Promise<void>
+    getEmployees: (pageSize: number, pageNumber: number) => Promise<void>
     updatePersonalInfo: (user: User) => Promise<void>
 }
 
 export const state: UserStoreState = {
     getEmployeesRes: {
-        data: [],
+        data: {content: [], totalPages: 0},
         status: "IDLE",
         error: null
     },
@@ -33,7 +34,7 @@ export type UserStore = UserStoreState & UserActions
 
 export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, get) => ({
     ...state,
-    getEmployees: async () => {
+    getEmployees: async (pageSize: number, pageNumber: number) => {
         set(
             produce((state: UserStore) => {
                 state.getEmployeesRes.status = "LOADING"
@@ -41,7 +42,7 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
             })
         )
         try {
-            const res = await axios.get(`${BASE_URL}/user/employees`, 
+            const res = await axios.get(`${BASE_URL}/user/employees/${pageSize}/${pageNumber}`, 
                 {
                     headers: {
                         "Authorization": "Bearer " + get().loginStateRes.data
