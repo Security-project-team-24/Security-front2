@@ -17,6 +17,7 @@ import { displayToast } from "../../utils/toast.caller";
 import { Project } from "../../store/project-store/types/project.type";
 import { CreateProjectForm } from "../../components/Project/CreateProjectForm";
 import AddEmployee from "../../components/Project/AddEmployee";
+import ProjectEngineersDisplay from "../../components/Project/ProjectEngineersDisplay";
 
 export const ProjectPage = () => {
  
@@ -39,6 +40,11 @@ export const ProjectPage = () => {
         onOpen: onOpenAddEmployee,
         onClose: onCloseAddEmployee,
     } = useDisclosure();
+    const {
+        isOpen: isOpenEngineersDisplay,
+        onOpen: onOpenEngineersDisplay,
+        onClose: onCloseEngineersDisplay,
+    } = useDisclosure();
     const toast = useToast()
     useEffect(() => {
         fetchProjects()
@@ -49,8 +55,11 @@ export const ProjectPage = () => {
     const [projectId, setProjectId] = useState(-1)
     const addEmployee = (projectId: number) => {
         setProjectId(projectId)
-        console.log(projectId)
         onOpenAddEmployee()
+    }
+    const openEngineersDisplay = (projectId: number) => {
+        setProjectId(projectId)
+        onOpenEngineersDisplay()
     }
     return (
     <>
@@ -72,6 +81,7 @@ export const ProjectPage = () => {
                 <Tr key={item.id}>
                     <Td>{item.name}</Td>
                     <Td>{item.duration}</Td>
+                    <Td><Button onClick={() => openEngineersDisplay(item.id)}>Engineers</Button></Td>
                     <Td><Button onClick={() => addEmployee(item.id)}>Add employee</Button></Td>
                 </Tr>
                 ))}
@@ -85,7 +95,14 @@ export const ProjectPage = () => {
       <AddEmployee
         isOpen={isOpenAddEmployee}
         onClose={onCloseAddEmployee}
-        projectId={projectId}/>
+        projectId={projectId}
+        setProjectId={setProjectId}/>
+        <ProjectEngineersDisplay
+        isOpen={isOpenEngineersDisplay}
+        onClose={onCloseEngineersDisplay}
+        projectId={projectId}
+        setProjectId={setProjectId}
+        />
     </>
     );
 };

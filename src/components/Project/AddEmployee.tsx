@@ -1,18 +1,28 @@
-import { Box, Button, Checkbox, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, Textarea, VStack, useToast } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Radio, RadioGroup, Text, Textarea, VStack, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { User } from "../../store/auth-store/model/user.model";
 import { useApplicationStore } from "../../store/application.store";
 import { displayToast } from "../../utils/toast.caller";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ADD_EMPLOYEE_DEFAULT_VALUES, ADD_EMPLOYEE_VALIDATION_SCHEMA } from "../../utils/project.constants";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-
-  
 interface Props {
     isOpen: boolean;
     onClose: () => void;
     projectId: number
+    setProjectId: (id: number) => void
   }
 
-const AddEmployee = ({isOpen, onClose, projectId}: Props) => {
+  
+  type Inputs = {
+    employeeId: number
+    projectId: number;
+    jobDescription: string;
+  };
+
+
+const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
   const getAvailableEmployees = useApplicationStore((state) => state.getAvailableEmployees)
   const getAvailableEmployeesRes = useApplicationStore((state) => state.getAvailableEmployeesRes)
   const [selectedUser, setSelectedUser] = useState(-1);
@@ -25,19 +35,30 @@ const AddEmployee = ({isOpen, onClose, projectId}: Props) => {
   const handleUserSelect = (user: User) => {
     setSelectedUser(user.id);
   };
+  const { register, handleSubmit, formState: { errors }, reset, setValue} = useForm<Inputs>({
+    defaultValues: ADD_EMPLOYEE_DEFAULT_VALUES,
+    resolver: yupResolver(ADD_EMPLOYEE_VALIDATION_SCHEMA),
+  });
 
-  const addEmployee = useApplicationStore((state) => state.addEmployee)
-  const addEmployeeRes = useApplicationStore((state) => state.addEmployeeRes)
+    const addEmployee = useApplicationStore((state) => state.addEmployee)
+    const addEmployeeRes = useApplicationStore((state) => state.addEmployeeRes)
     const toast = useToast()
-    const handleButtonClick = async () => {
-        await addEmployee({projectId: projectId, employeeId: selectedUser, jobDescription: jobDescription})
-        if (addEmployeeRes.status == "SUCCESS") {
-            displayToast(toast, "Succuessfully added employee", "success")
-            onClose()
-        }
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        await addEmployee(data)
     };
 
     useEffect(() => {
+      if (addEmployeeRes.status == "SUCCESS" && projectId != -1) {
+        displayToast(toast, "Succuessfully added employee", "success")
+        onClose()
+        setProjectId(-1)
+        reset()
+      }
+    }, [addEmployeeRes])
+
+    useEffect(() => {
+        reset()
+        setValue("projectId", projectId)
         fetchEmployees()
     }, [projectId])
     
@@ -47,6 +68,9 @@ const AddEmployee = ({isOpen, onClose, projectId}: Props) => {
         }
     };
 
+    const handleEmployeeId = (value: any) => {
+      setValue("employeeId", value)
+    }
 
   return (
     <>
@@ -58,26 +82,30 @@ const AddEmployee = ({isOpen, onClose, projectId}: Props) => {
             <ModalCloseButton />
             <ModalBody>
                 <Flex flexDirection={"column"}>
-                <Box h="150px" overflowY="auto">
-                    <VStack align="start">
-                    {getAvailableEmployeesRes.data.map((user) => (
-                        <Checkbox
-                        key={user.id}
-                        isChecked={selectedUser === user.id}
-                        onChange={() => handleUserSelect(user)}
-                        >
-                        <Text>{user.name} {user.surname}, {user.role}</Text>
-                        </Checkbox>
-                    ))}
-                    </VStack>
-                    </Box>
+                  <FormControl isInvalid={errors.employeeId != undefined}>
+                    <FormLabel>Employee</FormLabel>
+                    <RadioGroup onChange={handleEmployeeId} display={'flex'} flexDirection={'column'} height={'150px'} overflowY={'auto'} paddingLeft={'10px'}>
+                        {getAvailableEmployeesRes.data.map((user) => (
+                          <Radio key={user.id} value={user.id.toString()}>
+                            {user.name} {user.surname}
+                          </Radio>
+                        ))}
+                      </RadioGroup>
+                      {errors.employeeId && (
+                        <FormErrorMessage>{errors.employeeId?.message}</FormErrorMessage>
+                      )}
+                    </FormControl>
+                    <FormControl isInvalid={errors.jobDescription != undefined}>
+                    <FormLabel>Job description</FormLabel>
                      <Textarea
-                        value={jobDescription}
-                        onChange={handleTextChange}
-                        placeholder="Enter job description"
+                        {...register('jobDescription')}
                         mb="10px"
                         />
-                    <Button onClick={handleButtonClick}>Add</Button>
+                         {errors.jobDescription && (
+                        <FormErrorMessage>{errors.jobDescription?.message}</FormErrorMessage>
+                      )}
+                      </FormControl>
+                    <Button onClick={handleSubmit(onSubmit)}>Add</Button>
                 </Flex>
             </ModalBody>
           </ModalContent>

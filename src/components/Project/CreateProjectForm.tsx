@@ -2,6 +2,8 @@ import {
     Button,
     Checkbox,
     Flex,
+    FormControl,
+    FormErrorMessage,
     Heading,
     Input,
     Modal,
@@ -20,6 +22,8 @@ import {
   import { useApplicationStore } from '../../store/application.store';
   import { ProjectEmployee } from '../../store/project-store/types/projectEmployee.type';
 import { displayToast } from '../../utils/toast.caller';
+import { CREATE_PROJECT_DEFAULT_VALUES, CREATE_PROJECT_VALIDATION_SCHEMA } from '../../utils/project.constants';
+import { yupResolver } from '@hookform/resolvers/yup';
   
   interface Props {
     isOpen: boolean;
@@ -40,18 +44,24 @@ import { displayToast } from '../../utils/toast.caller';
     const createProjectRes = useApplicationStore(
       (state) => state.createProjectRes
     );
-    const { register, handleSubmit } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors }, reset} = useForm<Inputs>({
+      defaultValues: CREATE_PROJECT_DEFAULT_VALUES,
+      resolver: yupResolver(CREATE_PROJECT_VALIDATION_SCHEMA),
+    });
     const toast = useToast()  
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
       await createProject(data);
-      if (createProjectRes.status == "SUCCESS") {
-        displayToast(toast, "Successfully created project", "success")
-        onClose()
-    }
     };
   
-  
+    useEffect(() => {
+      if (createProjectRes.status == "SUCCESS" && isOpen) {
+        displayToast(toast, "Successfully created project", "success")
+        onClose()
+        reset()
+      }
+    }, [createProjectRes])
+
     return (
       <>
       { isOpen && <>
@@ -61,33 +71,33 @@ import { displayToast } from '../../utils/toast.caller';
           <ModalHeader textAlign='center'>Create project</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Flex gap={10}>
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flex: '1',
-                  gap: '5px',
-                }}
-              >
-                <Input
-                  type='text'
-                  placeholder='Name'
-                  {...register('name')}
-                ></Input>
-                <Input
-                  type='number'
-                  min='0'
-                  placeholder='Duration'
-                  {...register('duration')}
-                ></Input>
+            <Flex flexDirection={"column"} gap={10}>
+                <FormControl isInvalid={errors.name != null}>
+                  <Input
+                    type='text'
+                    placeholder='Name'
+                    {...register('name')}
+                  ></Input>
+                  {errors.name && (
+                  <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl isInvalid={errors.duration != null}>
+                  <Input
+                    type='number'
+                    min='0'
+                    placeholder='Duration'
+                    {...register('duration')}
+                  ></Input>
+                  {errors.duration && (
+                    <FormErrorMessage>{errors.duration?.message}</FormErrorMessage>
+                  )}
+                </FormControl> 
                 <Flex justifyContent='center'>
-                  <Button type='submit' margin='15px 0'>
+                  <Button onClick={handleSubmit(onSubmit)} margin='15px 0'>
                     Create project
                   </Button>
                 </Flex>
-              </form>
              </Flex>
           </ModalBody>
         </ModalContent>

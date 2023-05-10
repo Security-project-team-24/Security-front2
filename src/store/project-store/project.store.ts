@@ -6,6 +6,7 @@ import { ResponseState } from "../response-state.type";
 import { Project } from "./types/project.type";
 import { User } from "../auth-store/model/user.model";
 import { ProjectEmployeeRequest } from "./types/project.employee.request.type";
+import { ProjectEmployee } from "./types/projectEmployee.type";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -14,12 +15,14 @@ export type ProjectStoreState = {
     createProjectRes: ResponseState<any>
     getAvailableEmployeesRes: ResponseState<User[]>
     addEmployeeRes: ResponseState<any>
+    getProjectEngineersRes: ResponseState<ProjectEmployee[]>
 }
 export type ProjectActions = {
     getProjects: () => Promise<void>
     createProject: (project: Project) => Promise<void>
     getAvailableEmployees: (projectId: number) => Promise<void>
     addEmployee: (request: ProjectEmployeeRequest) => Promise<void>
+    getProjectEngineers: (projectId: number) => Promise<void>
 }
 
 export const state: ProjectStoreState = {
@@ -40,6 +43,11 @@ export const state: ProjectStoreState = {
     },
     addEmployeeRes: {
         data: null,
+        status: "IDLE",
+        error: null
+    },
+    getProjectEngineersRes: {
+        data: [],
         status: "IDLE",
         error: null
     },
@@ -167,6 +175,36 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
             set(
                 produce((state: ProjectStore) => {
                     state.addEmployeeRes.status = "ERROR"
+                    return state
+                })
+            )
+        }
+    }, getProjectEngineers: async (projectId: number) => {
+        set(
+            produce((state: ProjectStore) => {
+                state.getProjectEngineersRes.status = "LOADING"
+                return state
+            })
+        )
+        try {
+            const res = await axios.get(`${BASE_URL}/project-employee/${projectId}/engineers`, 
+                {
+                    headers: {
+                        "Authorization": "Bearer " + get().loginStateRes.data
+                    }
+                }
+            )
+            set(
+                produce((state: ProjectStore) => {
+                    state.getProjectEngineersRes.status = "SUCCESS"
+                    state.getProjectEngineersRes.data = res.data
+                    return state
+                })
+            )
+        } catch (e) {
+            set(
+                produce((state: ProjectStore) => {
+                    state.getProjectEngineersRes.status = "ERROR"
                     return state
                 })
             )
