@@ -40,7 +40,7 @@ const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
     resolver: yupResolver(ADD_EMPLOYEE_VALIDATION_SCHEMA),
   });
 
-    const addEmployee = useApplicationStore((state) => state.addEmployee)
+  const addEmployee = useApplicationStore((state) => state.addEmployee)
     const addEmployeeRes = useApplicationStore((state) => state.addEmployeeRes)
     const toast = useToast()
     const onSubmit: SubmitHandler<Inputs> = async (data) => {

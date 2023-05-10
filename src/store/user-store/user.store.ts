@@ -9,14 +9,21 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export type UserStoreState = {
     getEmployeesRes: ResponseState<User[]>
+    updatePersonalInfoRes: ResponseState<User | null>
 }
 export type UserActions = {
     getEmployees: () => Promise<void>
+    updatePersonalInfo: (user: User) => Promise<void>
 }
 
 export const state: UserStoreState = {
     getEmployeesRes: {
         data: [],
+        status: "IDLE",
+        error: null
+    },
+    updatePersonalInfoRes: {
+        data: null,
         status: "IDLE",
         error: null
     },
@@ -57,4 +64,35 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
             )
         }
     },
+    updatePersonalInfo: async (user: User) => {
+        set(
+            produce((state: UserStore) => {
+                state.updatePersonalInfoRes.status = "LOADING"
+                return state
+            })
+        )
+        try {
+            const res = await axios.patch(`${BASE_URL}/user/update`, user,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + get().loginStateRes.data
+                    }
+                }
+            )
+            set(
+                produce((state: UserStore) => {
+                    state.updatePersonalInfoRes.status = "SUCCESS"
+                    state.updatePersonalInfoRes.data = res.data
+                    return state
+                })
+            )
+        } catch (e) {
+            set(
+                produce((state: UserStore) => {
+                    state.updatePersonalInfoRes.status = "ERROR"
+                    return state
+                })
+            )
+        }
+    }
 })

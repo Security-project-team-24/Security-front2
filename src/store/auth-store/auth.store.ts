@@ -84,7 +84,6 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
             set(
                 produce(state => {
                     state.user = resp.data;
-                    console.log(state.user)
                     return state
                 })
             )

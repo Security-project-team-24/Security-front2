@@ -3,6 +3,7 @@ import App from "../App";
 import { LoginPage } from "../pages/Auth/LoginPage";
 import { ProjectPage } from "../pages/ProjectPage/ProjectPages";
 import { EmployeesPage } from "../pages/EmployeesPage/EmployeesPages";
+import { AdminProfilePage } from "../pages/UserProfilePage/AdminProfilePage";
 
 
 export const routes: RouteObject[] = [
@@ -21,6 +22,10 @@ export const routes: RouteObject[] = [
       {
         path: "/admin/employees",
         element: <EmployeesPage/>,
+      },
+      {
+        path: "/profile",
+        element: <AdminProfilePage/>,
       },
     ],
   },
