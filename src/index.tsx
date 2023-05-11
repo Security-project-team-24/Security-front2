@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {
-    BrowserRouter,
+    BrowserRouter as Router,
     createBrowserRouter,
     RouterProvider,
+    Routes,
+    Route,
   } from "react-router-dom";
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { routes } from './routing/routes';
+import ProtectedRoute from './routing/ProtectedRoute';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,7 +34,7 @@ const router = createBrowserRouter(routes)
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-        <RouterProvider router={router} />
+      <App></App>
     </ChakraProvider>
   </React.StrictMode>
 );

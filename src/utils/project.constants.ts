@@ -2,7 +2,7 @@ import * as yup from "yup"
 
 export const CREATE_PROJECT_VALIDATION_SCHEMA = yup.object({
     name: yup.string().required(),
-    duration: yup.string().required().min(0)
+    duration: yup.number().required().moreThan(0)
 })
 
 export const CREATE_PROJECT_DEFAULT_VALUES = {
