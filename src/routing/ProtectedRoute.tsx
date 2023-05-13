@@ -37,19 +37,19 @@ const ProtectedRoute = ({
    if (user?.role == "ADMIN" && user.firstLogged) {
      setTimeout(() => {
        displayToast(toast, "This is your first login. Please change your password!", "error")
-     }, 100); 
+     }, 300); 
      return
    }
    if (isAuthenticated == true && userHasRole == false) {
       setTimeout(() => {
         displayToast(toast, "Your role does not have access!", "error")
-      }, 100); 
+      }, 300); 
       return
    }
    if (isAuthenticated == false) {
     setTimeout(() => {
       displayToast(toast, "Please login first!", "error")
-    }, 100); 
+    }, 300); 
     return
    }
   }, []);
