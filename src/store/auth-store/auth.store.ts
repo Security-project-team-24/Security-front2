@@ -5,6 +5,7 @@ import {StateCreator} from "zustand"
 import {User} from "./model/user.model"
 import {Login} from "./types/login.type"
 import {ResponseState} from "../response-state.type";
+import { Register } from './types/register.type';
 
 
 const BASE_URL = process.env.REACT_APP_BASE_URL
@@ -12,18 +13,24 @@ const BASE_URL = process.env.REACT_APP_BASE_URL
 export type AuthStoreState = {
     user: User | null,
     loginStateRes: ResponseState<string | null>,
+    registerRes: ResponseState<User | null>
 }
 
 export type AuthActions = {
     login: (data: Login) => Promise<void>,
     logout: () => void,
-    fetchLoggedUser: (token: string) => Promise<void>
-
+    fetchLoggedUser: (token: string) => Promise<void>,
+    registerUser: (request: Register) => Promise<void>
 }
 
 export const state: AuthStoreState = {
     user: null,
     loginStateRes: {
+        data: null,
+        status: "IDLE",
+        error: null
+    },
+    registerRes: {
         data: null,
         status: "IDLE",
         error: null
@@ -96,6 +103,34 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
             )
 
         }
-    }
+    }, 
+    registerUser: async (body: Register) => {
+        set(
+            produce((state: AuthStoreState) => {
+                state.registerRes.status = "LOADING"
+                return state;
+            })
+        )
+        try {
+            const resp = await axios.post(`${BASE_URL}/auth/register`, body)
+            set(
+                produce((state: AuthStoreState) => {
+                    state.registerRes.status = "SUCCESS"
+                    state.registerRes.data = resp.data.accessToken
+                    return state;
+                })
+            )
+        } catch (e: any) {
+            console.log(e)
+            set(
+                produce((state: AuthStoreState) => {
+                    state.registerRes.status = "ERROR"
+                    state.registerRes.data = null
+                    state.registerRes.error = e.response.data.message
+                    return state
+                })
+            )
+        }
+    },
 })
 

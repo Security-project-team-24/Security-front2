@@ -56,11 +56,9 @@ const ProtectedRoute = ({
 
 
   if (user?.role == "ADMIN" && user.firstLogged) {
-    <Navigate to="/admin/change-password"></Navigate>
     return <ChangePasswordPage></ChangePasswordPage>
   } 
-
-  if (isAuthenticated && userHasRole) {
+  else if (isAuthenticated && userHasRole) {
     return element
   } else if (isAuthenticated && !userHasRole) {
     return <Navigate to="/login"></Navigate>
