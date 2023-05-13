@@ -39,7 +39,9 @@ import { useNavigate } from "react-router-dom";
     const loginStateRes = useApplicationStore((state) => state.loginStateRes);
     const toast = useToast();
     const navigate = useNavigate();
-    
+    const user = useApplicationStore((state) => state.user)
+  
+
     const handleOnSubmit = async (values: FormValues) => {
       await login(values);
     };
@@ -47,7 +49,10 @@ import { useNavigate } from "react-router-dom";
     useEffect(() => {
       if (loginStateRes.status === "SUCCESS") {
         displayToast(toast, "Successfully logged in!", "success");
-        navigate("/")
+        if (user?.role == "ADMIN" && user?.firstLogged)
+          navigate("/admin/change-password")
+        else 
+          navigate("/admin/projects")
       } else if (loginStateRes.status === "ERROR") {
         displayToast(toast, loginStateRes.error ?? "", "error");
       }

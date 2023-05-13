@@ -9,4 +9,5 @@ export type User = {
     status?: number,
     address: Address
     phoneNumber: string
+    firstLogged?: boolean
 }

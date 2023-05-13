@@ -1,8 +1,9 @@
 import React, { ReactNode, useEffect } from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
 import { useApplicationStore } from '../store/application.store';
 import { displayToast } from '../utils/toast.caller';
 import { useToast } from '@chakra-ui/react';
+import { ChangePasswordPage } from '../pages/ChangePasswordPage/ChangePasswordPage';
 
 interface CustomRouteProps {
   path: string;
@@ -33,6 +34,12 @@ const ProtectedRoute = ({
   const toast = useToast()
 
   useEffect(() => {
+   if (user?.role == "ADMIN" && user.firstLogged) {
+     setTimeout(() => {
+       displayToast(toast, "This is your first login. Please change your password!", "error")
+     }, 100); 
+     return
+   }
    if (isAuthenticated == true && userHasRole == false) {
       setTimeout(() => {
         displayToast(toast, "Your role does not have access!", "error")
@@ -46,6 +53,12 @@ const ProtectedRoute = ({
     return
    }
   }, []);
+
+
+  if (user?.role == "ADMIN" && user.firstLogged) {
+    <Navigate to="/admin/change-password"></Navigate>
+    return <ChangePasswordPage></ChangePasswordPage>
+  } 
 
   if (isAuthenticated && userHasRole) {
     return element

@@ -95,6 +95,7 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
                     return state
                 })
             )
+            await get().fetchLoggedUser(get().loginStateRes.data ?? "")
         } catch (e: any) {
             set(
                 produce((state: UserStore) => {
