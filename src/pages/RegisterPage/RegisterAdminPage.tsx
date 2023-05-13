@@ -40,7 +40,7 @@ export const RegisterAdminPage = () => {
   const registerUser = useApplicationStore((state) => state.registerUser);
   var registerUserRes = useApplicationStore((state) => state.registerRes)
   const toast = useToast();
-  const isInitialRender = useRef(true);
+  const [canDisplayMessages, setCanDisplayMessages] = useState<boolean>(false);
 
 
 
@@ -55,16 +55,17 @@ export const RegisterAdminPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.role = 3
+    setCanDisplayMessages(true)
     await registerUser(data);
   };
 
   useEffect(() => {
-    if (registerUserRes.status === "SUCCESS") {
-    displayToast(toast, "Successfully registered new admin!", "success");
-    reset()
+    if (registerUserRes.status === "SUCCESS" && canDisplayMessages) {
+      displayToast(toast, "Successfully registered new admin!", "success");
+      reset()
     }
-    if (registerUserRes.status === "ERROR") {
-    displayToast(toast, registerUserRes.error ?? "", "error");
+    if (registerUserRes.status === "ERROR" && canDisplayMessages) {
+      displayToast(toast, registerUserRes.error ?? "", "error");
     }
   }, [registerUserRes]);
 
