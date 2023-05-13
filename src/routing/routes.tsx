@@ -6,15 +6,21 @@ import { EmployeesPage } from "../pages/EmployeesPage/EmployeesPages";
 import { AdminProfilePage } from "../pages/UserProfilePage/AdminProfilePage";
 import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPage";
 import { Component, ReactNode } from "react";
+import { HomePage } from "../pages/HomePage/HomePage";
 
 interface CustomRouteProps {
   path: string;
   element: JSX.Element
-  isProtected?: boolean;
+  isProtected: boolean;
   requiredRole?: string[];
 }
 
 export const routes: CustomRouteProps[] = [
+      {
+        path: "/",
+        element: <HomePage/>,
+        isProtected: false,
+      },
       {
         path: "/login",
         element: <LoginPage/>,
