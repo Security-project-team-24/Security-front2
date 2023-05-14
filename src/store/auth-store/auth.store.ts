@@ -51,6 +51,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
         )
         try {
             const resp = await axios.post(`${BASE_URL}/auth/login`, body)
+            await get().fetchLoggedUser(resp.data.accessToken)
             set(
                 produce((state: AuthStoreState) => {
                     state.loginStateRes.status = "SUCCESS"
@@ -58,7 +59,6 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
                     return state;
                 })
             )
-            await get().fetchLoggedUser(resp.data.accessToken)
         } catch (e: any) {
             console.log(e)
             set(
@@ -121,7 +121,6 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
                 })
             )
         } catch (e: any) {
-            console.log(e)
             set(
                 produce((state: AuthStoreState) => {
                     state.registerRes.status = "ERROR"

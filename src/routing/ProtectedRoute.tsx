@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
 import { useApplicationStore } from '../store/application.store';
 import { displayToast } from '../utils/toast.caller';
@@ -34,25 +34,23 @@ const ProtectedRoute = ({
   const toast = useToast()
 
   useEffect(() => {
+    setTimeout(() => {
    if (user?.role == "ADMIN" && user.firstLogged) {
-     setTimeout(() => {
-       displayToast(toast, "This is your first login. Please change your password!", "error")
-     }, 300); 
-     return
+       displayToast(toast, "This is your first login. Please change your password!", "error") 
+       return
    }
    if (isAuthenticated == true && userHasRole == false) {
-      setTimeout(() => {
-        displayToast(toast, "Your role does not have access!", "error")
-      }, 300); 
+      displayToast(toast, "Your role does not have access!", "error")
       return
    }
    if (isAuthenticated == false) {
-    setTimeout(() => {
       displayToast(toast, "Please login first!", "error")
-    }, 300); 
-    return
+      return
    }
+  }, 300);
   }, []);
+
+
 
 
   if (user?.role == "ADMIN" && user.firstLogged) {

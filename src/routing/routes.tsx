@@ -30,7 +30,7 @@ export const routes: CustomRouteProps[] = [
       {
         path: "/admin/projects",
         element: <ProjectPage/>,
-        isProtected: true,
+        isProtected: false,
         requiredRole: ["ADMIN"]
       },
       {
