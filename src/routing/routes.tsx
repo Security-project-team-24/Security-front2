@@ -7,6 +7,7 @@ import { AdminProfilePage } from "../pages/UserProfilePage/AdminProfilePage";
 import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPage";
 import { Component, ReactNode } from "react";
 import { HomePage } from "../pages/HomePage/HomePage";
+import { RegisterAdminPage } from "../pages/RegisterPage/RegisterAdminPage";
 
 interface CustomRouteProps {
   path: string;
@@ -29,7 +30,7 @@ export const routes: CustomRouteProps[] = [
       {
         path: "/admin/projects",
         element: <ProjectPage/>,
-        isProtected: true,
+        isProtected: false,
         requiredRole: ["ADMIN"]
       },
       {
@@ -47,6 +48,12 @@ export const routes: CustomRouteProps[] = [
       {
         path: "/admin/change-password",
         element: <ChangePasswordPage/>,
+        isProtected: true,
+        requiredRole: ["ADMIN"]
+      },
+      {
+        path: "/admin/register-admin",
+        element: <RegisterAdminPage/>,
         isProtected: true,
         requiredRole: ["ADMIN"]
       }

@@ -6,6 +6,8 @@ import { ResponseState } from "../response-state.type";
 import { User } from "../auth-store/model/user.model";
 import { Page } from "../page.type";
 import { ChangePasswordRequest } from "./type/changepassword.type";
+import { displayToast } from "../../utils/toast.caller";
+import { ToastId, useToast } from "@chakra-ui/react";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -37,6 +39,7 @@ export const state: UserStoreState = {
         error: null
     },
 }
+
 
 export type UserStore = UserStoreState & UserActions
 
@@ -95,6 +98,7 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
                     return state
                 })
             )
+            await get().fetchLoggedUser(get().loginStateRes.data ?? "")
         } catch (e: any) {
             set(
                 produce((state: UserStore) => {
