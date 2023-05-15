@@ -1,7 +1,7 @@
 import { LoginPage } from "../pages/Auth/LoginPage";
 import { ProjectPage } from "../pages/ProjectPage/ProjectPages";
 import { EmployeesPage } from "../pages/EmployeesPage/EmployeesPages";
-import { AdminProfilePage } from "../pages/UserProfilePage/AdminProfilePage";
+import { ProfilePage } from "../pages/UserProfilePage/ProfilePage";
 import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPage";
 import { HomePage } from "../pages/HomePage/HomePage";
 import { RegisterAdminPage } from "../pages/RegisterPage/RegisterAdminPage";
@@ -28,7 +28,7 @@ export const routes: CustomRouteProps[] = [
   {
     path: "/admin/projects",
     element: <ProjectPage />,
-    isProtected: false,
+    isProtected: true,
     requiredRole: ["ADMIN"],
   },
   {
@@ -39,7 +39,7 @@ export const routes: CustomRouteProps[] = [
   },
   {
     path: "/profile",
-    element: <AdminProfilePage />,
+    element: <ProfilePage />,
     isProtected: true,
     requiredRole: ["ADMIN", "PROJECTMANAGER", "ENGINEER"],
   },
