@@ -76,7 +76,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
                   <Input
                     type='number'
                     min='0'
-                    placeholder='Duration'
+                    placeholder='Duration (months)'
                     {...register('duration')}
                   ></Input>
                   {errors.duration && (

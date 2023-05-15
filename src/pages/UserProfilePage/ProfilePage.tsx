@@ -25,7 +25,7 @@ type Inputs = {
   phoneNumber: string;
 };
 
-export const AdminProfilePage = () => {
+export const ProfilePage = () => {
   const user = useApplicationStore((state) => state.user);
 
   const updatePersonalInfo = useApplicationStore(
