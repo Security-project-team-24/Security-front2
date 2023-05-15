@@ -50,6 +50,8 @@ export const EmployeesPage = () => {
                 <Th>Email</Th>
                 <Th>Phone number</Th>
                 <Th>Role</Th>
+                <Th>Status</Th>
+                <Th>Activated</Th>
             </Tr>
             </Thead>
             <Tbody>
@@ -62,6 +64,8 @@ export const EmployeesPage = () => {
                     <Td>{item.email}</Td>
                     <Td>{item.phoneNumber}</Td>
                     <Td>{item.role}</Td>
+                    <Td>{item.status}</Td>
+                    <Td>{item.activated && <p>YES</p>} {!item.activated && <p>NO</p>}</Td>
                 </Tr>
                 ))}
             </Tbody>
