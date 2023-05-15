@@ -64,7 +64,6 @@ export const RegisterUserPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.role = parseInt(role);
-    console.log(data);
     await registerUser(data);
   };
 
