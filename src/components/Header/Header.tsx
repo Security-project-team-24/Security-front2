@@ -61,6 +61,7 @@ export const Header = () => {
               </Flex>
             )}
           </Flex>
+          <Flex>{user && <Button>Add skill</Button>}</Flex>
         </Flex>
         {user?.role == "ADMIN" && (
           <>
