@@ -15,46 +15,31 @@ interface Props {
   }
 
   
-  type Inputs = {
-    employeeId: number
-    projectId: number;
-    jobDescription: string;
-  };
+type Inputs = {
+  employeeId: number
+  projectId: number;
+  jobDescription: string;
+  startDate: Date
+  endDate: Date
+};
 
 
 const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
   const getAvailableEmployees = useApplicationStore((state) => state.getAvailableEmployees)
   const getAvailableEmployeesRes = useApplicationStore((state) => state.getAvailableEmployeesRes)
-  const [selectedUser, setSelectedUser] = useState(-1);
-  const [jobDescription, setJobDescription] = useState("");
 
-  const handleTextChange = (event: any) => {
-    setJobDescription(event.target.value);
-  };
-
-  const handleUserSelect = (user: User) => {
-    setSelectedUser(user.id);
-  };
   const { register, handleSubmit, formState: { errors }, reset, setValue} = useForm<Inputs>({
     defaultValues: ADD_EMPLOYEE_DEFAULT_VALUES,
     resolver: yupResolver(ADD_EMPLOYEE_VALIDATION_SCHEMA),
   });
 
   const addEmployee = useApplicationStore((state) => state.addEmployee)
-    const addEmployeeRes = useApplicationStore((state) => state.addEmployeeRes)
-    const toast = useToast()
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         await addEmployee(data)
-    };
-
-    useEffect(() => {
-      if (addEmployeeRes.status == "SUCCESS" && projectId != -1) {
-        displayToast(toast, "Succuessfully added employee", "success")
         onClose()
         setProjectId(-1)
         reset()
-      }
-    }, [addEmployeeRes])
+    };
 
     useEffect(() => {
         reset()
@@ -84,7 +69,7 @@ const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
                 <Flex flexDirection={"column"}>
                   <FormControl isInvalid={errors.employeeId != undefined}>
                     <FormLabel>Employee</FormLabel>
-                    <RadioGroup onChange={handleEmployeeId} display={'flex'} flexDirection={'column'} height={'150px'} overflowY={'auto'} paddingLeft={'10px'}>
+                    <RadioGroup onChange={handleEmployeeId} display={'flex'} flexDirection={'column'} height={'100px'} overflowY={'auto'} paddingLeft={'10px'}>
                         {getAvailableEmployeesRes.data.map((user) => (
                           <Radio key={user.id} value={user.id.toString()}>
                             {user.name} {user.surname}
@@ -94,18 +79,38 @@ const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
                       {errors.employeeId && (
                         <FormErrorMessage>{errors.employeeId?.message}</FormErrorMessage>
                       )}
-                    </FormControl>
-                    <FormControl isInvalid={errors.jobDescription != undefined}>
+                  </FormControl>
+                  <FormControl isInvalid={errors.jobDescription != undefined}>
                     <FormLabel>Job description</FormLabel>
-                     <Textarea
+                    <Textarea
                         {...register('jobDescription')}
                         mb="10px"
                         />
-                         {errors.jobDescription && (
+                        {errors.jobDescription && (
                         <FormErrorMessage>{errors.jobDescription?.message}</FormErrorMessage>
                       )}
-                      </FormControl>
-                    <Button onClick={handleSubmit(onSubmit)}>Add</Button>
+                  </FormControl>
+                  <FormControl isInvalid={errors.startDate != undefined}>
+                    <FormLabel>Start date</FormLabel>
+                     <Input type="date"
+                        {...register('startDate')}
+                        mb="10px"
+                        />
+                         {errors.startDate && (
+                        <FormErrorMessage>{errors.startDate?.message}</FormErrorMessage>
+                      )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.endDate != undefined}>
+                    <FormLabel>End date</FormLabel>
+                     <Input type="date"
+                        {...register('endDate')}
+                        mb="10px"
+                        />
+                         {errors.endDate && (
+                        <FormErrorMessage>{errors.endDate?.message}</FormErrorMessage>
+                      )}
+                  </FormControl>
+                  <Button onClick={handleSubmit(onSubmit)}>Add</Button>
                 </Flex>
             </ModalBody>
           </ModalContent>

@@ -5,6 +5,8 @@ import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import ProtectedRoute from './routing/ProtectedRoute';
 import { routes } from './routing/routes';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
         })}
       </Routes>
       <Footer></Footer>
+      <ToastContainer position={'bottom-right'} />
       </Flex>
     </Router>
   );

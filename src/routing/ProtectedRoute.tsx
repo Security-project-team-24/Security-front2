@@ -4,6 +4,7 @@ import { useApplicationStore } from '../store/application.store';
 import { displayToast } from '../utils/toast.caller';
 import { useToast } from '@chakra-ui/react';
 import { ChangePasswordPage } from '../pages/ChangePasswordPage/ChangePasswordPage';
+import { toast } from 'react-toastify';
 
 interface CustomRouteProps {
   path: string;
@@ -19,49 +20,53 @@ const ProtectedRoute = ({
   requiredRole,
 } : CustomRouteProps) => {
 
-  function isUserLoggedIn(): boolean {
-    return user != null
-  }
-      
+  useEffect(() => {
+
+  }, [])
+
+  const user = useApplicationStore((state) => state.user)
   function hasUserRole(roles?: string[]): boolean {
       if (!user) return false
       if (!roles) return false
       return roles.includes(user.role)
   }
-  const user = useApplicationStore((state) => state.user)
-  const isAuthenticated = isUserLoggedIn();
   const userHasRole = hasUserRole(requiredRole);
-  const toast = useToast()
 
-  useEffect(() => {
-    setTimeout(() => {
-   if (user?.role == "ADMIN" && user.firstLogged) {
-       displayToast(toast, "This is your first login. Please change your password!", "error") 
-       return
-   }
-   if (isAuthenticated == true && userHasRole == false) {
-      displayToast(toast, "Your role does not have access!", "error")
-      return
-   }
-   if (isAuthenticated == false) {
-      displayToast(toast, "Please login first!", "error")
-      return
-   }
-  }, 300);
-  }, []);
+  function firstAdminLogin(): boolean {
+    if (user?.role == "ADMIN" && user.firstLogged) {
+      toast.warning("This is your first login, please change your password!")
+      return true
+    }
+    return false
+  }
 
+  function isAuthenticated() : boolean {
+    if (user == null) {
+      toast.warning("Please login first!")
+      return false
+    }
+    return true
+  }
 
+  function userHasNoRole() : boolean {
+    if (user != null && !userHasRole) {
+      toast.warning("You do not have the appropriate role!")
+      return true;
+    }
+    return false;
+  }
 
-
-  if (user?.role == "ADMIN" && user.firstLogged) {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login"></Navigate>
+  }
+  else if (firstAdminLogin()) {
     return <ChangePasswordPage></ChangePasswordPage>
+  }
+  else if (userHasNoRole()) {
+    return <Navigate to="/login"></Navigate>
   } 
-  else if (isAuthenticated && userHasRole) {
+  else {
     return element
-  } else if (isAuthenticated && !userHasRole) {
-    return <Navigate to="/login"></Navigate>
-  } else {
-    return <Navigate to="/login"></Navigate>
   }
 };
 

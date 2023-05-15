@@ -8,6 +8,7 @@ import { User } from "../auth-store/model/user.model";
 import { ProjectEmployeeRequest } from "./types/project.employee.request.type";
 import { ProjectEmployee } from "./types/projectEmployee.type";
 import { Page } from "../page.type";
+import { toast } from "react-toastify";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -111,13 +112,15 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
                     return state
                 })
             )
-        } catch (e) {
+            toast.success("Successfully created project")
+        } catch (e: any) {
             set(
                 produce((state: ProjectStore) => {
                     state.createProjectRes.status = "ERROR"
                     return state
                 })
             )
+            toast.success(e.response.data.message)
         }
     }, getAvailableEmployees: async (projectId: number) => {
         set(
@@ -172,13 +175,15 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
                     return state
                 })
             )
-        } catch (e) {
+            toast.success("Succuessfully added employee")
+        } catch (e: any) {
             set(
                 produce((state: ProjectStore) => {
                     state.addEmployeeRes.status = "ERROR"
                     return state
                 })
             )
+            toast.error(e.response.data.message)
         }
     }, getProjectEngineers: async (projectId: number) => {
         set(

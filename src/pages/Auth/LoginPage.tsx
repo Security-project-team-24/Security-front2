@@ -1,22 +1,20 @@
 import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-    useToast,
-  } from "@chakra-ui/react";
-  import { useForm } from "react-hook-form";
-  import { yupResolver } from "@hookform/resolvers/yup";
-  import {
-    LOGIN_DEFAULT_VALUES,
-    LOGIN_VALIDATION_SCHEMA,
-  } from "../../utils/auth.constants";
-  import { displayToast } from "../../utils/toast.caller";
-  import { useApplicationStore } from "../../store/application.store";
-  import { useEffect } from "react";
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  LOGIN_DEFAULT_VALUES,
+  LOGIN_VALIDATION_SCHEMA,
+} from "../../utils/auth.constants";
+import { useApplicationStore } from "../../store/application.store";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
   
   export type FormValues = {
@@ -27,6 +25,7 @@ import { useNavigate } from "react-router-dom";
   
   export const LoginPage = () => {
     const login = useApplicationStore((state) => state.login);
+    const loginStateRes = useApplicationStore((state) => state.loginStateRes)
     const {
       register,
       handleSubmit,
@@ -36,27 +35,23 @@ import { useNavigate } from "react-router-dom";
       defaultValues: LOGIN_DEFAULT_VALUES,
       resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
     });
-    const loginStateRes = useApplicationStore((state) => state.loginStateRes);
-    const toast = useToast();
     const navigate = useNavigate();
     const user = useApplicationStore((state) => state.user)
-  
+    const [canNavigate, setCanNavigate] = useState(false)
+
+    useEffect(() => {
+      if (loginStateRes.status == "SUCCESS" && canNavigate){
+        if (user?.role == "ADMIN")
+          navigate("/admin/projects")
+        else 
+          navigate("/")
+      }
+    }, [loginStateRes])
 
     const handleOnSubmit = async (values: FormValues) => {
+      setCanNavigate(true)
       await login(values);
     };
-  
-    useEffect(() => {
-      if (loginStateRes.status === "SUCCESS") {
-        displayToast(toast, "Successfully logged in!", "success");
-        if (user?.role == "ADMIN" && user?.firstLogged)
-          navigate("/admin/change-password")
-        else 
-          navigate("/admin/projects")
-      } else if (loginStateRes.status === "ERROR") {
-        displayToast(toast, loginStateRes.error ?? "", "error");
-      }
-    }, [loginStateRes]);
   
     return (
             <Flex

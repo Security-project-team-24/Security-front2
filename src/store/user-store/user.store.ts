@@ -6,8 +6,7 @@ import { ResponseState } from "../response-state.type";
 import { User } from "../auth-store/model/user.model";
 import { Page } from "../page.type";
 import { ChangePasswordRequest } from "./type/changepassword.type";
-import { displayToast } from "../../utils/toast.caller";
-import { ToastId, useToast } from "@chakra-ui/react";
+import {toast} from 'react-toastify'
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -99,6 +98,7 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
                 })
             )
             await get().fetchLoggedUser(get().loginStateRes.data ?? "")
+            toast.success("Successfully changed password!")
         } catch (e: any) {
             set(
                 produce((state: UserStore) => {
@@ -108,6 +108,7 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
                     return state
                 })
             )
+            toast.error(e.response.data.message)
         }
     },
     updatePersonalInfo: async (user: User) => {
@@ -132,13 +133,15 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (set, g
                     return state
                 })
             )
-        } catch (e) {
+            toast.success("Successfully updated personal info")
+        } catch (e: any) {
             set(
                 produce((state: UserStore) => {
                     state.updatePersonalInfoRes.status = "ERROR"
                     return state
                 })
             )
+            toast.error(e.response.data.message)
         }
     }
 })

@@ -13,7 +13,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { displayToast } from "../../utils/toast.caller";
 import { Project } from "../../store/project-store/types/project.type";
 import { CreateProjectForm } from "../../components/Project/CreateProjectForm";
 import AddEmployee from "../../components/Project/AddEmployee";
@@ -50,7 +49,8 @@ export const ProjectPage = () => {
     } = useDisclosure();
     const toast = useToast()
     useEffect(() => {
-        fetchProjects(0)
+        setCurrentPage(0)
+        fetchProjects(currentPage)
     }, [createProjectRes])
     const fetchProjects = async (pageNumber: number) => {
         await getProjects(5, pageNumber);
