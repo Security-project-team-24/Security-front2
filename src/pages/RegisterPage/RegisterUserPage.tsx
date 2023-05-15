@@ -56,7 +56,8 @@ export const RegisterUserPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState,
+    formState: { errors, isSubmitSuccessful },
     reset,
   } = useForm<Inputs>({
     resolver: yupResolver(REGISTER_VALIDATION_SCHEMA),
@@ -66,6 +67,27 @@ export const RegisterUserPage = () => {
     data.role = parseInt(role);
     await registerUser(data);
   };
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({
+        name: "",
+        surname: "",
+        email: "",
+        address: {
+          street: "",
+          streetNumber: "",
+          city: "",
+          zipCode: "",
+          country: "",
+        },
+        phoneNumber: "",
+        password: "",
+        confirmPassword: "",
+        role: 0,
+      });
+    }
+  }, [formState, reset]);
 
   return (
     <Flex justifyContent="center">

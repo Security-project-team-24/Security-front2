@@ -13,7 +13,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { displayToast } from "../../utils/toast.caller";
 import { Project } from "../../store/project-store/types/project.type";
 import { CreateProjectForm } from "../../components/Project/CreateProjectForm";
 import AddEmployee from "../../components/Project/AddEmployee";
@@ -50,18 +49,24 @@ export const ProjectPage = () => {
     } = useDisclosure();
     const toast = useToast()
     useEffect(() => {
-        fetchProjects(0)
+        setCurrentPage(0)
+        fetchProjects(currentPage)
     }, [createProjectRes])
     const fetchProjects = async (pageNumber: number) => {
         await getProjects(5, pageNumber);
     };
-    const [projectId, setProjectId] = useState(-1)
-    const addEmployee = (projectId: number) => {
-        setProjectId(projectId)
+    const [project, setProject] = useState<Project>({
+        id: -1,
+        name: "",
+        duration: -1, 
+        projectEmployees: []
+    })
+    const addEmployee = (project: Project) => {
+        setProject(project)
         onOpenAddEmployee()
     }
-    const openEngineersDisplay = (projectId: number) => {
-        setProjectId(projectId)
+    const openEngineersDisplay = (project: Project) => {
+        setProject(project)
         onOpenEngineersDisplay()
     }
 
@@ -91,8 +96,8 @@ export const ProjectPage = () => {
                 <Tr key={item.id}>
                     <Td>{item.name}</Td>
                     <Td>{item.duration}</Td>
-                    <Td><Button onClick={() => openEngineersDisplay(item.id)}>Engineers</Button></Td>
-                    <Td><Button onClick={() => addEmployee(item.id)}>Add employee</Button></Td>
+                    <Td><Button onClick={() => openEngineersDisplay(item)}>Engineers</Button></Td>
+                    <Td><Button onClick={() => addEmployee(item)}>Add employee</Button></Td>
                 </Tr>
                 ))}
             </Tbody>
@@ -122,13 +127,13 @@ export const ProjectPage = () => {
       <AddEmployee
         isOpen={isOpenAddEmployee}
         onClose={onCloseAddEmployee}
-        projectId={projectId}
-        setProjectId={setProjectId}/>
+        project={project}
+        setProject={setProject}/>
         <ProjectEngineersDisplay
         isOpen={isOpenEngineersDisplay}
         onClose={onCloseEngineersDisplay}
-        projectId={projectId}
-        setProjectId={setProjectId}
+        project={project}
+        setProject={setProject}
         />
     </>
     );
