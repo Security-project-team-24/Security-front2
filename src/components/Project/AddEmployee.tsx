@@ -6,12 +6,14 @@ import { displayToast } from "../../utils/toast.caller";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ADD_EMPLOYEE_DEFAULT_VALUES, ADD_EMPLOYEE_VALIDATION_SCHEMA } from "../../utils/project.constants";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Project } from "../../store/project-store/types/project.type";
+import { toast } from "react-toastify";
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    projectId: number
-    setProjectId: (id: number) => void
+    project: Project
+    setProject: (project: Project) => void
   }
 
   
@@ -24,7 +26,7 @@ type Inputs = {
 };
 
 
-const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
+const AddEmployee = ({isOpen, onClose, project, setProject}: Props) => {
   const getAvailableEmployees = useApplicationStore((state) => state.getAvailableEmployees)
   const getAvailableEmployeesRes = useApplicationStore((state) => state.getAvailableEmployeesRes)
 
@@ -35,21 +37,27 @@ const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
 
   const addEmployee = useApplicationStore((state) => state.addEmployee)
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+      var calculatedEndDate = new Date(data.startDate)
+      calculatedEndDate.setMonth(calculatedEndDate.getMonth() + project.duration);
+      if (calculatedEndDate > new Date(data.endDate)){
         await addEmployee(data)
         onClose()
-        setProjectId(-1)
+        setProject({id: -1, name: "", duration: -1, projectEmployees: []})
         reset()
+      } else {
+        toast.error("Selected time range exceed the duration of the project!")
+      }
     };
 
     useEffect(() => {
         reset()
-        setValue("projectId", projectId)
+        setValue("projectId", project.id)
         fetchEmployees()
-    }, [projectId])
+    }, [project.id])
     
     const fetchEmployees = async () => {
-        if (projectId != -1) {
-            await getAvailableEmployees(projectId);
+        if (project.id != -1) {
+            await getAvailableEmployees(project.id);
         }
     };
 
