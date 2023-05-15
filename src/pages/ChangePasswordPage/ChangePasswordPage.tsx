@@ -1,26 +1,19 @@
 import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    IconButton,
-    Input,
-    InputGroup,
-    InputRightElement,
-    useToast,
-  } from "@chakra-ui/react";
-  import { useForm } from "react-hook-form";
-  import { yupResolver } from "@hookform/resolvers/yup";
-  import {
-    LOGIN_DEFAULT_VALUES,
-    LOGIN_VALIDATION_SCHEMA,
-  } from "../../utils/auth.constants";
-  import { displayToast } from "../../utils/toast.caller";
-  import { useApplicationStore } from "../../store/application.store";
-  import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useApplicationStore } from "../../store/application.store";
+import { useState } from "react";
 import { CHANGE_PASSWORD_DEFAULT_VALUES, CHANGE_PASSWORD_VALIDATION_SCHEMA } from "../../utils/user.constants";
 import { HiEye, HiEyeOff } from 'react-icons/hi';
   
@@ -42,31 +35,18 @@ import { HiEye, HiEyeOff } from 'react-icons/hi';
       defaultValues: CHANGE_PASSWORD_DEFAULT_VALUES,
       resolver: yupResolver(CHANGE_PASSWORD_VALIDATION_SCHEMA),
     });
-    const changePasswordRes = useApplicationStore((state) => state.changePasswordRes);
-    const toast = useToast();
-    const navigate = useNavigate();
     
     const handleOnSubmit = async (values: FormValues) => {
       await changePassword(values);
     };
-  
-    useEffect(() => {
-      if (changePasswordRes.status === "SUCCESS") {
-        displayToast(toast, "Successfully changed password!", "success");
-        navigate("/profile")
-      } else if (changePasswordRes.status === "ERROR") {
-        displayToast(toast, changePasswordRes.error ?? "", "error");
-      }
-    }, [changePasswordRes]);
-  
 
-      const [showPasswords, setShowPasswords] = useState([false, false, false]);
-      
-      const handlePasswordVisibility = (index: number) => {
-        const updatedPasswords = [...showPasswords];
-        updatedPasswords[index] = !showPasswords[index];
-        setShowPasswords(updatedPasswords);
-      };
+    const [showPasswords, setShowPasswords] = useState([false, false, false]);
+    
+    const handlePasswordVisibility = (index: number) => {
+      const updatedPasswords = [...showPasswords];
+      updatedPasswords[index] = !showPasswords[index];
+      setShowPasswords(updatedPasswords);
+    };
 
     return (
             <Flex

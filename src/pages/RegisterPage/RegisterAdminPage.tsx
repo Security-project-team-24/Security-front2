@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { useApplicationStore } from "../../store/application.store";
 import {
   Box,
@@ -8,15 +7,9 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  Spinner,
-  useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
-import { displayToast } from "../../utils/toast.caller";
-import { useNavigate } from "react-router";
-import { DefaultValues, SubmitHandler, useForm } from "react-hook-form";
-import { Form } from "react-router-dom";
-import { REGISTER_DEFAULT_VALUES, REGISTER_VALIDATION_SCHEMA } from "../../utils/auth.constants";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { REGISTER_VALIDATION_SCHEMA } from "../../utils/auth.constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type Inputs = {
@@ -38,11 +31,6 @@ type Inputs = {
 
 export const RegisterAdminPage = () => {
   const registerUser = useApplicationStore((state) => state.registerUser);
-  var registerUserRes = useApplicationStore((state) => state.registerRes)
-  const toast = useToast();
-  const [canDisplayMessages, setCanDisplayMessages] = useState<boolean>(false);
-
-
 
   const {
     register,
@@ -55,19 +43,8 @@ export const RegisterAdminPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.role = 3
-    setCanDisplayMessages(true)
     await registerUser(data);
   };
-
-  useEffect(() => {
-    if (registerUserRes.status === "SUCCESS" && canDisplayMessages) {
-      displayToast(toast, "Successfully registered new admin!", "success");
-      reset()
-    }
-    if (registerUserRes.status === "ERROR" && canDisplayMessages) {
-      displayToast(toast, registerUserRes.error ?? "", "error");
-    }
-  }, [registerUserRes]);
 
 
   return (

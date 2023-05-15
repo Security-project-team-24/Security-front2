@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useApplicationStore } from "../../store/application.store";
 import {
   Box,
   Button,
   Flex,
   Input,
-  Spinner,
-  useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
-import { displayToast } from "../../utils/toast.caller";
-import { useNavigate } from "react-router";
 import { DefaultValues, SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
@@ -35,13 +30,8 @@ export const AdminProfilePage = () => {
   const updatePersonalInfo = useApplicationStore(
     (state) => state.updatePersonalInfo
   );
-  const updatePersonalInfoRes = useApplicationStore(
-    (state) => state.updatePersonalInfoRes
-  );
   const fetchLoggedUser = useApplicationStore((state) => state.fetchLoggedUser);
   const token = useApplicationStore((state) => state.loginStateRes.data);
-  const toast = useToast();
-
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
   const defaultValues: Inputs = {
@@ -75,16 +65,6 @@ export const AdminProfilePage = () => {
   };
 
  
-
-  useEffect(() => {
-    if (updatePersonalInfoRes.status === "SUCCESS") {
-      displayToast(toast, "Successfully updated personal info!", "success");
-      return;
-    }
-    if (updatePersonalInfoRes.status === "ERROR") {
-      displayToast(toast, updatePersonalInfoRes.error ?? "", "error");
-    }
-  }, [updatePersonalInfoRes]);
   return (
     <Flex justifyContent="center">
       <Flex width="30%" gap="15px" direction="column" padding="30px 0">

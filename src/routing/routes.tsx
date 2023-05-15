@@ -1,11 +1,8 @@
-import { RouteObject, RouteProps } from "react-router-dom";
-import App from "../App";
 import { LoginPage } from "../pages/Auth/LoginPage";
 import { ProjectPage } from "../pages/ProjectPage/ProjectPages";
 import { EmployeesPage } from "../pages/EmployeesPage/EmployeesPages";
 import { AdminProfilePage } from "../pages/UserProfilePage/AdminProfilePage";
 import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPage";
-import { Component, ReactNode } from "react";
 import { HomePage } from "../pages/HomePage/HomePage";
 import { RegisterAdminPage } from "../pages/RegisterPage/RegisterAdminPage";
 
@@ -30,7 +27,7 @@ export const routes: CustomRouteProps[] = [
       {
         path: "/admin/projects",
         element: <ProjectPage/>,
-        isProtected: false,
+        isProtected: true,
         requiredRole: ["ADMIN"]
       },
       {

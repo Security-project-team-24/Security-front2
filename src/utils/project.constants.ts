@@ -13,13 +13,17 @@ export const CREATE_PROJECT_DEFAULT_VALUES = {
 export const ADD_EMPLOYEE_VALIDATION_SCHEMA = yup.object({
     employeeId: yup.number().required(),
     jobDescription: yup.string().required(),
-    projectId: yup.number().required()
+    projectId: yup.number().required(),
+    startDate: yup.date().required(),
+    endDate: yup.date().required()
 })
 
 export const ADD_EMPLOYEE_DEFAULT_VALUES = {
     employeeId: undefined,
     jobDescription: "",
-    projectId: undefined
+    projectId: undefined,
+    startDate: undefined,
+    endDate: undefined
 }
 
 export const DEFAULT_HEADERS = {

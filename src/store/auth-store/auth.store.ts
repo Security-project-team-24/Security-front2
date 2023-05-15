@@ -6,6 +6,7 @@ import {User} from "./model/user.model"
 import {Login} from "./types/login.type"
 import {ResponseState} from "../response-state.type";
 import { Register } from './types/register.type';
+import { toast } from 'react-toastify';
 
 
 const BASE_URL = process.env.REACT_APP_BASE_URL
@@ -59,6 +60,8 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
                     return state;
                 })
             )
+            toast.success("Successfully logged in!")
+
         } catch (e: any) {
             console.log(e)
             set(
@@ -69,6 +72,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
                     return state
                 })
             )
+            toast.error(e.response.data.message)
         }
     },
     logout: () => {
@@ -120,6 +124,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
                     return state;
                 })
             )
+            toast.success('Successfully registered!');
         } catch (e: any) {
             set(
                 produce((state: AuthStoreState) => {
@@ -129,6 +134,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (set, g
                     return state
                 })
             )
+            toast.error(e.response.data.message);
         }
     },
 })

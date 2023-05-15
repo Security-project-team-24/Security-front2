@@ -41,26 +41,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
     const createProject = useApplicationStore(
       (state) => state.createProject
     );
-    const createProjectRes = useApplicationStore(
-      (state) => state.createProjectRes
-    );
     const { register, handleSubmit, formState: { errors }, reset} = useForm<Inputs>({
       defaultValues: CREATE_PROJECT_DEFAULT_VALUES,
       resolver: yupResolver(CREATE_PROJECT_VALIDATION_SCHEMA),
     });
-    const toast = useToast()  
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
       await createProject(data);
+      onClose()
     };
   
-    useEffect(() => {
-      if (createProjectRes.status == "SUCCESS" && isOpen) {
-        displayToast(toast, "Successfully created project", "success")
-        onClose()
-        reset()
-      }
-    }, [createProjectRes])
 
     return (
       <>

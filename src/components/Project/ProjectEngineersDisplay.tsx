@@ -3,29 +3,31 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../store/auth-store/model/user.model";
 import { useApplicationStore } from "../../store/application.store";
 import { displayToast } from "../../utils/toast.caller";
+import { format, parseISO } from 'date-fns';
+import { Project } from "../../store/project-store/types/project.type";
 
 
   
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    projectId: number
-    setProjectId: (id: number) => void
+    project: Project
+    setProject: (id: Project) => void
   }
 
-const ProjectEngineersDisplay = ({isOpen, onClose, projectId, setProjectId}: Props) => {
+const ProjectEngineersDisplay = ({isOpen, onClose, project, setProject}: Props) => {
   const getProjectEngineers = useApplicationStore((state) => state.getProjectEngineers)
   const getProjectEngineersRes = useApplicationStore((state) => state.getProjectEngineersRes)
  
   
     useEffect(() => {
         fetchEngineers()
-    }, [projectId])
+    }, [project])
     
     const fetchEngineers = async () => {
-        if (projectId != -1) {
-            await getProjectEngineers(projectId);
-        }
+      if (project.id != -1) {
+          await getProjectEngineers(project.id);
+      }
     };
 
 
@@ -42,8 +44,9 @@ const ProjectEngineersDisplay = ({isOpen, onClose, projectId, setProjectId}: Pro
                 <UnorderedList>
                 {getProjectEngineersRes.data.map((user) => (
                     <ListItem key={user.id}>
-                       Employee: {user.employee.name} {user.employee.surname}<br/>
-                       Job description: {user.jobDescription}
+                       Full name: {user.employee.name} {user.employee.surname}<br/>
+                       Job description: {user.jobDescription}<br/>
+                       Working time: {format(new Date(user.startDate), 'dd/MM/yyyy')} - {format(new Date(user.endDate), "dd/MM/yyyy")}
                     </ListItem>
                  ))}
                 </UnorderedList>
