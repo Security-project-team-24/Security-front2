@@ -72,7 +72,7 @@ const AddEmployee = ({isOpen, onClose, projectId, setProjectId}: Props) => {
                     <RadioGroup onChange={handleEmployeeId} display={'flex'} flexDirection={'column'} height={'100px'} overflowY={'auto'} paddingLeft={'10px'}>
                         {getAvailableEmployeesRes.data.map((user) => (
                           <Radio key={user.id} value={user.id.toString()}>
-                            {user.name} {user.surname}
+                            {user.name} {user.surname}, {user.role}
                           </Radio>
                         ))}
                       </RadioGroup>
