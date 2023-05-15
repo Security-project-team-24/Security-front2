@@ -7,6 +7,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { DefaultValues, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type Inputs = {
   id:number,
@@ -63,11 +64,12 @@ export const AdminProfilePage = () => {
     await fetchLoggedUser(token ?? "");
     setIsUpdate(false)
   };
-
+  const navigate = useNavigate()
  
   return (
     <Flex justifyContent="center">
       <Flex width="30%" gap="15px" direction="column" padding="30px 0">
+        <Flex justifyContent={"center"} justifyItems={"center"}>Personal information</Flex>
         <Input
           defaultValue={defaultValues?.name}
           disabled={!isUpdate}
@@ -127,7 +129,9 @@ export const AdminProfilePage = () => {
         ) : (
           <Button onClick={() => setIsUpdate(true)}>Update</Button>
         )}
-
+        { user?.role == "ADMIN" &&
+          <Button onClick={() => navigate("/admin/change-password")}>Change password</Button>
+        }
       </Flex>
     </Flex>
   );
