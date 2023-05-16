@@ -89,6 +89,9 @@ export const Header = () => {
             <SkillForm isOpen={isOpen} onClose={onClose} />
             <Button onClick={onOpenCv}>Upload cv</Button>
             <CvForm isOpen={isOpenCv} onClose={onCloseCv} />
+            <Button onClick={() => navigate("/engineer/projects")}>
+              Projects
+            </Button>
           </Flex>
         )}
       </Box>
