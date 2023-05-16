@@ -8,6 +8,7 @@ import { RegisterAdminPage } from "../pages/RegisterPage/RegisterAdminPage";
 import { RegisterUserPage } from "../pages/RegisterPage/RegisterUserPage";
 import { EngineerProjectsPage } from "../pages/ProjectPage/EngineerProjectsPage";
 import { isPromise } from "util/types";
+import { LoginRedirectPage } from "../pages/RedirectPages/LoginRedirectPage";
 
 interface CustomRouteProps {
   path: string;
@@ -25,6 +26,11 @@ export const routes: CustomRouteProps[] = [
   {
     path: "/login",
     element: <LoginPage />,
+    isProtected: false,
+  },
+  {
+    path: "/passwordless/login/:token",
+    element: <LoginRedirectPage />,
     isProtected: false,
   },
   {
