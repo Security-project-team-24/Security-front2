@@ -1,14 +1,15 @@
-import axios from "axios";
-import { StateCreator } from "zustand";
-import produce from "immer";
-import { AppStore } from "../application.store";
-import { ResponseState } from "../response-state.type";
-import { Project } from "./types/project.type";
-import { User } from "../auth-store/model/user.model";
-import { ProjectEmployeeRequest } from "./types/project.employee.request.type";
-import { ProjectEmployee } from "./types/projectEmployee.type";
-import { Page } from "../page.type";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import { StateCreator } from 'zustand';
+import produce from 'immer';
+import { AppStore } from '../application.store';
+import { ResponseState } from '../response-state.type';
+import { Project } from './types/project.type';
+import { User } from '../auth-store/model/user.model';
+import { ProjectEmployeeRequest } from './types/project.employee.request.type';
+import { ProjectEmployee } from './types/projectEmployee.type';
+import { Page } from '../page.type';
+import { toast } from 'react-toastify';
+import { axiosInstance } from '../../api/axios';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -32,32 +33,32 @@ export type ProjectActions = {
 export const state: ProjectStoreState = {
   getProjectsRes: {
     data: { content: [], totalPages: 0 },
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   createProjectRes: {
     data: null,
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   getAvailableEmployeesRes: {
     data: [],
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   addEmployeeRes: {
     data: null,
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   getProjectEngineersRes: {
     data: [],
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   engineerProjects: {
     data: [],
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
 };
@@ -72,22 +73,17 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
   getProjects: async (pageSize: number, pageNumber: number) => {
     set(
       produce((state: ProjectStore) => {
-        state.getProjectsRes.status = "LOADING";
+        state.getProjectsRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.get(
-        `${BASE_URL}/project/${pageSize}/${pageNumber}`,
-        {
-          headers: {
-            Authorization: "Bearer " + get().loginStateRes.data,
-          },
-        }
+      const res = await axiosInstance(set).get(
+        `${BASE_URL}/project/${pageSize}/${pageNumber}`
       );
       set(
         produce((state: ProjectStore) => {
-          state.getProjectsRes.status = "SUCCESS";
+          state.getProjectsRes.status = 'SUCCESS';
           state.getProjectsRes.data = res.data;
           return state;
         })
@@ -95,7 +91,7 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
     } catch (e) {
       set(
         produce((state: ProjectStore) => {
-          state.getProjectsRes.status = "ERROR";
+          state.getProjectsRes.status = 'ERROR';
           return state;
         })
       );
@@ -104,28 +100,24 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
   createProject: async (project: Project) => {
     set(
       produce((state: ProjectStore) => {
-        state.createProjectRes.status = "LOADING";
+        state.createProjectRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.post(`${BASE_URL}/project`, project, {
-        headers: {
-          Authorization: "Bearer " + get().loginStateRes.data,
-        },
-      });
+      const res = await axiosInstance(set).post(`${BASE_URL}/project`, project);
       set(
         produce((state: ProjectStore) => {
-          state.createProjectRes.status = "SUCCESS";
+          state.createProjectRes.status = 'SUCCESS';
           state.createProjectRes.data = res.data;
           return state;
         })
       );
-      toast.success("Successfully created project");
+      toast.success('Successfully created project');
     } catch (e: any) {
       set(
         produce((state: ProjectStore) => {
-          state.createProjectRes.status = "ERROR";
+          state.createProjectRes.status = 'ERROR';
           return state;
         })
       );
@@ -135,22 +127,17 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
   getAvailableEmployees: async (projectId: number) => {
     set(
       produce((state: ProjectStore) => {
-        state.getAvailableEmployeesRes.status = "LOADING";
+        state.getAvailableEmployeesRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.get(
-        `${BASE_URL}/project-employee/available/${projectId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + get().loginStateRes.data,
-          },
-        }
+      const res = await axiosInstance(set).get(
+        `${BASE_URL}/project-employee/available/${projectId}`
       );
       set(
         produce((state: ProjectStore) => {
-          state.getAvailableEmployeesRes.status = "SUCCESS";
+          state.getAvailableEmployeesRes.status = 'SUCCESS';
           state.getAvailableEmployeesRes.data = res.data;
           return state;
         })
@@ -158,7 +145,7 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
     } catch (e) {
       set(
         produce((state: ProjectStore) => {
-          state.getAvailableEmployeesRes.status = "ERROR";
+          state.getAvailableEmployeesRes.status = 'ERROR';
           return state;
         })
       );
@@ -167,28 +154,28 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
   addEmployee: async (request: ProjectEmployeeRequest) => {
     set(
       produce((state: ProjectStore) => {
-        state.addEmployeeRes.status = "LOADING";
+        state.addEmployeeRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.post(`${BASE_URL}/project-employee`, request, {
-        headers: {
-          Authorization: "Bearer " + get().loginStateRes.data,
-        },
-      });
+      const res = await axiosInstance(set).post(
+        `${BASE_URL}/project-employee`,
+        request
+      );
       set(
         produce((state: ProjectStore) => {
-          state.addEmployeeRes.status = "SUCCESS";
+          state.addEmployeeRes.status = 'SUCCESS';
+
           state.addEmployeeRes.data = res.data;
           return state;
         })
       );
-      toast.success("Succuessfully added employee");
+      toast.success('Succuessfully added employee');
     } catch (e: any) {
       set(
         produce((state: ProjectStore) => {
-          state.addEmployeeRes.status = "ERROR";
+          state.addEmployeeRes.status = 'ERROR';
           return state;
         })
       );
@@ -198,22 +185,17 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
   getProjectEngineers: async (projectId: number) => {
     set(
       produce((state: ProjectStore) => {
-        state.getProjectEngineersRes.status = "LOADING";
+        state.getProjectEngineersRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.get(
-        `${BASE_URL}/project-employee/${projectId}/engineers`,
-        {
-          headers: {
-            Authorization: "Bearer " + get().loginStateRes.data,
-          },
-        }
+      const res = await axiosInstance(set).get(
+        `${BASE_URL}/project-employee/${projectId}/engineers`
       );
       set(
         produce((state: ProjectStore) => {
-          state.getProjectEngineersRes.status = "SUCCESS";
+          state.getProjectEngineersRes.status = 'SUCCESS';
           state.getProjectEngineersRes.data = res.data;
           return state;
         })
@@ -221,7 +203,7 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
     } catch (e) {
       set(
         produce((state: ProjectStore) => {
-          state.getProjectEngineersRes.status = "ERROR";
+          state.getProjectEngineersRes.status = 'ERROR';
           return state;
         })
       );
@@ -230,19 +212,19 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
   getEngineerProjects: async () => {
     set(
       produce((state: ProjectStore) => {
-        state.engineerProjects.status = "LOADING";
+        state.engineerProjects.status = 'LOADING';
         return state;
       })
     );
     try {
       const res = await axios.get(`${BASE_URL}/project-employee/projects`, {
         headers: {
-          Authorization: "Bearer " + get().loginStateRes.data,
+          Authorization: 'Bearer ' + get().loginStateRes.data,
         },
       });
       set(
         produce((state: ProjectStore) => {
-          state.engineerProjects.status = "SUCCESS";
+          state.engineerProjects.status = 'SUCCESS';
           state.engineerProjects.data = res.data;
           return state;
         })
@@ -250,7 +232,7 @@ export const projectStoreSlice: StateCreator<AppStore, [], [], ProjectStore> = (
     } catch (e) {
       set(
         produce((state: ProjectStore) => {
-          state.engineerProjects.status = "ERROR";
+          state.engineerProjects.status = 'ERROR';
           return state;
         })
       );

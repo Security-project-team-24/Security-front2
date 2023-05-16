@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5278222-28b7-4797-ae2d-40f45247701a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/RedirectPages/LoginRedirectPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Security-front2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/axios.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Auth/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Auth/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routing/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/routes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routing/ProtectedRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/ProtectedRoute.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store/auth-store/auth.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth-store/auth.store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/auth-store/model/enums/role.enum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth-store/model/enums/role.enum.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/project-store/project.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/project-store/project.store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/user-store/user.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/user-store/user.store.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +74,7 @@
       <workItem from="1684173182149" duration="12211000" />
       <workItem from="1684261569358" duration="244000" />
       <workItem from="1684261815291" duration="2614000" />
-      <workItem from="1684273073563" duration="9000" />
+      <workItem from="1684273073563" duration="506000" />
     </task>
     <servers />
   </component>

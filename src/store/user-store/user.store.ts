@@ -1,13 +1,14 @@
-import axios from "axios";
-import { StateCreator } from "zustand";
-import produce from "immer";
-import { AppStore } from "../application.store";
-import { ResponseState } from "../response-state.type";
-import { User } from "../auth-store/model/user.model";
-import { Page } from "../page.type";
-import { ChangePasswordRequest } from "./type/changepassword.type";
-import { toast } from "react-toastify";
-import { Skill } from "./type/skill";
+import { Skill } from './type/skill';
+import axios from 'axios';
+import { StateCreator } from 'zustand';
+import produce from 'immer';
+import { AppStore } from '../application.store';
+import { ResponseState } from '../response-state.type';
+import { User } from '../auth-store/model/user.model';
+import { Page } from '../page.type';
+import { ChangePasswordRequest } from './type/changepassword.type';
+import { toast } from 'react-toastify';
+import { axiosInstance } from '../../api/axios';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -29,27 +30,27 @@ export type UserActions = {
 export const state: UserStoreState = {
   getEmployeesRes: {
     data: { content: [], totalPages: 0 },
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   updatePersonalInfoRes: {
     data: null,
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   changePasswordRes: {
     data: null,
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   addSkillRes: {
     data: null,
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
   uploadCvRes: {
     data: null,
-    status: "IDLE",
+    status: 'IDLE',
     error: null,
   },
 };
@@ -64,22 +65,19 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
   getEmployees: async (pageSize: number, pageNumber: number) => {
     set(
       produce((state: UserStore) => {
-        state.getEmployeesRes.status = "LOADING";
+        state.getEmployeesRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.get(
-        `${BASE_URL}/user/employees/${pageSize}/${pageNumber}`,
-        {
-          headers: {
-            Authorization: "Bearer " + get().loginStateRes.data,
-          },
-        }
+      const res = await axiosInstance(set).get(
+        `${BASE_URL}/user/employees/${pageSize}/${pageNumber}`
       );
+      console.log('triggered');
+      console.log(res.data);
       set(
         produce((state: UserStore) => {
-          state.getEmployeesRes.status = "SUCCESS";
+          state.getEmployeesRes.status = 'SUCCESS';
           state.getEmployeesRes.data = res.data;
           return state;
         })
@@ -87,7 +85,8 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
     } catch (e) {
       set(
         produce((state: UserStore) => {
-          state.getEmployeesRes.status = "ERROR";
+          state.getEmployeesRes.status = 'ERROR';
+          state.getEmployeesRes.data = { content: [], totalPages: 0 };
           return state;
         })
       );
@@ -96,30 +95,30 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
   changePassword: async (request: ChangePasswordRequest) => {
     set(
       produce((state: UserStore) => {
-        state.changePasswordRes.status = "LOADING";
+        state.changePasswordRes.status = 'LOADING';
         return state;
       })
     );
     try {
-      const res = await axios.put(`${BASE_URL}/user/change-password`, request, {
-        headers: {
-          Authorization: "Bearer " + get().loginStateRes.data,
-        },
-      });
+      const res = await axiosInstance(set).put(
+        `${BASE_URL}/user/change-password`,
+        request
+      );
       set(
         produce((state: UserStore) => {
-          state.changePasswordRes.status = "SUCCESS";
-          state.updatePersonalInfoRes.data = res.data;
+          state.changePasswordRes.status = 'SUCCESS';
+          state.changePasswordRes.data = res.data;
           return state;
         })
       );
-      await get().fetchLoggedUser(get().loginStateRes.data ?? "");
-      toast.success("Successfully changed password!");
+
+      await get().fetchLoggedUser(get().loginStateRes.data ?? '');
+      toast.success('Successfully changed password!');
     } catch (e: any) {
       set(
         produce((state: UserStore) => {
           state.changePasswordRes.error = e.response.data.message;
-          state.changePasswordRes.status = "ERROR";
+          state.changePasswordRes.status = 'ERROR';
           console.log(e);
           return state;
         })
@@ -130,28 +129,28 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
   updatePersonalInfo: async (user: User) => {
     set(
       produce((state: UserStore) => {
-        state.updatePersonalInfoRes.status = "LOADING";
+        state.updatePersonalInfoRes.status = 'LOADING';
         return state;
       })
     );
     try {
       const res = await axios.patch(`${BASE_URL}/user/update`, user, {
         headers: {
-          Authorization: "Bearer " + get().loginStateRes.data,
+          Authorization: 'Bearer ' + get().loginStateRes.data,
         },
       });
       set(
         produce((state: UserStore) => {
-          state.updatePersonalInfoRes.status = "SUCCESS";
+          state.updatePersonalInfoRes.status = 'SUCCESS';
           state.updatePersonalInfoRes.data = res.data;
           return state;
         })
       );
-      toast.success("Successfully updated personal info");
+      toast.success('Successfully updated personal info');
     } catch (e: any) {
       set(
         produce((state: UserStore) => {
-          state.updatePersonalInfoRes.status = "ERROR";
+          state.updatePersonalInfoRes.status = 'ERROR';
           return state;
         })
       );
@@ -161,7 +160,8 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
   addSkill: async (skill: Skill) => {
     set(
       produce((state: UserStore) => {
-        state.addSkillRes.status = "LOADING";
+        state.addSkillRes.status = 'LOADING';
+        state.updatePersonalInfoRes.status = 'LOADING';
         return state;
       })
     );
@@ -178,22 +178,22 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
         },
         {
           headers: {
-            Authorization: "Bearer " + get().loginStateRes.data,
+            Authorization: 'Bearer ' + get().loginStateRes.data,
           },
         }
       );
       set(
         produce((state: UserStore) => {
-          state.addSkillRes.status = "SUCCESS";
+          state.addSkillRes.status = 'SUCCESS';
           state.addSkillRes.data = res.data;
           return state;
         })
       );
-      toast.success("Skill successfully added!");
+      toast.success('Skill successfully added!');
     } catch (e: any) {
       set(
         produce((state: UserStore) => {
-          state.addSkillRes.status = "ERROR";
+          state.addSkillRes.status = 'ERROR';
           return state;
         })
       );
@@ -204,34 +204,34 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
     const formData = new FormData();
 
     Array.from(cv).forEach((cv) => {
-      formData.append("file", cv);
+      formData.append('file', cv);
     });
 
     set(
       produce((state: UserStore) => {
-        state.uploadCvRes.status = "LOADING";
+        state.uploadCvRes.status = 'LOADING';
         return state;
       })
     );
     try {
       const res = await axios.post(`${BASE_URL}/user/cv/upload`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + get().loginStateRes.data,
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + get().loginStateRes.data,
         },
       });
       set(
         produce((state: UserStore) => {
-          state.uploadCvRes.status = "SUCCESS";
+          state.uploadCvRes.status = 'SUCCESS';
           state.uploadCvRes.data = res.data;
           return state;
         })
       );
-      toast.success("CV successfully uploaded!");
+      toast.success('CV successfully uploaded!');
     } catch (e: any) {
       set(
         produce((state: UserStore) => {
-          state.uploadCvRes.status = "ERROR";
+          state.uploadCvRes.status = 'ERROR';
           return state;
         })
       );
