@@ -16,12 +16,14 @@ export type UserStoreState = {
   updatePersonalInfoRes: ResponseState<User | null>;
   changePasswordRes: ResponseState<any>;
   addSkillRes: ResponseState<any>;
+  uploadCvRes: ResponseState<any>;
 };
 export type UserActions = {
   getEmployees: (pageSize: number, pageNumber: number) => Promise<void>;
   updatePersonalInfo: (user: User) => Promise<void>;
   changePassword: (request: ChangePasswordRequest) => Promise<void>;
   addSkill: (skill: Skill) => Promise<void>;
+  uploadCv: (cv: FileList) => Promise<void>;
 };
 
 export const state: UserStoreState = {
@@ -41,6 +43,11 @@ export const state: UserStoreState = {
     error: null,
   },
   addSkillRes: {
+    data: null,
+    status: "IDLE",
+    error: null,
+  },
+  uploadCvRes: {
     data: null,
     status: "IDLE",
     error: null,
@@ -187,6 +194,44 @@ export const userStoreSlice: StateCreator<AppStore, [], [], UserStore> = (
       set(
         produce((state: UserStore) => {
           state.addSkillRes.status = "ERROR";
+          return state;
+        })
+      );
+      toast.error(e.response.data.message);
+    }
+  },
+  uploadCv: async (cv: FileList) => {
+    const formData = new FormData();
+
+    Array.from(cv).forEach((cv) => {
+      formData.append("file", cv);
+    });
+
+    set(
+      produce((state: UserStore) => {
+        state.uploadCvRes.status = "LOADING";
+        return state;
+      })
+    );
+    try {
+      const res = await axios.post(`${BASE_URL}/user/cv/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + get().loginStateRes.data,
+        },
+      });
+      set(
+        produce((state: UserStore) => {
+          state.uploadCvRes.status = "SUCCESS";
+          state.uploadCvRes.data = res.data;
+          return state;
+        })
+      );
+      toast.success("CV successfully uploaded!");
+    } catch (e: any) {
+      set(
+        produce((state: UserStore) => {
+          state.uploadCvRes.status = "ERROR";
           return state;
         })
       );

@@ -13,8 +13,9 @@ import { useApplicationStore } from "../../store/application.store";
 import { displayToast } from "../../utils/toast.caller";
 import { Role } from "../../store/auth-store/model/enums/role.enum";
 import { CreateProjectForm } from "../Project/CreateProjectForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SkillForm } from "../SkillForm/SkillForm";
+import { CvForm } from "../CvForm/CvForm";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ export const Header = () => {
   const logout = useApplicationStore((state) => state.logout);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenCv,
+    onOpen: onOpenCv,
+    onClose: onCloseCv,
+  } = useDisclosure();
 
   const handleLogout = () => {
     logout();
@@ -78,10 +84,12 @@ export const Header = () => {
           </>
         )}
         {user?.role === "ENGINEER" && (
-          <>
+          <Flex gap="15px">
             <Button onClick={onOpen}>Add skill</Button>
             <SkillForm isOpen={isOpen} onClose={onClose} />
-          </>
+            <Button onClick={onOpenCv}>Upload cv</Button>
+            <CvForm isOpen={isOpenCv} onClose={onCloseCv} />
+          </Flex>
         )}
       </Box>
     </>
