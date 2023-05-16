@@ -50,7 +50,7 @@ export const LoginPage = () => {
   }, [loginStateRes]);
 
   useEffect(() => {
-    if (loginStateRes.status == "SUCCESS" && canNavigate) {
+    if (sendLoginMailRes.status == "SUCCESS" && canNavigate) {
       navigate("/");
     }
   }, [sendLoginMailRes]);
