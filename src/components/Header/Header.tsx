@@ -14,12 +14,14 @@ import { displayToast } from "../../utils/toast.caller";
 import { Role } from "../../store/auth-store/model/enums/role.enum";
 import { CreateProjectForm } from "../Project/CreateProjectForm";
 import { useEffect } from "react";
+import { SkillForm } from "../SkillForm/SkillForm";
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useApplicationStore((state) => state.user);
   const logout = useApplicationStore((state) => state.logout);
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogout = () => {
     logout();
@@ -61,7 +63,6 @@ export const Header = () => {
               </Flex>
             )}
           </Flex>
-          <Flex>{user && <Button>Add skill</Button>}</Flex>
         </Flex>
         {user?.role == "ADMIN" && (
           <>
@@ -74,6 +75,12 @@ export const Header = () => {
             <Button onClick={() => navigate("/admin/register-admin")} mr="5px">
               Register admin
             </Button>
+          </>
+        )}
+        {user?.role === "ENGINEER" && (
+          <>
+            <Button onClick={onOpen}>Add skill</Button>
+            <SkillForm isOpen={isOpen} onClose={onClose} />
           </>
         )}
       </Box>
