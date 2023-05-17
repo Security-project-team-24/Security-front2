@@ -6,6 +6,7 @@ import { Login } from './types/login.type';
 import { ResponseState } from '../response-state.type';
 import { toast } from 'react-toastify';
 import { mainInstance } from '../../api/useAxios';
+import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -33,16 +34,6 @@ export const state: AuthStoreState = {
   registerRes: {
     data: null,
     status: 'IDLE',
-    error: null,
-  },
-  sendLoginMailRes: {
-    data: null,
-    status: 'IDLE',
-    error: null,
-  },
-  sendLoginMailRes: {
-    data: null,
-    status: "IDLE",
     error: null,
   },
 };
@@ -93,7 +84,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (
       })
     );
     try {
-      const resp = await mainInstance.post(
+      const resp = await axios.post(
         `${BASE_URL}/auth/passwordless/login/${token}`,
         {}
       );
@@ -111,65 +102,6 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (
       set(
         produce((state: AuthStoreState) => {
           state.loginStateRes.status = 'ERROR';
-          state.loginStateRes.data = null;
-          state.loginStateRes.error = e.response.data.message;
-          return state;
-        })
-      );
-      toast.error(e.response.data.message);
-    }
-  },
-  sendLoginMail: async (email: string) => {
-    set(
-      produce((state: AuthStoreState) => {
-        state.sendLoginMailRes.status = "LOADING";
-        return state;
-      })
-    );
-    try {
-      await axios.post(`${BASE_URL}/auth/send/login/${email}`, {});
-      set(
-        produce((state: AuthStoreState) => {
-          state.sendLoginMailRes.status = "SUCCESS";
-          return state;
-        })
-      );
-      toast.success("Check your email for login link!");
-    } catch (e: any) {
-      console.log(e);
-      set(
-        produce((state: AuthStoreState) => {
-          state.sendLoginMailRes.status = "ERROR";
-          state.sendLoginMailRes.error = e.response.data.message;
-          return state;
-        })
-      );
-      toast.error(e.response.data.message);
-    }
-  },
-  passwordlessLogin: async (token: string) => {
-    set(
-      produce((state: AuthStoreState) => {
-        state.loginStateRes.status = "LOADING";
-        return state;
-      })
-    );
-    try {
-      const resp = await axios.post(`${BASE_URL}/auth/passwordless/login/${token}`, {});
-      await get().fetchLoggedUser(resp.data.accessToken);
-      set(
-        produce((state: AuthStoreState) => {
-          state.loginStateRes.status = "SUCCESS";
-          state.loginStateRes.data = resp.data.accessToken;
-          return state;
-        })
-      );
-      toast.success("Successfully logged in!");
-    } catch (e: any) {
-      console.log(e);
-      set(
-        produce((state: AuthStoreState) => {
-          state.loginStateRes.status = "ERROR";
           state.loginStateRes.data = null;
           state.loginStateRes.error = e.response.data.message;
           return state;
