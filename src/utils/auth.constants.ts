@@ -1,4 +1,4 @@
-import * as yup from "yup";
+import * as yup from 'yup';
 
 export const LOGIN_VALIDATION_SCHEMA = yup.object({
   email: yup.string().required().email(),
@@ -6,8 +6,8 @@ export const LOGIN_VALIDATION_SCHEMA = yup.object({
 });
 
 export const LOGIN_DEFAULT_VALUES = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
 
 export const REGISTER_VALIDATION_SCHEMA = yup.object({
@@ -18,11 +18,11 @@ export const REGISTER_VALIDATION_SCHEMA = yup.object({
     .min(8)
     .matches(
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must be at least 8 characters long, and include one digit, one uppercase letter, one lowercase letter, and one special character"
+      'Password must be at least 8 characters long, and include one digit, one uppercase letter, one lowercase letter, and one special character'
     ),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password")], "Passwords must match"),
+    .oneOf([yup.ref('password')], 'Passwords must match'),
   name: yup.string().required(),
   surname: yup.string().required(),
   phoneNumber: yup.string().required(),
@@ -36,13 +36,29 @@ export const REGISTER_VALIDATION_SCHEMA = yup.object({
 });
 
 export const REGISTER_DEFAULT_VALUES = {
-  email: "",
-  password: "",
-  confirmPassword: "",
-  name: "",
-  surname: "",
-  phoneNumber: "",
+  email: '',
+  password: '',
+  confirmPassword: '',
+  name: '',
+  surname: '',
+  phoneNumber: '',
+};
+export const REGISTER_USER_DEFAULT_VALUES = {
+  name: '',
+  surname: '',
+  email: '',
+  address: {
+    street: '',
+    streetNumber: '',
+    city: '',
+    zipCode: '',
+    country: '',
+  },
+  phoneNumber: '',
+  password: '',
+  confirmPassword: '',
+  role: 0,
 };
 export const DEFAULT_HEADERS = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
 };

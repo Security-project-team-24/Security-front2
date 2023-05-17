@@ -6,6 +6,8 @@ import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPa
 import { HomePage } from "../pages/HomePage/HomePage";
 import { RegisterAdminPage } from "../pages/RegisterPage/RegisterAdminPage";
 import { RegisterUserPage } from "../pages/RegisterPage/RegisterUserPage";
+import { EngineerProjectsPage } from "../pages/ProjectPage/EngineerProjectsPage";
+import { isPromise } from "util/types";
 import { LoginRedirectPage } from "../pages/RedirectPages/LoginRedirectPage";
 
 interface CustomRouteProps {
@@ -47,7 +49,7 @@ export const routes: CustomRouteProps[] = [
     path: "/profile",
     element: <ProfilePage />,
     isProtected: true,
-    requiredRole: ["ADMIN"],
+    requiredRole: ["ADMIN", "PROJECTMANAGER", "ENGINEER"],
   },
   {
     path: "/admin/change-password",
@@ -65,5 +67,11 @@ export const routes: CustomRouteProps[] = [
     path: "/register",
     element: <RegisterUserPage />,
     isProtected: false,
+  },
+  {
+    path: "/engineer/projects",
+    element: <EngineerProjectsPage />,
+    isProtected: true,
+    requiredRole: ["ENGINEER"],
   },
 ];

@@ -1,79 +1,86 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Text,
-  useDisclosure,
-  useToast,
-  Link,
-} from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { useApplicationStore } from "../../store/application.store";
-import { displayToast } from "../../utils/toast.caller";
-import { Role } from "../../store/auth-store/model/enums/role.enum";
-import { CreateProjectForm } from "../Project/CreateProjectForm";
-import { useEffect } from "react";
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useApplicationStore } from '../../store/application.store';
+import { CvForm } from '../CvForm/CvForm';
+import { SkillForm } from '../SkillForm/SkillForm';
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useApplicationStore((state) => state.user);
   const logout = useApplicationStore((state) => state.logout);
-  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenCv,
+    onOpen: onOpenCv,
+    onClose: onCloseCv,
+  } = useDisclosure();
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
     <>
-      <Box width="100%" bg={"#3d997c"} p={"10px 25px"}>
+      <Box width='100%' bg={'#3d997c'} p={'10px 25px'}>
         <Flex
-          w={"100%"}
-          h={"40px"}
-          alignItems={"center"}
-          justifyContent="space-between"
+          w={'100%'}
+          h={'40px'}
+          alignItems={'center'}
+          justifyContent='space-between'
         >
-          <Link href="/">
-            <Text color={"white"} fontWeight="700">
+          <Link to='/'>
+            <Text color={'white'} fontWeight='700'>
               Security
             </Text>
           </Link>
           {user != null && (
-            <Link href="/profile" mr="5px" color={"white"}>
-              {user.name} {user.surname}
+            <Link to={'/profile'}>
+              <Text color={'white'}>
+                {user.name} {user.surname}
+              </Text>
             </Link>
           )}
-          <Flex gap="15px">
+          <Flex gap='15px'>
             {user ? (
-              <Link color={"white"} onClick={handleLogout}>
+              <Text color={'white'} cursor={'pointer'} onClick={handleLogout}>
                 Logout
-              </Link>
+              </Text>
             ) : (
-              <Flex gap="15px">
-                <Link href="/login" color={"white"}>
+              <Flex gap='15px'>
+                <Link to='/login' color={'white'}>
                   Login
                 </Link>
-                <Link href="/register" color={"white"}>
+                <Link to='/register' color={'white'}>
                   Register
                 </Link>
               </Flex>
             )}
           </Flex>
         </Flex>
-        {user?.role == "ADMIN" && (
+        {user?.role == 'ADMIN' && (
           <>
-            <Button onClick={() => navigate("/admin/projects")} mr="5px">
+            <Button onClick={() => navigate('/admin/projects')} mr='5px'>
               Projects
             </Button>
-            <Button onClick={() => navigate("/admin/employees")} mr="5px">
+            <Button onClick={() => navigate('/admin/employees')} mr='5px'>
               Employees
             </Button>
-            <Button onClick={() => navigate("/admin/register-admin")} mr="5px">
+            <Button onClick={() => navigate('/admin/register-admin')} mr='5px'>
               Register admin
             </Button>
           </>
+        )}
+        {user?.role === 'ENGINEER' && (
+          <Flex gap='15px'>
+            <Button onClick={onOpen}>Add skill</Button>
+            <SkillForm isOpen={isOpen} onClose={onClose} />
+            <Button onClick={onOpenCv}>Upload cv</Button>
+            <CvForm isOpen={isOpenCv} onClose={onCloseCv} />
+            <Button onClick={() => navigate('/engineer/projects')}>
+              Projects
+            </Button>
+          </Flex>
         )}
       </Box>
     </>

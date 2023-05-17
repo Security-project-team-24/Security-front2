@@ -6,16 +6,17 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-} from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+} from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   LOGIN_DEFAULT_VALUES,
   LOGIN_VALIDATION_SCHEMA,
-} from "../../utils/auth.constants";
-import { useApplicationStore } from "../../store/application.store";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+} from '../../utils/auth.constants';
+import { useApplicationStore } from '../../store/application.store';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSendLoginMail } from '../../api/services/auth/useSendLoginMail';
 
 export type FormValues = {
   email: string;
@@ -25,10 +26,10 @@ export type FormValues = {
 export const LoginPage = () => {
   const login = useApplicationStore((state) => state.login);
   const loginStateRes = useApplicationStore((state) => state.loginStateRes);
-  const sendLoginMail = useApplicationStore((state) => state.sendLoginMail);
-  const sendLoginMailRes = useApplicationStore(
-    (state) => state.sendLoginMailRes
-  );
+  const user = useApplicationStore((state) => state.user);
+  const { sendLoginMail, sendLoginMailRes } = useSendLoginMail();
+  const navigate = useNavigate();
+  const [canNavigate, setCanNavigate] = useState(false);
   const {
     register,
     handleSubmit,
@@ -38,20 +39,18 @@ export const LoginPage = () => {
     defaultValues: LOGIN_DEFAULT_VALUES,
     resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
   });
-  const navigate = useNavigate();
-  const user = useApplicationStore((state) => state.user);
-  const [canNavigate, setCanNavigate] = useState(false);
 
   useEffect(() => {
-    if (loginStateRes.status == "SUCCESS" && canNavigate) {
-      if (user?.role == "ADMIN") navigate("/admin/projects");
-      else navigate("/");
+    if (loginStateRes.status == 'SUCCESS' && canNavigate) {
+      if (user?.role == 'ADMIN') navigate('/admin/projects');
+      else navigate('/');
+
     }
   }, [loginStateRes]);
 
   useEffect(() => {
-    if (sendLoginMailRes.status == "SUCCESS" && canNavigate) {
-      navigate("/");
+    if (sendLoginMailRes.status == 'SUCCESS' && canNavigate) {
+      navigate('/');
     }
   }, [sendLoginMailRes]);
 
@@ -86,29 +85,29 @@ export const LoginPage = () => {
         </FormControl>
         <Button
           onClick={handleSubmit(handleOnSubmit)}
-          mt={"4"}
-          fontWeight={"bold"}
-          bg={"#003b95"}
+          mt={'4'}
+          fontWeight={'bold'}
+          bg={'#003b95'}
           _hover={{
-            bg: "#136ed1",
+            bg: '#136ed1',
           }}
-          w="100%"
-          mx={"auto"}
-          color={"white"}
+          w='100%'
+          mx={'auto'}
+          color={'white'}
         >
           Login
         </Button>
         <Button
           onClick={() => handleOnMailLogin()}
-          mt={"4"}
-          fontWeight={"bold"}
-          bg={"#003b95"}
+          mt={'4'}
+          fontWeight={'bold'}
+          bg={'#003b95'}
           _hover={{
-            bg: "#136ed1",
+            bg: '#136ed1',
           }}
-          w="100%"
-          mx={"auto"}
-          color={"white"}
+          w='100%'
+          mx={'auto'}
+          color={'white'}
         >
           Login with mail
         </Button>
