@@ -1,13 +1,16 @@
 import {
+  Button,
   Input,
   Table,
   TableCaption,
   TableContainer,
   Tbody,
   Td,
+  Textarea,
   Th,
   Thead,
   Tr,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -15,17 +18,20 @@ import ReactPaginate from 'react-paginate';
 import { useApplicationStore } from '../../store/application.store';
 import { ProjectEmployee } from '../../api/services/project/types/projectEmployee.type';
 import { useGetEngineerProjects } from '../../api/services/project/useGetEngineerProjects';
+import { useUpdateJobDescription } from '../../api/services/project/useUpdateJobDescription';
+import { JobDescriptionForm } from '../../components/JobDescriptionForm/JobDescriptionForm';
 
 export const EngineerProjectsPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const { getEngineerProjects, getEngineerProjectsRes: engineerProjects } =
     useGetEngineerProjects();
 
-  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   useEffect(() => {
     setCurrentPage(0);
     getEngineerProjects();
-  }, []);
+  }, [isOpen]);
 
   return (
     <>
@@ -45,7 +51,19 @@ export const EngineerProjectsPage = () => {
                 <Tr key={item.id}>
                   <Td>{item.project.name}</Td>
                   <Td>{item.project.duration}</Td>
-                  <Td>{item.jobDescription}</Td>
+                  <Td>
+                    <>{item.jobDescription}</>
+
+                    <Button onClick={onOpen} marginLeft={'10px'}>
+                      Update
+                    </Button>
+                    <JobDescriptionForm
+                      isOpen={isOpen}
+                      onClose={onClose}
+                      jobDescription={item.jobDescription}
+                      projectId={item.project.id}
+                    />
+                  </Td>
                 </Tr>
               ))}
           </Tbody>
