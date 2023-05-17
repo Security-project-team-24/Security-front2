@@ -26,10 +26,7 @@ export type FormValues = {
 export const LoginPage = () => {
   const login = useApplicationStore((state) => state.login);
   const loginStateRes = useApplicationStore((state) => state.loginStateRes);
-  const user = useApplicationStore((state) => state.user);
   const { sendLoginMail, sendLoginMailRes } = useSendLoginMail();
-  const navigate = useNavigate();
-  const [canNavigate, setCanNavigate] = useState(false);
   const {
     register,
     handleSubmit,
@@ -39,12 +36,14 @@ export const LoginPage = () => {
     defaultValues: LOGIN_DEFAULT_VALUES,
     resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
   });
+  const navigate = useNavigate();
+  const user = useApplicationStore((state) => state.user);
+  const [canNavigate, setCanNavigate] = useState(false);
 
   useEffect(() => {
     if (loginStateRes.status == 'SUCCESS' && canNavigate) {
       if (user?.role == 'ADMIN') navigate('/admin/projects');
       else navigate('/');
-
     }
   }, [loginStateRes]);
 
@@ -60,25 +59,25 @@ export const LoginPage = () => {
   };
   const handleOnMailLogin = async () => {
     setCanNavigate(true);
-    await sendLoginMail(getValues("email"));
+    await sendLoginMail(getValues('email'));
   };
 
   return (
-    <Flex alignItems="center" justifyContent="center" height="80vh">
-      <Box width="30%" boxShadow={"md"} padding={"30px"}>
-        <Flex alignItems={"center"} justifyContent={"center"}>
+    <Flex alignItems='center' justifyContent='center' height='80vh'>
+      <Box width='30%' boxShadow={'md'} padding={'30px'}>
+        <Flex alignItems={'center'} justifyContent={'center'}>
           Login
         </Flex>
-        <FormControl isInvalid={errors.email != null} h={"100px"} mb={"2"}>
+        <FormControl isInvalid={errors.email != null} h={'100px'} mb={'2'}>
           <FormLabel>Email</FormLabel>
-          <Input type="email" {...register("email")} />
+          <Input type='email' {...register('email')} />
           {errors.email && (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           )}
         </FormControl>
-        <FormControl isInvalid={errors.password != null} h={"100px"}>
+        <FormControl isInvalid={errors.password != null} h={'100px'}>
           <FormLabel>Password</FormLabel>
-          <Input type="password" {...register("password")} />
+          <Input type='password' {...register('password')} />
           {errors.password && (
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           )}
