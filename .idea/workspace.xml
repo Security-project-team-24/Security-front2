@@ -5,21 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5278222-28b7-4797-ae2d-40f45247701a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Security-front2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/axios.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/auth/useRegisterUser.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/auth/useSendLoginMail.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/project/useAddEmployee.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/project/useCreateProject.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/project/useGetAvailableEmployees.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/project/useGetEngineerProjects.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/project/useGetProjectEngineers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/project/useGetProjects.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/user/useAddSkill.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/user/useChangePassword.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/user/useGetEmployees.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/user/useUpdatePersonalInfo.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/services/user/useUploadCv.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/useAxios.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/useResponseState.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/axios.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/CvForm/CvForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CvForm/CvForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Project/AddEmployee.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Project/AddEmployee.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Project/CreateProjectForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Project/CreateProjectForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Project/ProjectEngineersDisplay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Project/ProjectEngineersDisplay.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SkillForm/SkillForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SkillForm/SkillForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Auth/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Auth/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routing/ProtectedRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/ProtectedRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ChangePasswordPage/ChangePasswordPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePasswordPage/ChangePasswordPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/EmployeesPage/EmployeesPages.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/EmployeesPage/EmployeesPages.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProjectPage/EngineerProjectsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProjectPage/EngineerProjectsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProjectPage/ProjectPages.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProjectPage/ProjectPages.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterAdminPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterAdminPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterUserPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterUserPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/UserProfilePage/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/UserProfilePage/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/application.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/application.store.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store/auth-store/auth.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth-store/auth.store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/auth-store/model/enums/role.enum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth-store/model/enums/role.enum.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/project-store/project.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/project-store/project.store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/user-store/user.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/user-store/user.store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/project-store/project.store.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/project-store/types/project.employee.request.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/project/types/project.employee.request.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/project-store/types/project.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/project/types/project.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/project-store/types/projectEmployee.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/project/types/projectEmployee.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/user-store/type/changepassword.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/user/types/changepassword.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/user-store/type/skill.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/user/types/skill.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/user-store/user.store.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/auth.constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/auth.constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/user.constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/user.constants.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +57,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -61,6 +89,14 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Fakultet\Security-front2\src\api\services\user" />
+      <recent name="C:\Fakultet\Security-front2\src\api\services\project" />
+      <recent name="C:\Fakultet\Security-front2\src\api" />
+      <recent name="C:\Fakultet\Security-front2\src\api\services\auth" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -74,7 +110,7 @@
       <workItem from="1684173182149" duration="12211000" />
       <workItem from="1684261569358" duration="244000" />
       <workItem from="1684261815291" duration="2614000" />
-      <workItem from="1684273073563" duration="506000" />
+      <workItem from="1684273073563" duration="11022000" />
     </task>
     <servers />
   </component>

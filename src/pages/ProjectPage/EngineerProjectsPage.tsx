@@ -9,20 +9,17 @@ import {
   Thead,
   Tr,
   useToast,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
-import { useApplicationStore } from "../../store/application.store";
-import { ProjectEmployee } from "../../store/project-store/types/projectEmployee.type";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
+import { useApplicationStore } from '../../store/application.store';
+import { ProjectEmployee } from '../../api/services/project/types/projectEmployee.type';
+import { useGetEngineerProjects } from '../../api/services/project/useGetEngineerProjects';
 
 export const EngineerProjectsPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const getEngineerProjects = useApplicationStore(
-    (state) => state.getEngineerProjects
-  );
-  const engineerProjects = useApplicationStore(
-    (state) => state.engineerProjects
-  );
+  const { getEngineerProjects, getEngineerProjectsRes: engineerProjects } =
+    useGetEngineerProjects();
 
   const toast = useToast();
   useEffect(() => {
@@ -33,7 +30,7 @@ export const EngineerProjectsPage = () => {
   return (
     <>
       <TableContainer flex={1}>
-        <Table variant="striped" colorScheme="teal">
+        <Table variant='striped' colorScheme='teal'>
           <TableCaption>Projects</TableCaption>
           <Thead>
             <Tr>

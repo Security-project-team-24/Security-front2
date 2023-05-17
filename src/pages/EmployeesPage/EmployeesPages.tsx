@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useApplicationStore } from "../../store/application.store";
+import { useEffect, useState } from 'react';
+import { useApplicationStore } from '../../store/application.store';
 import {
   Button,
   Table,
@@ -11,83 +11,85 @@ import {
   Thead,
   Tr,
   useToast,
-} from "@chakra-ui/react";
-import { User } from "../../store/auth-store/model/user.model";
-import ReactPaginate from "react-paginate";
+} from '@chakra-ui/react';
+import { User } from '../../store/auth-store/model/user.model';
+import ReactPaginate from 'react-paginate';
+import { useGetEmployees } from '../../api/services/user/useGetEmployees';
 
 export const EmployeesPage = () => {
- 
-    const [currentPage, setCurrentPage] = useState<number>(0);
-    const getEmployees = useApplicationStore(
-    (state) => state.getEmployees
-    );
-    const getEmployeesRes = useApplicationStore(
-    (state) => state.getEmployeesRes
-    );
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const { getEmployeesRes, getEmployees } = useGetEmployees();
 
-    useEffect(() => {
-        fetchEmployees(0)
-    }, [])
-    const fetchEmployees = async (pageNumber: number) => {
-        await getEmployees(5, pageNumber);
-    };
+  useEffect(() => {
+    fetchEmployees(0);
+  }, []);
+  const fetchEmployees = async (pageNumber: number) => {
+    await getEmployees(5, pageNumber);
+  };
 
-    const handlePageClick = async (event: any) => {
-        setCurrentPage(event.selected);
-        fetchEmployees(event.selected)
-    };
+  const handlePageClick = async (event: any) => {
+    setCurrentPage(event.selected);
+    fetchEmployees(event.selected);
+  };
 
-    return (
+  return (
     <>
-        <TableContainer flex={1}>
-        <Table variant="striped" colorScheme="teal">
-            <TableCaption>Employees</TableCaption>
-            <Thead>
+      <TableContainer flex={1}>
+        <Table variant='striped' colorScheme='teal'>
+          <TableCaption>Employees</TableCaption>
+          <Thead>
             <Tr>
-                <Th>Name</Th>
-                <Th>Surname</Th>
-                <Th>Address</Th>
-                <Th>Email</Th>
-                <Th>Phone number</Th>
-                <Th>Role</Th>
-                <Th>Status</Th>
-                <Th>Activated</Th>
+              <Th>Name</Th>
+              <Th>Surname</Th>
+              <Th>Address</Th>
+              <Th>Email</Th>
+              <Th>Phone number</Th>
+              <Th>Role</Th>
+              <Th>Status</Th>
+              <Th>Activated</Th>
             </Tr>
-            </Thead>
-            <Tbody>
+          </Thead>
+          <Tbody>
             {getEmployeesRes.data.content &&
-                getEmployeesRes.data.content.map((item: User) => (
+              getEmployeesRes.data.content.map((item: User) => (
                 <Tr key={item.id}>
-                    <Td>{item.name}</Td>
-                    <Td>{item.surname}</Td>
-                    <Td>{item.address.street} {item.address.streetNumber} {item.address.zipCode} {item.address.city}, {item.address.country}</Td>
-                    <Td>{item.email}</Td>
-                    <Td>{item.phoneNumber}</Td>
-                    <Td>{item.role}</Td>
-                    <Td>{item.status}</Td>
-                    <Td>{item.activated && <p>YES</p>} {!item.activated && <p>NO</p>}</Td>
+                  <Td>{item.name}</Td>
+                  <Td>{item.surname}</Td>
+                  <Td>
+                    {item.address.street} {item.address.streetNumber}{' '}
+                    {item.address.zipCode} {item.address.city},{' '}
+                    {item.address.country}
+                  </Td>
+                  <Td>{item.email}</Td>
+                  <Td>{item.phoneNumber}</Td>
+                  <Td>{item.role}</Td>
+                  <Td>{item.status}</Td>
+                  <Td>
+                    {item.activated && <p>YES</p>}{' '}
+                    {!item.activated && <p>NO</p>}
+                  </Td>
                 </Tr>
-                ))}
-            </Tbody>
+              ))}
+          </Tbody>
         </Table>
-        </TableContainer>
-        <ReactPaginate
-          activeClassName={"item active "}
-          forcePage={currentPage}
-          breakClassName={"item break-me "}
-          breakLabel={"..."}
-          containerClassName={"pagination"}
-          disabledClassName={"disabled-page"}
-          marginPagesDisplayed={2}
-          nextClassName={"item next "}
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageCount={getEmployeesRes.data.totalPages}
-          pageClassName={"item pagination-page "}
-          pageRangeDisplayed={2}
-          previousClassName={"item previous"}
-          previousLabel="<"
-        />
+      </TableContainer>
+      <ReactPaginate
+        activeClassName={'item active '}
+        forcePage={currentPage}
+        breakClassName={'item break-me '}
+        breakLabel={'...'}
+        containerClassName={'pagination'}
+        disabledClassName={'disabled-page'}
+        marginPagesDisplayed={2}
+        nextClassName={'item next '}
+        nextLabel='>'
+        onPageChange={handlePageClick}
+        pageCount={getEmployeesRes.data.totalPages}
+        pageClassName={'item pagination-page '}
+        pageRangeDisplayed={2}
+        previousClassName={'item previous'}
+        previousLabel='<'
+      />
     </>
-    );
+  );
 };

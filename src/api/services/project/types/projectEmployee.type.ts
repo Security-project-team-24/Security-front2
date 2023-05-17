@@ -1,5 +1,5 @@
-import { User } from "../../auth-store/model/user.model";
-import { Project } from "./project.type";
+import { User } from '../../../../store/auth-store/model/user.model';
+import { Project } from './project.type';
 
 export type ProjectEmployee = {
   id: number;

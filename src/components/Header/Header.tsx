@@ -1,12 +1,13 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useApplicationStore } from '../../store/application.store';
+import { CvForm } from '../CvForm/CvForm';
+import { SkillForm } from '../SkillForm/SkillForm';
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useApplicationStore((state) => state.user);
   const logout = useApplicationStore((state) => state.logout);
-  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenCv,
@@ -42,7 +43,7 @@ export const Header = () => {
           )}
           <Flex gap='15px'>
             {user ? (
-              <Text color={'white'} onClick={handleLogout}>
+              <Text color={'white'} cursor={'pointer'} onClick={handleLogout}>
                 Logout
               </Text>
             ) : (

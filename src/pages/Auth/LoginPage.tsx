@@ -16,6 +16,7 @@ import {
 import { useApplicationStore } from '../../store/application.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSendLoginMail } from '../../api/services/auth/useSendLoginMail';
 
 export type FormValues = {
   email: string;
@@ -25,10 +26,10 @@ export type FormValues = {
 export const LoginPage = () => {
   const login = useApplicationStore((state) => state.login);
   const loginStateRes = useApplicationStore((state) => state.loginStateRes);
-  const sendLoginMail = useApplicationStore((state) => state.sendLoginMail);
-  const sendLoginMailRes = useApplicationStore(
-    (state) => state.sendLoginMailRes
-  );
+  const user = useApplicationStore((state) => state.user);
+  const { sendLoginMail, sendLoginMailRes } = useSendLoginMail();
+  const navigate = useNavigate();
+  const [canNavigate, setCanNavigate] = useState(false);
   const {
     register,
     handleSubmit,
@@ -38,9 +39,6 @@ export const LoginPage = () => {
     defaultValues: LOGIN_DEFAULT_VALUES,
     resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
   });
-  const navigate = useNavigate();
-  const user = useApplicationStore((state) => state.user);
-  const [canNavigate, setCanNavigate] = useState(false);
 
   useEffect(() => {
     if (loginStateRes.status == 'SUCCESS' && canNavigate) {

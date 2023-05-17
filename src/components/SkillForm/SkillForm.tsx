@@ -1,6 +1,6 @@
-import { Button } from "@chakra-ui/button";
-import { Input } from "@chakra-ui/input";
-import { Box, Flex } from "@chakra-ui/layout";
+import { Button } from '@chakra-ui/button';
+import { Input } from '@chakra-ui/input';
+import { Box, Flex } from '@chakra-ui/layout';
 import {
   Modal,
   ModalBody,
@@ -8,12 +8,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-} from "@chakra-ui/modal";
-import React, { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { ADD_SKILL_VALIDATION_SCHEMA } from "../../utils/user.constants";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useApplicationStore } from "../../store/application.store";
+} from '@chakra-ui/modal';
+import React, { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ADD_SKILL_VALIDATION_SCHEMA } from '../../utils/user.constants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useApplicationStore } from '../../store/application.store';
+import { useAddSkill } from '../../api/services/user/useAddSkill';
 
 interface Props {
   isOpen: boolean;
@@ -26,7 +27,7 @@ type Inputs = {
 };
 
 export const SkillForm = ({ isOpen, onClose }: Props) => {
-  const addSkill = useApplicationStore((state) => state.addSkill);
+  const { addSkill } = useAddSkill();
   const {
     register,
     handleSubmit,
@@ -38,14 +39,14 @@ export const SkillForm = ({ isOpen, onClose }: Props) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("a");
+    console.log('a');
     await addSkill(data);
   };
 
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset({
-        skills: "",
+        skills: '',
         strength: 1,
       });
     }
@@ -60,26 +61,26 @@ export const SkillForm = ({ isOpen, onClose }: Props) => {
             <ModalHeader>Add skill</ModalHeader>
             <ModalCloseButton onClick={onClose} />
             <ModalBody>
-              <Flex padding={"15px"} gap={"15px"}>
+              <Flex padding={'15px'} gap={'15px'}>
                 <Input
-                  {...register("skills", { required: true })}
-                  type="text"
-                  width={"80%"}
+                  {...register('skills', { required: true })}
+                  type='text'
+                  width={'80%'}
                 ></Input>
                 <Input
-                  {...register("strength", { required: true })}
-                  type="number"
+                  {...register('strength', { required: true })}
+                  type='number'
                   max={5}
                   min={1}
-                  width={"20%"}
+                  width={'20%'}
                 ></Input>
               </Flex>
-              <Flex direction={"column"} color={"red"}>
+              <Flex direction={'column'} color={'red'}>
                 <span>{errors.skills?.message}</span>
                 <span>{errors.strength?.message}</span>
               </Flex>
 
-              <Button onClick={handleSubmit(onSubmit)} width={"100%"}>
+              <Button onClick={handleSubmit(onSubmit)} width={'100%'}>
                 Save
               </Button>
             </ModalBody>

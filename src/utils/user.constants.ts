@@ -1,4 +1,4 @@
-import * as yup from "yup";
+import * as yup from 'yup';
 
 export const CHANGE_PASSWORD_VALIDATION_SCHEMA = yup.object({
   oldPassword: yup
@@ -7,7 +7,7 @@ export const CHANGE_PASSWORD_VALIDATION_SCHEMA = yup.object({
     .min(8)
     .matches(
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must include one digit, one uppercase letter, one lowercase letter, and one special character"
+      'Password must include one digit, one uppercase letter, one lowercase letter, and one special character'
     ),
   newPassword: yup
     .string()
@@ -15,20 +15,20 @@ export const CHANGE_PASSWORD_VALIDATION_SCHEMA = yup.object({
     .min(8)
     .matches(
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must include one digit, one uppercase letter, one lowercase letter, and one special character"
+      'Password must include one digit, one uppercase letter, one lowercase letter, and one special character'
     ),
   confirmPassword: yup
     .string()
     .oneOf(
-      [yup.ref("newPassword")],
-      "Confirm passwords must match with new password"
+      [yup.ref('newPassword')],
+      'Confirm passwords must match with new password'
     ),
 });
 
 export const CHANGE_PASSWORD_DEFAULT_VALUES = {
-  oldPassword: "",
-  newPassword: "",
-  confirmPassword: "",
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
 };
 
 export const ADD_SKILL_VALIDATION_SCHEMA = yup.object({
@@ -37,19 +37,19 @@ export const ADD_SKILL_VALIDATION_SCHEMA = yup.object({
     .number()
     .nullable()
     .transform((value, originalValue) =>
-      originalValue.trim() === "" ? null : value
+      originalValue.trim() === '' ? null : value
     )
-    .typeError("Skill value must be a number")
-    .required("Skill value is required")
+    .typeError('Skill value must be a number')
+    .required('Skill value is required')
     .min(1)
     .max(5)
     .test(
-      "is-number",
-      "Skill value must be a number",
+      'is-number',
+      'Skill value must be a number',
       (value) => !isNaN(value)
     ),
 });
 
 export const DEFAULT_HEADERS = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
 };
