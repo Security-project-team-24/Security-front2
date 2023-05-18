@@ -66,6 +66,12 @@ export const Header = () => {
             <Button onClick={() => navigate('/admin/employees')} mr='5px'>
               Employees
             </Button>
+            <Button
+              onClick={() => navigate('/admin/pending/employees')}
+              mr='5px'
+            >
+              Pending employees
+            </Button>
             <Button onClick={() => navigate('/admin/register-admin')} mr='5px'>
               Register admin
             </Button>

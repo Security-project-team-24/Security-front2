@@ -7,8 +7,9 @@ import { HomePage } from '../pages/HomePage/HomePage';
 import { RegisterAdminPage } from '../pages/RegisterPage/RegisterAdminPage';
 import { RegisterUserPage } from '../pages/RegisterPage/RegisterUserPage';
 import { EngineerProjectsPage } from '../pages/ProjectPage/EngineerProjectsPage';
-import { isPromise } from 'util/types';
 import { LoginRedirectPage } from '../pages/RedirectPages/LoginRedirectPage';
+import { PendingEmployeesPage } from '../pages/EmployeesPage/PendingEmployeesPage';
+import { ActivateRedirectPage } from '../pages/RedirectPages/ActivateRedirecPage';
 import { ProjectManagerProjectsPage } from '../pages/ProjectPage/ProjectManagerProjectsPage';
 
 interface CustomRouteProps {
@@ -35,6 +36,11 @@ export const routes: CustomRouteProps[] = [
     isProtected: false,
   },
   {
+    path: '/user/activation/:token',
+    element: <ActivateRedirectPage />,
+    isProtected: false,
+  },
+  {
     path: '/admin/projects',
     element: <ProjectPage />,
     isProtected: true,
@@ -43,6 +49,12 @@ export const routes: CustomRouteProps[] = [
   {
     path: '/admin/employees',
     element: <EmployeesPage />,
+    isProtected: true,
+    requiredRole: ['ADMIN'],
+  },
+  {
+    path: '/admin/pending/employees',
+    element: <PendingEmployeesPage />,
     isProtected: true,
     requiredRole: ['ADMIN'],
   },
