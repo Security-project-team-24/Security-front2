@@ -34,6 +34,7 @@ import { Project } from '../../api/services/project/types/project.type';
 import { toast } from 'react-toastify';
 import { useGetAvailableEmployees } from '../../api/services/project/useGetAvailableEmployees';
 import { useAddEmployee } from '../../api/services/project/useAddEmployee';
+import { useGetProjectEngineers } from '../../api/services/project/useGetProjectEngineers';
 
 interface Props {
   isOpen: boolean;
@@ -53,6 +54,8 @@ type Inputs = {
 const AddEmployee = ({ isOpen, onClose, project, setProject }: Props) => {
   const { getAvailableEmployees, getAvailableEmployeesRes } =
     useGetAvailableEmployees();
+  const { getProjectEngineers, getProjectEngineersRes } =
+    useGetProjectEngineers();
   const { addEmployee } = useAddEmployee();
 
   const {
@@ -74,6 +77,7 @@ const AddEmployee = ({ isOpen, onClose, project, setProject }: Props) => {
       onClose();
       setProject({ id: -1, name: '', duration: -1, projectEmployees: [] });
       reset();
+      await getProjectEngineers(project.id);
     } else {
       toast.error('Selected time range exceed the duration of the project!');
     }

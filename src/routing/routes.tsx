@@ -10,6 +10,7 @@ import { EngineerProjectsPage } from '../pages/ProjectPage/EngineerProjectsPage'
 import { LoginRedirectPage } from '../pages/RedirectPages/LoginRedirectPage';
 import { PendingEmployeesPage } from '../pages/EmployeesPage/PendingEmployeesPage';
 import { ActivateRedirectPage } from '../pages/RedirectPages/ActivateRedirecPage';
+import { ProjectManagerProjectsPage } from '../pages/ProjectPage/ProjectManagerProjectsPage';
 
 interface CustomRouteProps {
   path: string;
@@ -85,5 +86,11 @@ export const routes: CustomRouteProps[] = [
     element: <EngineerProjectsPage />,
     isProtected: true,
     requiredRole: ['ENGINEER'],
+  },
+  {
+    path: '/project-manager/projects',
+    element: <ProjectManagerProjectsPage />,
+    isProtected: true,
+    requiredRole: ['PROJECTMANAGER'],
   },
 ];

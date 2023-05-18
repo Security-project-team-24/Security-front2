@@ -136,7 +136,6 @@ export const ProjectPage = () => {
         isOpen={isOpenEngineersDisplay}
         onClose={onCloseEngineersDisplay}
         project={project}
-        setProject={setProject}
       />
     </>
   );
