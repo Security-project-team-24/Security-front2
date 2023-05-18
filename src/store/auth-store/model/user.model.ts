@@ -10,5 +10,4 @@ export type User = {
     address: Address
     phoneNumber: string
     firstLogged?: boolean
-    activated?: boolean
 }
