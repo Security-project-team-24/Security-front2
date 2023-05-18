@@ -82,6 +82,13 @@ export const Header = () => {
             </Button>
           </Flex>
         )}
+        {user?.role === 'PROJECTMANAGER' && (
+          <Flex gap='15px'>
+            <Button onClick={() => navigate('/project-manager/projects')}>
+              Projects
+            </Button>
+          </Flex>
+        )}
       </Box>
     </>
   );

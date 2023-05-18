@@ -25,22 +25,23 @@ import { displayToast } from '../../utils/toast.caller';
 import { format, parseISO } from 'date-fns';
 import { Project } from '../../api/services/project/types/project.type';
 import { useGetProjectEngineers } from '../../api/services/project/useGetProjectEngineers';
+import { useRemmoveEmployee } from '../../api/services/project/useRemoveEmployee';
+import { ProjectEmployee } from '../../api/services/project/types/projectEmployee.type';
+import { useGetAvailableEmployees } from '../../api/services/project/useGetAvailableEmployees';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   project: Project;
-  setProject: (id: Project) => void;
 }
 
-const ProjectEngineersDisplay = ({
-  isOpen,
-  onClose,
-  project,
-  setProject,
-}: Props) => {
+const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
   const { getProjectEngineers, getProjectEngineersRes } =
     useGetProjectEngineers();
+  const { getAvailableEmployees, getAvailableEmployeesRes } =
+    useGetAvailableEmployees();
+  const loggedUser = useApplicationStore((state) => state.user);
+  const { removeEmployeeRes, removeEmployee } = useRemmoveEmployee();
 
   useEffect(() => {
     fetchEngineers();
@@ -50,6 +51,12 @@ const ProjectEngineersDisplay = ({
     if (project.id != -1) {
       await getProjectEngineers(project.id);
     }
+  };
+
+  const handleRemoveEmployeeFromProject = async (employeeId: number) => {
+    await removeEmployee(project.id, employeeId);
+    await getProjectEngineers(project.id);
+    await getAvailableEmployees(project.id);
   };
 
   return (
@@ -65,15 +72,29 @@ const ProjectEngineersDisplay = ({
                 <Box height='400px' overflowY='auto' paddingLeft='5px'>
                   <UnorderedList>
                     {getProjectEngineersRes.data.map((user) => (
-                      <ListItem key={user.id}>
-                        Full name: {user.employee.name} {user.employee.surname}
-                        <br />
-                        Job description: {user.jobDescription}
-                        <br />
-                        Working time:{' '}
-                        {format(new Date(user.startDate), 'dd/MM/yyyy')} -{' '}
-                        {format(new Date(user.endDate), 'dd/MM/yyyy')}
-                      </ListItem>
+                      <Flex>
+                        <ListItem key={user.id}>
+                          Full name: {user.employee.name}{' '}
+                          {user.employee.surname}
+                          <br />
+                          Job description: {user.jobDescription}
+                          <br />
+                          Working time:{' '}
+                          {format(
+                            new Date(user.startDate),
+                            'dd/MM/yyyy'
+                          )} - {format(new Date(user.endDate), 'dd/MM/yyyy')}
+                        </ListItem>
+                        {loggedUser?.role === 'PROJECTMANAGER' && (
+                          <Button
+                            onClick={() =>
+                              handleRemoveEmployeeFromProject(user.employee.id)
+                            }
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </Flex>
                     ))}
                   </UnorderedList>
                 </Box>

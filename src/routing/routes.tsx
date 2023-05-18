@@ -1,14 +1,15 @@
-import { LoginPage } from "../pages/Auth/LoginPage";
-import { ProjectPage } from "../pages/ProjectPage/ProjectPages";
-import { EmployeesPage } from "../pages/EmployeesPage/EmployeesPages";
-import { ProfilePage } from "../pages/UserProfilePage/ProfilePage";
-import { ChangePasswordPage } from "../pages/ChangePasswordPage/ChangePasswordPage";
-import { HomePage } from "../pages/HomePage/HomePage";
-import { RegisterAdminPage } from "../pages/RegisterPage/RegisterAdminPage";
-import { RegisterUserPage } from "../pages/RegisterPage/RegisterUserPage";
-import { EngineerProjectsPage } from "../pages/ProjectPage/EngineerProjectsPage";
-import { isPromise } from "util/types";
-import { LoginRedirectPage } from "../pages/RedirectPages/LoginRedirectPage";
+import { LoginPage } from '../pages/Auth/LoginPage';
+import { ProjectPage } from '../pages/ProjectPage/ProjectPages';
+import { EmployeesPage } from '../pages/EmployeesPage/EmployeesPages';
+import { ProfilePage } from '../pages/UserProfilePage/ProfilePage';
+import { ChangePasswordPage } from '../pages/ChangePasswordPage/ChangePasswordPage';
+import { HomePage } from '../pages/HomePage/HomePage';
+import { RegisterAdminPage } from '../pages/RegisterPage/RegisterAdminPage';
+import { RegisterUserPage } from '../pages/RegisterPage/RegisterUserPage';
+import { EngineerProjectsPage } from '../pages/ProjectPage/EngineerProjectsPage';
+import { isPromise } from 'util/types';
+import { LoginRedirectPage } from '../pages/RedirectPages/LoginRedirectPage';
+import { ProjectManagerProjectsPage } from '../pages/ProjectPage/ProjectManagerProjectsPage';
 
 interface CustomRouteProps {
   path: string;
@@ -19,59 +20,65 @@ interface CustomRouteProps {
 
 export const routes: CustomRouteProps[] = [
   {
-    path: "/",
+    path: '/',
     element: <HomePage />,
     isProtected: false,
   },
   {
-    path: "/login",
+    path: '/login',
     element: <LoginPage />,
     isProtected: false,
   },
   {
-    path: "/passwordless/login/:token",
+    path: '/passwordless/login/:token',
     element: <LoginRedirectPage />,
     isProtected: false,
   },
   {
-    path: "/admin/projects",
+    path: '/admin/projects',
     element: <ProjectPage />,
     isProtected: true,
-    requiredRole: ["ADMIN"],
+    requiredRole: ['ADMIN'],
   },
   {
-    path: "/admin/employees",
+    path: '/admin/employees',
     element: <EmployeesPage />,
     isProtected: true,
-    requiredRole: ["ADMIN"],
+    requiredRole: ['ADMIN'],
   },
   {
-    path: "/profile",
+    path: '/profile',
     element: <ProfilePage />,
     isProtected: true,
-    requiredRole: ["ADMIN", "PROJECTMANAGER", "ENGINEER"],
+    requiredRole: ['ADMIN', 'PROJECTMANAGER', 'ENGINEER'],
   },
   {
-    path: "/admin/change-password",
+    path: '/admin/change-password',
     element: <ChangePasswordPage />,
     isProtected: true,
-    requiredRole: ["ADMIN"],
+    requiredRole: ['ADMIN'],
   },
   {
-    path: "/admin/register-admin",
+    path: '/admin/register-admin',
     element: <RegisterAdminPage />,
     isProtected: true,
-    requiredRole: ["ADMIN"],
+    requiredRole: ['ADMIN'],
   },
   {
-    path: "/register",
+    path: '/register',
     element: <RegisterUserPage />,
     isProtected: false,
   },
   {
-    path: "/engineer/projects",
+    path: '/engineer/projects',
     element: <EngineerProjectsPage />,
     isProtected: true,
-    requiredRole: ["ENGINEER"],
+    requiredRole: ['ENGINEER'],
+  },
+  {
+    path: '/project-manager/projects',
+    element: <ProjectManagerProjectsPage />,
+    isProtected: true,
+    requiredRole: ['PROJECTMANAGER'],
   },
 ];
