@@ -48,6 +48,7 @@ export const CreateProjectForm = ({ isOpen, onClose }: Props) => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await createProject(data);
     onClose();
+    reset();
   };
 
   return (

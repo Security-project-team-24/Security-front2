@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useApplicationStore } from '../../store/application.store';
 import {
   Button,
+  Flex,
+  Spinner,
   Table,
   TableCaption,
   TableContainer,
@@ -20,12 +22,10 @@ import ProjectEngineersDisplay from '../../components/Project/ProjectEngineersDi
 import ReactPaginate from 'react-paginate';
 import '../../styles/pagination.css';
 import { useGetProjects } from '../../api/services/project/useGetProjects';
-import { useCreateProject } from '../../api/services/project/useCreateProject';
 
 export const ProjectPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const { getProjectsRes, getProjects } = useGetProjects();
-  const { createProjectRes } = useCreateProject();
 
   const {
     isOpen: isOpenCreateProject,
@@ -46,7 +46,7 @@ export const ProjectPage = () => {
   useEffect(() => {
     setCurrentPage(0);
     fetchProjects(currentPage);
-  }, [createProjectRes]);
+  }, []);
   const fetchProjects = async (pageNumber: number) => {
     await getProjects(5, pageNumber);
   };
@@ -70,11 +70,14 @@ export const ProjectPage = () => {
     fetchProjects(event.selected);
   };
 
+
   return (
     <>
-      <Button onClick={onOpenCreateProject} mr='5px'>
-        Create project
-      </Button>
+      <Flex justifyContent={'center'} mt={'5px'}>
+        <Button onClick={onOpenCreateProject} width={'200px'}>
+          Create project
+        </Button>
+      </Flex>
       <TableContainer flex={1}>
         <Table variant='striped' colorScheme='teal'>
           <TableCaption>Projects</TableCaption>
@@ -105,6 +108,12 @@ export const ProjectPage = () => {
           </Tbody>
         </Table>
       </TableContainer>
+      { getProjectsRes.status == "LOADING" && <>
+        <Flex justifyContent={'center'}>
+          <Spinner/>
+        </Flex>
+         </>
+      }
       <ReactPaginate
         activeClassName={'item active '}
         forcePage={currentPage}
@@ -124,7 +133,11 @@ export const ProjectPage = () => {
       />
       <CreateProjectForm
         isOpen={isOpenCreateProject}
-        onClose={onCloseCreateProject}
+        onClose={() => {
+          onCloseCreateProject()
+          setCurrentPage(0);
+          fetchProjects(currentPage)
+        }}
       />
       <AddEmployee
         isOpen={isOpenAddEmployee}

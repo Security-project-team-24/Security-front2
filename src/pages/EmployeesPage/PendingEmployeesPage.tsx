@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Button,
   Flex,
+  Spinner,
   Table,
   TableCaption,
   TableContainer,
@@ -112,6 +113,12 @@ export const PendingEmployeesPage = () => {
         userId={checkedUser}
         fetchPending={fetchPendingEmployees}
       />
+      { getPendingEmployeesRes.status == "LOADING" && <>
+        <Flex justifyContent={'center'}>
+          <Spinner/>
+        </Flex>
+         </>
+      }
       <ReactPaginate
         activeClassName={'item active '}
         forcePage={currentPage}
