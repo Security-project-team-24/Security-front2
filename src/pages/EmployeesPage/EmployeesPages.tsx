@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useApplicationStore } from '../../store/application.store';
 import {
   Button,
+  Flex,
+  Spinner,
   Table,
   TableCaption,
   TableContainer,
@@ -68,6 +70,12 @@ export const EmployeesPage = () => {
           </Tbody>
         </Table>
       </TableContainer>
+      { getEmployeesRes.status == "LOADING" && <>
+        <Flex justifyContent={'center'}>
+          <Spinner/>
+        </Flex>
+         </>
+      }
       <ReactPaginate
         activeClassName={'item active '}
         forcePage={currentPage}

@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Text,
   Textarea,
   UnorderedList,
@@ -70,9 +71,16 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
               <ModalCloseButton />
               <ModalBody>
                 <Box height='400px' overflowY='auto' paddingLeft='5px'>
+                  { getProjectEngineersRes.status == "LOADING" && <>
+                      <Flex justifyContent={'center'}>
+                        <Spinner/>
+                      </Flex>
+                      </>
+                  } 
+                  { getProjectEngineersRes.status != "LOADING" && <>
                   <UnorderedList>
                     {getProjectEngineersRes.data.map((user) => (
-                      <Flex>
+                      <Flex key={user.id}>
                         <ListItem key={user.id}>
                           Full name: {user.employee.name}{' '}
                           {user.employee.surname}
@@ -97,6 +105,8 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
                       </Flex>
                     ))}
                   </UnorderedList>
+                  </>
+                 }
                 </Box>
               </ModalBody>
             </ModalContent>

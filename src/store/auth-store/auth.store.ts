@@ -122,7 +122,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (
   },
   fetchLoggedUser: async (token: string) => {
     try {
-      const resp = await mainInstance.get(`${BASE_URL}/auth/current`, {
+      const resp = await mainInstance.get(`/auth/current`, {
         headers: {
           Authorization: 'Bearer ' + token,
         },

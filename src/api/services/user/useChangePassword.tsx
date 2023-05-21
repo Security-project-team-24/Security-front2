@@ -1,3 +1,4 @@
+import { useApplicationStore } from '../../../store/application.store';
 import { useAxios } from '../../useAxios';
 import { useResponseState } from '../../useResponseState';
 import { ChangePasswordRequest } from './types/changepassword.type';
@@ -12,12 +13,14 @@ export const useChangePassword = () => {
     state: changePasswordRes,
   } = useResponseState<any>(null);
 
+  const fetchLoggedUser = useApplicationStore((state) => state.fetchLoggedUser)
+  const token = useApplicationStore((state) => state.loginStateRes.data)
   const changePassword = async (data: ChangePasswordRequest) => {
     try {
       setLoading();
       const res = await axios.put(`/user/change-password`, data);
       setSuccess(res.data);
-      // await get().fetchLoggedUser(get().loginStateRes.data ?? '');
+      await fetchLoggedUser(token ?? "")
       toast.success('Successfully changed password!');
     } catch (e: any) {
       setError(e.response.data.message);

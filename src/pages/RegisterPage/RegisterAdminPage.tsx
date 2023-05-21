@@ -37,6 +37,7 @@ export const RegisterAdminPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<Inputs>({
     resolver: yupResolver(REGISTER_VALIDATION_SCHEMA),
   });
@@ -44,6 +45,7 @@ export const RegisterAdminPage = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.role = 3;
     await registerUser(data);
+    reset();
   };
 
   return (
