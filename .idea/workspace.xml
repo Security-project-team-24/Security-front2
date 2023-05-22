@@ -6,6 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="f5278222-28b7-4797-ae2d-40f45247701a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/services/user/useUpdatePersonalInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/user/useUpdatePersonalInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Project/AddEmployee.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Project/AddEmployee.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Project/ProjectEngineersDisplay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Project/ProjectEngineersDisplay.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Auth/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Auth/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/EmployeesPage/EmployeesPages.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/EmployeesPage/EmployeesPages.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/EmployeesPage/PendingEmployeesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/EmployeesPage/PendingEmployeesPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RedirectPages/LoginRedirectPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RedirectPages/LoginRedirectPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterAdminPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterAdminPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterUserPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage/RegisterUserPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/UserProfilePage/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/UserProfilePage/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routing/ProtectedRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/ProtectedRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/auth-store/model/user.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth-store/model/user.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/auth-store/types/register.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth-store/types/register.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/auth.constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/auth.constants.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +86,7 @@
       <workItem from="1684261815291" duration="2614000" />
       <workItem from="1684273073563" duration="11218000" />
       <workItem from="1684355724153" duration="1208000" />
+      <workItem from="1684771549072" duration="4744000" />
     </task>
     <servers />
   </component>

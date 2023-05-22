@@ -19,9 +19,9 @@ import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { useRegisterUser } from '../../api/services/auth/useRegisterUser';
 
 export enum Role {
-  ENGINEER = 0,
-  PROJECTMANAGER = 1,
-  HRMANAGER = 2,
+  ENGINEER = 'ENGINEER',
+  PROJECT_MANAGER = 'PROJECT_MANAGER',
+  HR_MANAGER = 'HR_MANAGER',
 }
 
 type Inputs = {
@@ -38,12 +38,12 @@ type Inputs = {
   phoneNumber: string;
   password: string;
   confirmPassword: string;
-  role: number;
+  role: string;
 };
 
 export const RegisterUserPage = () => {
   const { registerUser } = useRegisterUser();
-  const [role, setRole] = useState<string>(Role.ENGINEER.toString());
+  const [role, setRole] = useState<string>(Role.ENGINEER);
 
   const {
     register,
@@ -56,8 +56,8 @@ export const RegisterUserPage = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    data.role = parseInt(role);
-    await registerUser(data);
+    console.log(data);
+    await registerUser({ ...data, roles: [role] });
   };
 
   useEffect(() => {
@@ -143,11 +143,9 @@ export const RegisterUserPage = () => {
         <FormControl>
           <RadioGroup onChange={setRole} value={role}>
             <Stack direction='row'>
-              <Radio value={Role.ENGINEER.toString()}>ENGINEER</Radio>
-              <Radio value={Role.PROJECTMANAGER.toString()}>
-                PROJECT MANAGER
-              </Radio>
-              <Radio value={Role.HRMANAGER.toString()}>HR MANAGER</Radio>
+              <Radio value={Role.ENGINEER}>ENGINEER</Radio>
+              <Radio value={Role.PROJECT_MANAGER}>PROJECT MANAGER</Radio>
+              <Radio value={Role.HR_MANAGER}>HR MANAGER</Radio>
             </Stack>
           </RadioGroup>
         </FormControl>

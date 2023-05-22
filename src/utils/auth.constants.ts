@@ -57,7 +57,7 @@ export const REGISTER_USER_DEFAULT_VALUES = {
   phoneNumber: '',
   password: '',
   confirmPassword: '',
-  role: 0,
+  role: 'ENGINEER',
 };
 export const DEFAULT_HEADERS = {
   'Content-Type': 'application/json',

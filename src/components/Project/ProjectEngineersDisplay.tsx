@@ -71,42 +71,47 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
               <ModalCloseButton />
               <ModalBody>
                 <Box height='400px' overflowY='auto' paddingLeft='5px'>
-                  { getProjectEngineersRes.status == "LOADING" && <>
+                  {getProjectEngineersRes.status == 'LOADING' && (
+                    <>
                       <Flex justifyContent={'center'}>
-                        <Spinner/>
+                        <Spinner />
                       </Flex>
-                      </>
-                  } 
-                  { getProjectEngineersRes.status != "LOADING" && <>
-                  <UnorderedList>
-                    {getProjectEngineersRes.data.map((user) => (
-                      <Flex key={user.id}>
-                        <ListItem key={user.id}>
-                          Full name: {user.employee.name}{' '}
-                          {user.employee.surname}
-                          <br />
-                          Job description: {user.jobDescription}
-                          <br />
-                          Working time:{' '}
-                          {format(
-                            new Date(user.startDate),
-                            'dd/MM/yyyy'
-                          )} - {format(new Date(user.endDate), 'dd/MM/yyyy')}
-                        </ListItem>
-                        {loggedUser?.role === 'PROJECTMANAGER' && (
-                          <Button
-                            onClick={() =>
-                              handleRemoveEmployeeFromProject(user.employee.id)
-                            }
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </Flex>
-                    ))}
-                  </UnorderedList>
-                  </>
-                 }
+                    </>
+                  )}
+                  {getProjectEngineersRes.status != 'LOADING' && (
+                    <>
+                      <UnorderedList>
+                        {getProjectEngineersRes.data.map((user) => (
+                          <Flex key={user.id}>
+                            <ListItem key={user.id}>
+                              Full name: {user.employee.name}{' '}
+                              {user.employee.surname}
+                              <br />
+                              Job description: {user.jobDescription}
+                              <br />
+                              Working time:{' '}
+                              {format(
+                                new Date(user.startDate),
+                                'dd/MM/yyyy'
+                              )} -{' '}
+                              {format(new Date(user.endDate), 'dd/MM/yyyy')}
+                            </ListItem>
+                            {loggedUser?.roles.includes('PROJECT_MANAGER') && (
+                              <Button
+                                onClick={() =>
+                                  handleRemoveEmployeeFromProject(
+                                    user.employee.id
+                                  )
+                                }
+                              >
+                                Remove
+                              </Button>
+                            )}
+                          </Flex>
+                        ))}
+                      </UnorderedList>
+                    </>
+                  )}
                 </Box>
               </ModalBody>
             </ModalContent>

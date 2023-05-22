@@ -1,11 +1,8 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { Route, Navigate, Routes, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useApplicationStore } from '../store/application.store';
-import { displayToast } from '../utils/toast.caller';
-import { useToast } from '@chakra-ui/react';
 import { ChangePasswordPage } from '../pages/ChangePasswordPage/ChangePasswordPage';
 import { toast } from 'react-toastify';
-import { Role } from '../store/auth-store/model/enums/role.enum';
 
 interface CustomRouteProps {
   path: string;
@@ -26,12 +23,12 @@ const ProtectedRoute = ({
   function hasUserRole(roles?: string[]): boolean {
     if (!user) return false;
     if (!roles) return false;
-    return roles.includes(user.role);
+    return roles.some((role) => user.roles.includes(role));
   }
   const userHasRole = hasUserRole(requiredRole);
 
   function firstAdminLogin(): boolean {
-    if (user?.role == 'ADMIN' && user.firstLogged) {
+    if (user?.roles.includes('ADMIN') && user.firstLogged) {
       toast.warning('This is your first login, please change your password!');
       return true;
     }

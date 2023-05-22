@@ -122,7 +122,7 @@ const AddEmployee = ({ isOpen, onClose, project, setProject }: Props) => {
                     >
                       {getAvailableEmployeesRes.data.map((user) => (
                         <Radio key={user.id} value={user.id.toString()}>
-                          {user.name} {user.surname}, {user.role}
+                          {user.name} {user.surname}, {user.roles[0]}
                         </Radio>
                       ))}
                     </RadioGroup>

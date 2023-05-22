@@ -58,7 +58,7 @@ export const Header = () => {
             )}
           </Flex>
         </Flex>
-        {user?.role == 'ADMIN' && (
+        {user?.roles.includes('ADMIN') && (
           <>
             <Button onClick={() => navigate('/admin/projects')} mr='5px'>
               Projects
@@ -77,7 +77,7 @@ export const Header = () => {
             </Button>
           </>
         )}
-        {user?.role === 'ENGINEER' && (
+        {user?.roles.includes('ENGINEER') && (
           <Flex gap='15px'>
             <Button onClick={onOpen}>Add skill</Button>
             <SkillForm isOpen={isOpen} onClose={onClose} />
@@ -88,7 +88,7 @@ export const Header = () => {
             </Button>
           </Flex>
         )}
-        {user?.role === 'PROJECTMANAGER' && (
+        {user?.roles.includes('PROJECT_MANAGER') && (
           <Flex gap='15px'>
             <Button onClick={() => navigate('/project-manager/projects')}>
               Projects

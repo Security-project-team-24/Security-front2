@@ -1,6 +1,4 @@
-import { useApplicationStore } from '../../store/application.store';
 import {
-  Box,
   Button,
   Flex,
   FormControl,
@@ -24,7 +22,7 @@ type Inputs = {
     zipCode: string;
     country: string;
   };
-  role: number;
+  role: string;
   phoneNumber: string;
   password: string;
   confirmPassword: string;
@@ -37,14 +35,14 @@ export const RegisterAdminPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<Inputs>({
     resolver: yupResolver(REGISTER_VALIDATION_SCHEMA),
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    data.role = 3;
-    await registerUser(data);
+    data.role = 'ADMIN';
+    await registerUser({ ...data, roles: [data.role] });
     reset();
   };
 
