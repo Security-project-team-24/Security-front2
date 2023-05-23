@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useApplicationStore } from '../../store/application.store';
 import { CvForm } from '../CvForm/CvForm';
 import { SkillForm } from '../SkillForm/SkillForm';
@@ -74,6 +74,9 @@ export const Header = () => {
             </Button>
             <Button onClick={() => navigate('/admin/register-admin')} mr='5px'>
               Register admin
+            </Button>
+            <Button onClick={() => navigate('/administrator/permissions')} mr='5px'>
+              Permissions 
             </Button>
           </>
         )}

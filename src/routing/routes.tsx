@@ -11,6 +11,7 @@ import { LoginRedirectPage } from '../pages/RedirectPages/LoginRedirectPage';
 import { PendingEmployeesPage } from '../pages/EmployeesPage/PendingEmployeesPage';
 import { ActivateRedirectPage } from '../pages/RedirectPages/ActivateRedirecPage';
 import { ProjectManagerProjectsPage } from '../pages/ProjectPage/ProjectManagerProjectsPage';
+import { AdminPermissionPage } from '../pages/AdminPermissionPage/AdminPermissionPage';
 
 interface CustomRouteProps {
   path: string;
@@ -62,7 +63,7 @@ export const routes: CustomRouteProps[] = [
     path: '/profile',
     element: <ProfilePage />,
     isProtected: true,
-    requiredRole: ['ADMIN', 'PROJECTMANAGER', 'ENGINEER'],
+    requiredRole: ['ADMIN', 'PROJECT_MANAGER', 'ENGINEER'],
   },
   {
     path: '/admin/change-password',
@@ -91,6 +92,12 @@ export const routes: CustomRouteProps[] = [
     path: '/project-manager/projects',
     element: <ProjectManagerProjectsPage />,
     isProtected: true,
-    requiredRole: ['PROJECTMANAGER'],
+    requiredRole: ['PROJECT_MANAGER'],
+  },
+  {
+    path: '/administrator/permissions',
+    element: <AdminPermissionPage />,
+    isProtected: true,
+    requiredRole: ['ADMIN'],
   },
 ];
