@@ -63,19 +63,20 @@ export const EmployeesPage = () => {
                   </Td>
                   <Td>{item.email}</Td>
                   <Td>{item.phoneNumber}</Td>
-                  <Td>{item.role}</Td>
+                  <Td>{item.roles[0]}</Td>
                   <Td>{item.status}</Td>
                 </Tr>
               ))}
           </Tbody>
         </Table>
       </TableContainer>
-      { getEmployeesRes.status == "LOADING" && <>
-        <Flex justifyContent={'center'}>
-          <Spinner/>
-        </Flex>
-         </>
-      }
+      {getEmployeesRes.status == 'LOADING' && (
+        <>
+          <Flex justifyContent={'center'}>
+            <Spinner />
+          </Flex>
+        </>
+      )}
       <ReactPaginate
         activeClassName={'item active '}
         forcePage={currentPage}

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useApplicationStore } from '../../store/application.store';
 import { CvForm } from '../CvForm/CvForm';
 import { SkillForm } from '../SkillForm/SkillForm';
@@ -58,7 +58,7 @@ export const Header = () => {
             )}
           </Flex>
         </Flex>
-        {user?.role == 'ADMIN' && (
+        {user?.roles?.includes('ADMIN') && (
           <>
             <Button onClick={() => navigate('/admin/projects')} mr='5px'>
               Projects
@@ -75,9 +75,15 @@ export const Header = () => {
             <Button onClick={() => navigate('/admin/register-admin')} mr='5px'>
               Register admin
             </Button>
+            <Button
+              onClick={() => navigate('/administrator/permissions')}
+              mr='5px'
+            >
+              Permissions
+            </Button>
           </>
         )}
-        {user?.role === 'ENGINEER' && (
+        {user?.roles?.includes('ENGINEER') && (
           <Flex gap='15px'>
             <Button onClick={onOpen}>Add skill</Button>
             <SkillForm isOpen={isOpen} onClose={onClose} />
@@ -88,7 +94,7 @@ export const Header = () => {
             </Button>
           </Flex>
         )}
-        {user?.role === 'PROJECTMANAGER' && (
+        {user?.roles?.includes('PROJECT_MANAGER') && (
           <Flex gap='15px'>
             <Button onClick={() => navigate('/project-manager/projects')}>
               Projects

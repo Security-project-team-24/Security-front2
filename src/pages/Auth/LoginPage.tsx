@@ -42,7 +42,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     if (loginStateRes.status == 'SUCCESS' && canNavigate) {
-      if (user?.role == 'ADMIN') navigate('/admin/projects');
+      if (user?.roles.includes('ADMIN')) navigate('/admin/projects');
       else navigate('/');
     }
   }, [loginStateRes]);

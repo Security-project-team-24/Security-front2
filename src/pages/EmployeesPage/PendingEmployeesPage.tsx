@@ -82,7 +82,7 @@ export const PendingEmployeesPage = () => {
                   </Td>
                   <Td>{item.email}</Td>
                   <Td>{item.phoneNumber}</Td>
-                  <Td>{item.role}</Td>
+                  <Td>{item.roles[0]}</Td>
                   <Td>
                     <Flex gap={'4'}>
                       <Button
@@ -113,12 +113,13 @@ export const PendingEmployeesPage = () => {
         userId={checkedUser}
         fetchPending={fetchPendingEmployees}
       />
-      { getPendingEmployeesRes.status == "LOADING" && <>
-        <Flex justifyContent={'center'}>
-          <Spinner/>
-        </Flex>
-         </>
-      }
+      {getPendingEmployeesRes.status == 'LOADING' && (
+        <>
+          <Flex justifyContent={'center'}>
+            <Spinner />
+          </Flex>
+        </>
+      )}
       <ReactPaginate
         activeClassName={'item active '}
         forcePage={currentPage}

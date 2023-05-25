@@ -66,6 +66,7 @@ export const SkillForm = ({ isOpen, onClose }: Props) => {
                   {...register('skills', { required: true })}
                   type='text'
                   width={'80%'}
+                  placeholder={'Skill'}
                 ></Input>
                 <Input
                   {...register('strength', { required: true })}
@@ -73,6 +74,7 @@ export const SkillForm = ({ isOpen, onClose }: Props) => {
                   max={5}
                   min={1}
                   width={'20%'}
+                  placeholder={'Strength'}
                 ></Input>
               </Flex>
               <Flex direction={'column'} color={'red'}>

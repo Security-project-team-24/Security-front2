@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { Spinner, Flex } from "@chakra-ui/react";
-import { useApplicationStore } from "../../store/application.store";
-import { useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import { Spinner, Flex } from '@chakra-ui/react';
+import { useApplicationStore } from '../../store/application.store';
+import { useEffect } from 'react';
 
 export const LoginRedirectPage = () => {
   const { token } = useParams();
@@ -12,10 +12,10 @@ export const LoginRedirectPage = () => {
   );
   const loginStateRes = useApplicationStore((state) => state.loginStateRes);
   useEffect(() => {
-    if (loginStateRes.status == "SUCCESS" && user?.role == "ADMIN") {
-      if (user?.role == "ADMIN") navigate("/admin/projects");
+    if (loginStateRes.status == 'SUCCESS' && user?.roles.includes('ADMIN')) {
+      if (user?.roles.includes('ADMIN')) navigate('/admin/projects');
     }
-    navigate("/");
+    navigate('/');
   }, [loginStateRes]);
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export const LoginRedirectPage = () => {
   };
   return (
     <Flex
-      justifyContent={"center"}
-      alignItems={"center"}
-      h={"calc(100vh - 95px)"}
+      justifyContent={'center'}
+      alignItems={'center'}
+      h={'calc(100vh - 95px)'}
     >
-      <Spinner boxSize={36} thickness="10px" color={"#3d997c"} />
+      <Spinner boxSize={36} thickness='10px' color={'#3d997c'} />
     </Flex>
   );
 };

@@ -33,7 +33,7 @@ export const ProfilePage = () => {
     name: user?.name ?? '',
     surname: user?.surname ?? '',
     email: user?.email ?? '',
-    role: user?.role ?? '',
+    role: user?.roles[0] ?? '',
     address: {
       street: user?.address.street ?? '',
       streetNumber: user?.address.streetNumber ?? '',
@@ -53,7 +53,7 @@ export const ProfilePage = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await updatePersonalInfo(data);
+    await updatePersonalInfo({ ...data, roles: [data.role] });
     await fetchLoggedUser(token ?? '');
     setIsUpdate(false);
   };
@@ -124,7 +124,7 @@ export const ProfilePage = () => {
         ) : (
           <Button onClick={() => setIsUpdate(true)}>Update</Button>
         )}
-        {user?.role == 'ADMIN' && (
+        {user?.roles.includes('ADMIN') && (
           <Button onClick={() => navigate('/admin/change-password')}>
             Change password
           </Button>
