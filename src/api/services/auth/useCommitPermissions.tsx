@@ -15,9 +15,7 @@ export const useCommitPermissions = () => {
     try {
       setLoading();
       await axios.post(`/auth/permissions/${role}/commit`, permissions);
-      setTimeout(() => {
-        setSuccess();
-      }, 500);
+      setSuccess();
     } catch (e: any) {
       setErrorWithToast(e.response.data.message);
       console.log(e);

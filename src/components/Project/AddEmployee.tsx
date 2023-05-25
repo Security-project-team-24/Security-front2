@@ -70,6 +70,7 @@ const AddEmployee = ({ isOpen, onClose, project, setProject }: Props) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
     var calculatedEndDate = new Date(data.startDate);
     calculatedEndDate.setMonth(calculatedEndDate.getMonth() + project.duration);
     if (calculatedEndDate > new Date(data.endDate)) {
@@ -84,10 +85,11 @@ const AddEmployee = ({ isOpen, onClose, project, setProject }: Props) => {
   };
 
   useEffect(() => {
+    if (!isOpen) return;
     reset();
     setValue('projectId', project.id);
     fetchEmployees();
-  }, [project.id]);
+  }, [isOpen]);
 
   const fetchEmployees = async () => {
     if (project.id != -1) {

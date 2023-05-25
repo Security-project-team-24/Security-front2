@@ -45,10 +45,12 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
   const { removeEmployeeRes, removeEmployee } = useRemmoveEmployee();
 
   useEffect(() => {
+    if (!isOpen) return;
     fetchEngineers();
-  }, [project]);
+  }, [isOpen]);
 
   const fetchEngineers = async () => {
+    console.log(project.id);
     if (project.id != -1) {
       await getProjectEngineers(project.id);
     }

@@ -23,6 +23,7 @@ export const AdminPermissionPage = () => {
   const [draggedRight, setDraggedRight] = useState<Permission | null>();
 
   const onDropFromLeft = () => {
+    console.log(draggedLeft);
     if (draggedLeft == null) return;
     setPermissionsGranted([...permissionsGranted, draggedLeft]);
     setPermissionsNotGranted(
@@ -31,6 +32,7 @@ export const AdminPermissionPage = () => {
     setDraggedLeft(null);
   };
   const onDropFromRight = () => {
+    console.log(draggedRight);
     if (draggedRight == null) return;
     setPermissionsNotGranted([...permissionsNotGranted, draggedRight]);
     setPermissionsGranted(
@@ -44,6 +46,7 @@ export const AdminPermissionPage = () => {
       toast.error('Role must be selected!');
       return;
     }
+    console.log(selectedRole, permissionsGranted);
     await commitPermissions(selectedRole, permissionsGranted);
     await loadPermissions(selectedRole);
   };
@@ -79,7 +82,9 @@ export const AdminPermissionPage = () => {
         onChange={(e) => setSelectedRole(e.target.value)}
       >
         {roles.map((role) => (
-          <option value={role}>{role}</option>
+          <option key={role} value={role}>
+            {role}
+          </option>
         ))}
       </Select>
       <Flex gap={10}>

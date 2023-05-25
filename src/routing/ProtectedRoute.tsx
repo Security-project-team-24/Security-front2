@@ -28,6 +28,7 @@ const ProtectedRoute = ({
   const userHasRole = hasUserRole(requiredRole);
 
   function firstAdminLogin(): boolean {
+    console.log(user);
     if (user?.roles.includes('ADMIN') && user.firstLogged) {
       toast.warning('This is your first login, please change your password!');
       return true;
@@ -53,13 +54,15 @@ const ProtectedRoute = ({
 
   if (!isAuthenticated()) {
     return <Navigate to='/login'></Navigate>;
-  } else if (firstAdminLogin()) {
-    return <ChangePasswordPage></ChangePasswordPage>;
-  } else if (userHasNoRole()) {
-    return <Navigate to='/login'></Navigate>;
-  } else {
-    return element;
   }
+  console.log(firstAdminLogin());
+  if (firstAdminLogin()) {
+    return <ChangePasswordPage></ChangePasswordPage>;
+  }
+  if (userHasNoRole()) {
+    return <Navigate to='/login'></Navigate>;
+  }
+  return element;
 };
 
 export default ProtectedRoute;
