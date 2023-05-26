@@ -35,6 +35,7 @@ import { toast } from 'react-toastify';
 import { useGetAvailableEmployees } from '../../api/services/project/useGetAvailableEmployees';
 import { useAddEmployee } from '../../api/services/project/useAddEmployee';
 import { useGetProjectEngineers } from '../../api/services/project/useGetProjectEngineers';
+import { Role } from '../../pages/RegisterPage/RegisterUserPage';
 
 interface Props {
   isOpen: boolean;
@@ -124,7 +125,9 @@ const AddEmployee = ({ isOpen, onClose, project, setProject }: Props) => {
                     >
                       {getAvailableEmployeesRes.data.map((user) => (
                         <Radio key={user.id} value={user.id.toString()}>
-                          {user.name} {user.surname}, {user.roles[0]}
+                          {user.name} {user.surname}, {user.roles.map((item: string) => (
+                            (item == "ENGINEER" || item == "PROJECT_MANAGER") && item + " "
+                          ))}
                         </Radio>
                       ))}
                     </RadioGroup>
