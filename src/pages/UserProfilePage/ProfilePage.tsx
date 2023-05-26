@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useApplicationStore } from '../../store/application.store';
-import { Box, Button, Flex, Input } from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { DefaultValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useUpdatePersonalInfo } from '../../api/services/user/useUpdatePersonalInfo';
@@ -65,60 +65,78 @@ export const ProfilePage = () => {
         <Flex justifyContent={'center'} justifyItems={'center'}>
           Personal information
         </Flex>
-        <Input
-          defaultValue={defaultValues?.name}
-          disabled={!isUpdate}
-          placeholder='name'
-          {...register('name', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.surname}
-          disabled={!isUpdate}
-          placeholder='surname'
-          {...register('surname', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.email}
-          disabled={true}
-          placeholder='email'
-          {...register('email', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.address.street}
-          disabled={!isUpdate}
-          placeholder='street'
-          {...register('address.street', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.address.streetNumber}
-          disabled={!isUpdate}
-          placeholder='street number'
-          {...register('address.streetNumber', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.address.city}
-          disabled={!isUpdate}
-          placeholder='city'
-          {...register('address.city', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.address.zipCode}
-          disabled={!isUpdate}
-          placeholder='zip code'
-          {...register('address.zipCode', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.address.country}
-          disabled={!isUpdate}
-          placeholder='country'
-          {...register('address.country', { required: true })}
-        />
-        <Input
-          defaultValue={defaultValues?.phoneNumber}
-          disabled={!isUpdate}
-          placeholder='phone number'
-          {...register('phoneNumber', { required: true })}
-        />
+        <FormControl>
+          <FormLabel mb={'0'}>Name</FormLabel>
+          <Input
+            defaultValue={defaultValues?.name}
+            disabled={!isUpdate}
+            {...register('name', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Surname</FormLabel>
+          <Input
+            defaultValue={defaultValues?.surname}
+            disabled={!isUpdate}
+            {...register('surname', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Email</FormLabel>
+          <Input
+            defaultValue={defaultValues?.email}
+            disabled={true}
+            {...register('email', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Street</FormLabel>
+          <Input
+            defaultValue={defaultValues?.address.street}
+            disabled={!isUpdate}
+            {...register('address.street', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Street number</FormLabel>
+          <Input
+            defaultValue={defaultValues?.address.streetNumber}
+            disabled={!isUpdate}
+            {...register('address.streetNumber', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>City</FormLabel>
+          <Input
+            defaultValue={defaultValues?.address.city}
+            disabled={!isUpdate}
+            {...register('address.city', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Zip code</FormLabel>
+          <Input
+            defaultValue={defaultValues?.address.zipCode}
+            disabled={!isUpdate}
+            {...register('address.zipCode', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Country</FormLabel>
+          <Input
+            defaultValue={defaultValues?.address.country}
+            disabled={!isUpdate}
+            {...register('address.country', { required: true })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={'0'}>Phone number</FormLabel>
+          <Input
+            defaultValue={defaultValues?.phoneNumber}
+            disabled={!isUpdate}
+            {...register('phoneNumber', { required: true })}
+          />
+        </FormControl>
         {isUpdate ? (
           <Button onClick={handleSubmit(onSubmit)}>Save</Button>
         ) : (

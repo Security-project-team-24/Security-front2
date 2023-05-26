@@ -47,7 +47,6 @@ export const EmployeesPage = () => {
               <Th>Email</Th>
               <Th>Phone number</Th>
               <Th>Role</Th>
-              <Th>Status</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -63,8 +62,9 @@ export const EmployeesPage = () => {
                   </Td>
                   <Td>{item.email}</Td>
                   <Td>{item.phoneNumber}</Td>
-                  <Td>{item.roles[0]}</Td>
-                  <Td>{item.status}</Td>
+                  <Td>{item.roles.map((item: string) => (
+                      item + " "
+                  ))}</Td>
                 </Tr>
               ))}
           </Tbody>

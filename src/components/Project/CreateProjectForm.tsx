@@ -3,6 +3,7 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Input,
   Modal,
   ModalBody,
@@ -63,9 +64,9 @@ export const CreateProjectForm = ({ isOpen, onClose }: Props) => {
               <ModalBody>
                 <Flex flexDirection={'column'} gap={10}>
                   <FormControl isInvalid={errors.name != null}>
+                    <FormLabel>Name</FormLabel>
                     <Input
                       type='text'
-                      placeholder='Name'
                       {...register('name')}
                     ></Input>
                     {errors.name && (
@@ -75,10 +76,10 @@ export const CreateProjectForm = ({ isOpen, onClose }: Props) => {
                     )}
                   </FormControl>
                   <FormControl isInvalid={errors.duration != null}>
+                    <FormLabel>Duration (months)</FormLabel>
                     <Input
                       type='number'
                       min='0'
-                      placeholder='Duration (months)'
                       {...register('duration')}
                     ></Input>
                     {errors.duration && (
