@@ -1,4 +1,5 @@
 import { Address } from './address.model';
+import { Engineer } from './engineer.model';
 
 export type User = {
   id: number;
@@ -10,4 +11,5 @@ export type User = {
   address: Address;
   phoneNumber: string;
   firstLogged?: boolean;
+  engineer?: Engineer;
 };

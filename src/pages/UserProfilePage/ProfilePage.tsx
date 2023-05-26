@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApplicationStore } from '../../store/application.store';
 import { Box, Button, Flex, Input } from '@chakra-ui/react';
 import { DefaultValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -58,6 +58,22 @@ export const ProfilePage = () => {
     setIsUpdate(false);
   };
   const navigate = useNavigate();
+
+  const calculateSeniority = (): string => {
+    if (user?.roles.includes('ENGINEER')) {
+      if (new Date(Date.now()) >= addYears(3)) return 'SENIOR';
+      else if (new Date(Date.now()) >= addYears(2)) return 'MEDIOR';
+      return 'JUNIOR';
+    }
+    return '';
+  };
+
+  const addYears = (year: number) => {
+    const seniorityDate = new Date(user?.engineer?.seniority ?? '');
+    const currentYear = seniorityDate.getFullYear();
+    seniorityDate.setFullYear(currentYear + year);
+    return seniorityDate;
+  };
 
   return (
     <Flex justifyContent='center'>
@@ -119,6 +135,7 @@ export const ProfilePage = () => {
           placeholder='phone number'
           {...register('phoneNumber', { required: true })}
         />
+        <Input disabled={true} defaultValue={calculateSeniority()} />
         {isUpdate ? (
           <Button onClick={handleSubmit(onSubmit)}>Save</Button>
         ) : (

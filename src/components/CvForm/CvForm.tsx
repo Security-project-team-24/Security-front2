@@ -14,6 +14,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useApplicationStore } from '../../store/application.store';
 import { useUploadCv } from '../../api/services/user/useUploadCv';
+import { useGetEngineerSkills } from '../../api/services/user/useGetEngineerSkills';
 
 interface Props {
   isOpen: boolean;

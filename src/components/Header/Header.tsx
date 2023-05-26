@@ -3,11 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useApplicationStore } from '../../store/application.store';
 import { CvForm } from '../CvForm/CvForm';
 import { SkillForm } from '../SkillForm/SkillForm';
+import { useEffect } from 'react';
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useApplicationStore((state) => state.user);
   const logout = useApplicationStore((state) => state.logout);
+  const token = useApplicationStore((state) => state.loginStateRes.data);
+  const fetchLoggedUser = useApplicationStore((state) => state.fetchLoggedUser);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenCv,
@@ -19,6 +22,10 @@ export const Header = () => {
     logout();
     navigate('/login');
   };
+
+  useEffect(() => {
+    fetchLoggedUser(token ?? '');
+  }, [isOpenCv]);
 
   return (
     <>
@@ -91,6 +98,14 @@ export const Header = () => {
             <CvForm isOpen={isOpenCv} onClose={onCloseCv} />
             <Button onClick={() => navigate('/engineer/projects')}>
               Projects
+            </Button>
+            <Button onClick={() => navigate('/engineer/skills')}>
+              My skills
+            </Button>
+            <Button>
+              <a href={user.engineer?.cv_url} target='_blank'>
+                My cv
+              </a>
             </Button>
           </Flex>
         )}
