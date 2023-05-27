@@ -24,6 +24,12 @@ export enum Role {
   HR_MANAGER = 'HR_MANAGER',
 }
 
+export enum Seniority {
+  JUNIOR = 'JUNIOR',
+  MEDIOR = 'MEDIOR',
+  SENIOR = 'SENIOR',
+}
+
 type Inputs = {
   name: string;
   surname: string;
@@ -44,6 +50,7 @@ type Inputs = {
 export const RegisterUserPage = () => {
   const { registerUser } = useRegisterUser();
   const [role, setRole] = useState<string>(Role.ENGINEER);
+  const [seniority, setSeniority] = useState<string>(Seniority.JUNIOR);
 
   const {
     register,
@@ -57,7 +64,7 @@ export const RegisterUserPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
-    await registerUser({ ...data, roles: [role] });
+    await registerUser({ ...data, roles: [role], seniority });
   };
 
   useEffect(() => {
@@ -149,6 +156,17 @@ export const RegisterUserPage = () => {
             </Stack>
           </RadioGroup>
         </FormControl>
+        {role === 'ENGINEER' && (
+          <FormControl>
+            <RadioGroup onChange={setSeniority} value={seniority}>
+              <Stack direction='row'>
+                <Radio value={Seniority.JUNIOR}>Junior</Radio>
+                <Radio value={Seniority.MEDIOR}>Medior</Radio>
+                <Radio value={Seniority.SENIOR}>Senior</Radio>
+              </Stack>
+            </RadioGroup>
+          </FormControl>
+        )}
 
         <FormControl isInvalid={errors.password != null}>
           <FormLabel>Password</FormLabel>

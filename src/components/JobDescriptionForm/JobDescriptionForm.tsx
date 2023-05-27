@@ -35,30 +35,19 @@ export const JobDescriptionForm = ({
   projectId,
 }: Props) => {
   const { uploadCv } = useUploadCv();
-  const {
-    register,
-    handleSubmit,
-    formState,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-  } = useForm<Inputs>();
+  const { handleSubmit } = useForm<Inputs>();
   const [updatedDescription, setUpdatedDescription] =
     useState<string>(jobDescription);
-  const { updateJobDescriptionRes, updateJobDescription } =
-    useUpdateJobDescription();
+  const { updateJobDescription } = useUpdateJobDescription();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await updateJobDescription({
+    const res = await updateJobDescription({
       description: updatedDescription,
       projectId: projectId,
     });
+    if (res.error) return;
+    onClose();
   };
-
-  useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      onClose();
-    }
-  }, [formState, onClose]);
 
   return (
     <Box>

@@ -7,9 +7,13 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { REGISTER_USER_DEFAULT_VALUES, REGISTER_VALIDATION_SCHEMA } from '../../utils/auth.constants';
+import {
+  REGISTER_USER_DEFAULT_VALUES,
+  REGISTER_VALIDATION_SCHEMA,
+} from '../../utils/auth.constants';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRegisterUser } from '../../api/services/auth/useRegisterUser';
+import { Seniority } from './RegisterUserPage';
 
 type Inputs = {
   name: string;
@@ -42,8 +46,12 @@ export const RegisterAdminPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.role = 'ADMIN';
-    await registerUser({ ...data, roles: [data.role] });
-    reset(REGISTER_USER_DEFAULT_VALUES)
+    await registerUser({
+      ...data,
+      roles: [data.role],
+      seniority: Seniority.JUNIOR,
+    });
+    reset(REGISTER_USER_DEFAULT_VALUES);
   };
 
   return (

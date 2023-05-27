@@ -24,7 +24,9 @@ export const useUpdateJobDescription = () => {
       );
       setSuccess(res.data);
       toast.success('Job description successfully changed!');
+      return {};
     } catch (e: any) {
+      return { error: e };
       setError(e.response.data.message);
       toast.error(e.response.data.message);
     }
