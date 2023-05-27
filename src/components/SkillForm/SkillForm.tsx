@@ -15,6 +15,7 @@ import { ADD_SKILL_VALIDATION_SCHEMA } from '../../utils/user.constants';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useApplicationStore } from '../../store/application.store';
 import { useAddSkill } from '../../api/services/user/useAddSkill';
+import { useGetEngineerSkills } from '../../api/services/user/useGetEngineerSkills';
 
 interface Props {
   isOpen: boolean;
@@ -27,7 +28,9 @@ type Inputs = {
 };
 
 export const SkillForm = ({ isOpen, onClose }: Props) => {
+  const user = useApplicationStore((state) => state.user);
   const { addSkill } = useAddSkill();
+  const { skillsRes, getEngineerSkills } = useGetEngineerSkills();
   const {
     register,
     handleSubmit,
@@ -39,8 +42,8 @@ export const SkillForm = ({ isOpen, onClose }: Props) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('a');
     await addSkill(data);
+    await getEngineerSkills(user?.engineer?.id ?? -1);
   };
 
   useEffect(() => {

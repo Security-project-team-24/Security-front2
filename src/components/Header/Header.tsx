@@ -12,7 +12,7 @@ export const Header = () => {
   const logout = useApplicationStore((state) => state.logout);
   const token = useApplicationStore((state) => state.loginStateRes.data);
   const fetchLoggedUser = useApplicationStore((state) => state.fetchLoggedUser);
-  const { skillsRes, getEngineerSkills } = useGetEngineerSkills();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenCv,
@@ -28,10 +28,6 @@ export const Header = () => {
   useEffect(() => {
     fetchLoggedUser(token ?? '');
   }, [isOpenCv]);
-
-  useEffect(() => {
-    getEngineerSkills(user?.engineer?.id ?? -1);
-  }, [isOpen]);
 
   return (
     <>

@@ -13,7 +13,7 @@ export const SkillsPage = () => {
 
   useEffect(() => {
     init();
-  }, [skillsRes.data]);
+  }, [skillsRes.data?.length]);
 
   const init = async () => {
     await getEngineerSkills(user?.engineer?.id ?? -1);
