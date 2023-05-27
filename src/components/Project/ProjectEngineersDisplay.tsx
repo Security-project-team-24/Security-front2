@@ -39,10 +39,9 @@ interface Props {
 const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
   const { getProjectEngineers, getProjectEngineersRes } =
     useGetProjectEngineers();
-  const { getAvailableEmployees, getAvailableEmployeesRes } =
-    useGetAvailableEmployees();
+  const { getAvailableEmployees } = useGetAvailableEmployees();
   const loggedUser = useApplicationStore((state) => state.user);
-  const { removeEmployeeRes, removeEmployee } = useRemmoveEmployee();
+  const { removeEmployee } = useRemmoveEmployee();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -86,17 +85,20 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
                         {getProjectEngineersRes.data.map((user) => (
                           <Flex key={user.id}>
                             <ListItem key={user.id}>
-                              Full name: {user.employee.name}{' '}
-                              {user.employee.surname}
-                              <br />
-                              Job description: {user.jobDescription}
-                              <br />
-                              Working time:{' '}
-                              {format(
-                                new Date(user.startDate),
-                                'dd/MM/yyyy'
-                              )} -{' '}
-                              {format(new Date(user.endDate), 'dd/MM/yyyy')}
+                              <>
+                                Full name: {user.employee.name}{' '}
+                                {user.employee.surname}
+                                <br />
+                                Job description: {user.jobDescription}
+                                <br />
+                                Working time:{' '}
+                                {format(
+                                  new Date(user.startDate),
+                                  'dd/MM/yyyy'
+                                )}{' '}
+                                - {format(new Date(user.endDate), 'dd/MM/yyyy')}
+                                <br />
+                              </>
                             </ListItem>
                             {loggedUser?.roles.includes('PROJECT_MANAGER') && (
                               <Button

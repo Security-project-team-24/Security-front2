@@ -111,6 +111,7 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (
     }
   },
   logout: () => {
+    mainInstance.get('/logout').then(console.log).catch(console.log);
     set(
       produce((state: AuthStore) => {
         state.loginStateRes.status = 'IDLE';

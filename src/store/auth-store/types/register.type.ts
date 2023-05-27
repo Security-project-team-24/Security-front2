@@ -9,4 +9,5 @@ export type Register = {
   phoneNumber: string;
   password: string;
   confirmPassword: string;
+  seniority: string;
 };
