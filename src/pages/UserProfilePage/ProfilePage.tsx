@@ -160,20 +160,21 @@ export const ProfilePage = () => {
             {...register('phoneNumber', { required: true })}
           />
         </FormControl>
-        <FormControl>
-          <FormLabel>Seniority</FormLabel>
-          <Input disabled={true} defaultValue={calculateSeniority()} />
-        </FormControl>
+        {user?.roles.includes('ENGINEER') && (
+          <FormControl>
+            <FormLabel>Seniority</FormLabel>
+            <Input disabled={true} defaultValue={calculateSeniority()} />
+          </FormControl>
+        )}
         {isUpdate ? (
           <Button onClick={handleSubmit(onSubmit)}>Save</Button>
         ) : (
           <Button onClick={() => setIsUpdate(true)}>Update</Button>
         )}
-        {user?.roles.includes('ADMIN') && (
-          <Button onClick={() => navigate('/admin/change-password')}>
-            Change password
-          </Button>
-        )}
+
+        <Button onClick={() => navigate('/change-password')}>
+          Change password
+        </Button>
       </Flex>
     </Flex>
   );

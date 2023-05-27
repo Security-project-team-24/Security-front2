@@ -28,7 +28,6 @@ const ProtectedRoute = ({
   const userHasRole = hasUserRole(requiredRole);
 
   function firstAdminLogin(): boolean {
-    console.log(user);
     if (user?.roles.includes('ADMIN') && user.firstLogged) {
       toast.warning('This is your first login, please change your password!');
       return true;

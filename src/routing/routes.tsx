@@ -67,10 +67,9 @@ export const routes: CustomRouteProps[] = [
     requiredRole: ['ADMIN', 'PROJECT_MANAGER', 'ENGINEER'],
   },
   {
-    path: '/admin/change-password',
+    path: '/change-password',
     element: <ChangePasswordPage />,
-    isProtected: true,
-    requiredRole: ['ADMIN'],
+    isProtected: false,
   },
   {
     path: '/admin/register-admin',
