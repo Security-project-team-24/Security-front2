@@ -13,7 +13,7 @@ export const SkillsPage = () => {
 
   useEffect(() => {
     init();
-  }, []);
+  }, [skillsRes.data]);
 
   const init = async () => {
     await getEngineerSkills(user?.engineer?.id ?? -1);
@@ -25,7 +25,12 @@ export const SkillsPage = () => {
   };
 
   return (
-    <Flex direction={'column'} alignItems={'center'} padding={'20px 0'}>
+    <Flex
+      direction={'column'}
+      alignItems={'center'}
+      padding={'20px 0'}
+      gap={'10px'}
+    >
       {skillsRes?.data?.map((skill: Skill) => (
         <Flex key={skill.skill}>
           <Input defaultValue={skill.skill} />

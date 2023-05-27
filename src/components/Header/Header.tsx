@@ -4,6 +4,7 @@ import { useApplicationStore } from '../../store/application.store';
 import { CvForm } from '../CvForm/CvForm';
 import { SkillForm } from '../SkillForm/SkillForm';
 import { useEffect } from 'react';
+import { useGetEngineerSkills } from '../../api/services/user/useGetEngineerSkills';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export const Header = () => {
   const logout = useApplicationStore((state) => state.logout);
   const token = useApplicationStore((state) => state.loginStateRes.data);
   const fetchLoggedUser = useApplicationStore((state) => state.fetchLoggedUser);
+  const { skillsRes, getEngineerSkills } = useGetEngineerSkills();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenCv,
@@ -26,6 +28,10 @@ export const Header = () => {
   useEffect(() => {
     fetchLoggedUser(token ?? '');
   }, [isOpenCv]);
+
+  useEffect(() => {
+    getEngineerSkills(user?.engineer?.id ?? -1);
+  }, [isOpen]);
 
   return (
     <>
