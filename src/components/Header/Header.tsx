@@ -118,6 +118,11 @@ export const Header = () => {
             </Button>
           </Flex>
         )}
+        {user?.roles?.includes('HR_MANAGER') && (
+          <Flex gap='15px'>
+            <Button onClick={() => navigate('engineers')}>Engineers</Button>
+          </Flex>
+        )}
       </Box>
     </>
   );

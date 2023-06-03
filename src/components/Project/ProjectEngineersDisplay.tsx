@@ -100,17 +100,34 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
                                 <br />
                               </>
                             </ListItem>
-                            {loggedUser?.roles.includes('PROJECT_MANAGER') && (
-                              <Button
-                                onClick={() =>
-                                  handleRemoveEmployeeFromProject(
-                                    user.employee.id
-                                  )
-                                }
-                              >
-                                Remove
-                              </Button>
-                            )}
+                            <Flex gap={'10px'}>
+                              {loggedUser?.roles.includes(
+                                'PROJECT_MANAGER'
+                              ) && (
+                                <Button
+                                  onClick={() =>
+                                    handleRemoveEmployeeFromProject(
+                                      user.employee.id
+                                    )
+                                  }
+                                >
+                                  Remove
+                                </Button>
+                              )}
+                              {loggedUser?.roles.includes(
+                                'PROJECT_MANAGER'
+                              ) && (
+                                <Button>
+                                  <a
+                                    href={user.engineer.cv_url}
+                                    target='_blank'
+                                    rel='noreferrer'
+                                  >
+                                    CV
+                                  </a>
+                                </Button>
+                              )}
+                            </Flex>
                           </Flex>
                         ))}
                       </UnorderedList>

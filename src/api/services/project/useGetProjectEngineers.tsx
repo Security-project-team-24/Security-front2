@@ -1,6 +1,7 @@
 import { useAxios } from '../../useAxios';
 import { useResponseState } from '../../useResponseState';
 import { ProjectEmployee } from './types/projectEmployee.type';
+import { ProjectEngineer } from './types/projectEngineer.type';
 
 export const useGetProjectEngineers = () => {
   const { axios } = useAxios();
@@ -9,7 +10,7 @@ export const useGetProjectEngineers = () => {
     setLoading,
     setSuccess,
     state: getProjectEngineersRes,
-  } = useResponseState<ProjectEmployee[]>([]);
+  } = useResponseState<ProjectEngineer[]>([]);
 
   const getProjectEngineers = async (projectId: number) => {
     try {
