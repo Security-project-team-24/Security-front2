@@ -5,4 +5,5 @@ export type Engineer = {
   cv_url: string;
   seniority: string;
   user: User;
+  hireDate: Date;
 };

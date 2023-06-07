@@ -14,10 +14,10 @@ export const useGetEngineers = () => {
     state: engineersRes,
   } = useResponseState<Page<Engineer>>({ totalPages: 0, content: [] });
 
-  const getEngineers = async (pageNumber: number) => {
+  const getEngineers = async (pageNumber: number, email: string, name: string, surname: string, fromDate: String, toDate: String) => {
     try {
       setLoading();
-      const res = await axios.get(`/user/engineers/${pageNumber}`);
+      const res = await axios.get(`/user/engineers?pageNumber=${pageNumber}&email=${email}&name=${name}&surname=${surname}&fromDate=${fromDate}&toDate=${toDate}`);
       setSuccess(res.data);
     } catch (e: any) {
       setError(e.response.data.message);

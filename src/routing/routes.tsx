@@ -111,6 +111,6 @@ export const routes: CustomRouteProps[] = [
     path: '/engineers',
     element: <EngineersPage />,
     isProtected: true,
-    requiredRole: ['HR_MANAGER'],
+    requiredRole: ['HR_MANAGER', 'ADMIN'],
   },
 ];
