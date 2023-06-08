@@ -6,6 +6,8 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  useDisclosure,
+  Text,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,6 +19,7 @@ import { useApplicationStore } from '../../store/application.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSendLoginMail } from '../../api/services/auth/useSendLoginMail';
+import { ForgotPasswordForm } from '../../components/ForgotPasswordForm/ForgotPasswordForm';
 
 export type FormValues = {
   email: string;
@@ -36,9 +39,18 @@ export const LoginPage = () => {
     defaultValues: LOGIN_DEFAULT_VALUES,
     resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
   });
+  const {
+    isOpen: isOpenForgotPassword,
+    onClose: onCloseForgotPassword,
+    onOpen: onOpenForgotPassword,
+  } = useDisclosure();
   const navigate = useNavigate();
   const user = useApplicationStore((state) => state.user);
   const [canNavigate, setCanNavigate] = useState(false);
+
+  const handleForgotPassword = async () => {
+    onOpenForgotPassword();
+  };
 
   useEffect(() => {
     if (loginStateRes.status == 'SUCCESS' && canNavigate) {
@@ -110,7 +122,21 @@ export const LoginPage = () => {
         >
           Login with mail
         </Button>
+        <Text
+          align={'end'}
+          mt={'2'}
+          color={'#136ed1'}
+          cursor={'pointer'}
+          onClick={() => handleForgotPassword()}
+        >
+          Forgot Password
+        </Text>
       </Box>
+      <ForgotPasswordForm
+        isOpen={isOpenForgotPassword}
+        onOpen={onOpenForgotPassword}
+        onClose={onCloseForgotPassword}
+      ></ForgotPasswordForm>
     </Flex>
   );
 };

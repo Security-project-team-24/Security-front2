@@ -6,6 +6,7 @@ export type User = {
   name: string;
   surname: string;
   email: string;
+  blocked?: boolean;
   roles: string[];
   status?: number;
   address: Address;

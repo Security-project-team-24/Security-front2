@@ -1,5 +1,6 @@
 import { useApplicationStore } from '../store/application.store';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const axiosInstance = axios.create({
