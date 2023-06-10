@@ -17,10 +17,16 @@ import {
 import { User } from '../../store/auth-store/model/user.model';
 import ReactPaginate from 'react-paginate';
 import { useGetEmployees } from '../../api/services/user/useGetEmployees';
+import { boolean } from 'yup';
+import { useBlockUser } from '../../api/services/user/useBlockUser';
+import { useUnblockUser } from '../../api/services/user/useUnblockUser';
+import { ResponseState } from '../../store/response-state.type';
 
 export const EmployeesPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const { getEmployeesRes, getEmployees } = useGetEmployees();
+  const { blockUser } = useBlockUser();
+  const { unblockUser } = useUnblockUser();
 
   useEffect(() => {
     fetchEmployees(0);
@@ -32,6 +38,16 @@ export const EmployeesPage = () => {
   const handlePageClick = async (event: any) => {
     setCurrentPage(event.selected);
     fetchEmployees(event.selected);
+  };
+  const handleUserBlocking = async (id: number) => {
+    blockUser(id).then((response: ResponseState<null>) => {
+      if (response.status == 'SUCCESS') fetchEmployees(0);
+    });
+  };
+  const handleUserUnblocking = async (id: number) => {
+    unblockUser(id).then((response: ResponseState<null>) => {
+      if (response.status == 'SUCCESS') fetchEmployees(0);
+    });
   };
 
   return (
@@ -62,9 +78,28 @@ export const EmployeesPage = () => {
                   </Td>
                   <Td>{item.email}</Td>
                   <Td>{item.phoneNumber}</Td>
-                  <Td>{item.roles.map((item: string) => (
-                      item + " "
-                  ))}</Td>
+                  <Td>{item.roles.map((item: string) => item + ' ')}</Td>
+                  <Td>
+                    <Flex gap={'4'}>
+                      {item.blocked ? (
+                        <Button
+                          colorScheme='green'
+                          width={'100%'}
+                          onClick={() => handleUserUnblocking(item.id)}
+                        >
+                          Unblock
+                        </Button>
+                      ) : (
+                        <Button
+                          colorScheme='red'
+                          width={'100%'}
+                          onClick={() => handleUserBlocking(item.id)}
+                        >
+                          Block
+                        </Button>
+                      )}
+                    </Flex>
+                  </Td>
                 </Tr>
               ))}
           </Tbody>
