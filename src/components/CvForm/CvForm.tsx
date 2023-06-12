@@ -15,6 +15,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useApplicationStore } from '../../store/application.store';
 import { useUploadCv } from '../../api/services/user/useUploadCv';
 import { useGetEngineerSkills } from '../../api/services/user/useGetEngineerSkills';
+import { ResponseState } from '../../store/response-state.type';
 
 interface Props {
   isOpen: boolean;
@@ -27,24 +28,16 @@ type Inputs = {
 
 export const CvForm = ({ isOpen, onClose }: Props) => {
   const { uploadCv } = useUploadCv();
-  const {
-    register,
-    handleSubmit,
-    formState,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-  } = useForm<Inputs>();
+  const { handleSubmit, formState } = useForm<Inputs>();
   const [cvFile, setCvFile] = useState<FileList | null>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await uploadCv(cvFile ?? new FileList());
+    await uploadCv(cvFile ?? new FileList()).then(
+      (response: ResponseState<null>) => {
+        onClose();
+      }
+    );
   };
-
-  useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      onClose();
-    }
-  }, [formState, onClose]);
 
   return (
     <Box>
