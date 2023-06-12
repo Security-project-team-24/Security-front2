@@ -1,10 +1,7 @@
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
-  Heading,
-  Input,
   ListItem,
   Modal,
   ModalBody,
@@ -13,22 +10,16 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
-  Text,
-  Textarea,
   UnorderedList,
-  VStack,
-  useToast,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { User } from '../../store/auth-store/model/user.model';
+import { useEffect } from 'react';
 import { useApplicationStore } from '../../store/application.store';
-import { displayToast } from '../../utils/toast.caller';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { Project } from '../../api/services/project/types/project.type';
 import { useGetProjectEngineers } from '../../api/services/project/useGetProjectEngineers';
 import { useRemmoveEmployee } from '../../api/services/project/useRemoveEmployee';
-import { ProjectEmployee } from '../../api/services/project/types/projectEmployee.type';
 import { useGetAvailableEmployees } from '../../api/services/project/useGetAvailableEmployees';
+import { useDownloadCvByName } from '../../api/services/user/useDownloadCvByName';
 
 interface Props {
   isOpen: boolean;
@@ -40,6 +31,7 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
   const { getProjectEngineers, getProjectEngineersRes } =
     useGetProjectEngineers();
   const { getAvailableEmployees } = useGetAvailableEmployees();
+  const { downloadCvByName } = useDownloadCvByName();
   const loggedUser = useApplicationStore((state) => state.user);
   const { removeEmployee } = useRemmoveEmployee();
 
@@ -49,10 +41,13 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
   }, [isOpen]);
 
   const fetchEngineers = async () => {
-    console.log(project.id);
     if (project.id != -1) {
       await getProjectEngineers(project.id);
     }
+  };
+
+  const handleDownloadCv = async (cv_name: String) => {
+    await downloadCvByName(cv_name);
   };
 
   const handleRemoveEmployeeFromProject = async (employeeId: number) => {
@@ -117,14 +112,12 @@ const ProjectEngineersDisplay = ({ isOpen, onClose, project }: Props) => {
                               {loggedUser?.roles.includes(
                                 'PROJECT_MANAGER'
                               ) && (
-                                <Button>
-                                  <a
-                                    href={user.engineer.cv_url}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                  >
-                                    CV
-                                  </a>
+                                <Button
+                                  onClick={() =>
+                                    handleDownloadCv(user.engineer.cvName)
+                                  }
+                                >
+                                  CV
                                 </Button>
                               )}
                             </Flex>
