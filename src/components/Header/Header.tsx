@@ -90,6 +90,7 @@ export const Header = () => {
             >
               Permissions
             </Button>
+            <Button mr='5px' onClick={() => navigate('engineers')}>Engineers</Button>
           </>
         )}
         {user?.roles?.includes('ENGINEER') && (
@@ -116,6 +117,11 @@ export const Header = () => {
             <Button onClick={() => navigate('/project-manager/projects')}>
               Projects
             </Button>
+          </Flex>
+        )}
+        {(user?.roles?.includes('HR_MANAGER')) && (
+          <Flex gap='15px'>
+            <Button onClick={() => navigate('engineers')}>Engineers</Button>
           </Flex>
         )}
       </Box>

@@ -13,6 +13,7 @@ import { ActivateRedirectPage } from '../pages/RedirectPages/ActivateRedirecPage
 import { ProjectManagerProjectsPage } from '../pages/ProjectPage/ProjectManagerProjectsPage';
 import { AdminPermissionPage } from '../pages/AdminPermissionPage/AdminPermissionPage';
 import { SkillsPage } from '../pages/EngineerPage/SkillsPage';
+import { EngineersPage } from '../pages/EmployeesPage/EngineersPage';
 
 interface CustomRouteProps {
   path: string;
@@ -105,5 +106,11 @@ export const routes: CustomRouteProps[] = [
     element: <SkillsPage />,
     isProtected: true,
     requiredRole: ['ENGINEER'],
+  },
+  {
+    path: '/engineers',
+    element: <EngineersPage />,
+    isProtected: true,
+    requiredRole: ['HR_MANAGER', 'ADMIN'],
   },
 ];

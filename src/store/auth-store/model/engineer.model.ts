@@ -1,5 +1,9 @@
+import { User } from './user.model';
+
 export type Engineer = {
   id: number;
   cv_url: string;
-  seniority: Date;
+  seniority: string;
+  user: User;
+  hireDate: Date;
 };
