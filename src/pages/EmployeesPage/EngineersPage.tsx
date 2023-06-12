@@ -23,6 +23,7 @@ import { useGetEmployees } from '../../api/services/user/useGetEmployees';
 import { useGetEngineers } from '../../api/services/user/useGetEngineers';
 import { Engineer } from '../../store/auth-store/model/engineer.model';
 import { format } from 'date-fns';
+import { useDownloadCvByName } from '../../api/services/user/useDownloadCvByName';
 
 export const EngineersPage = () => {
   const { engineersRes, getEngineers } = useGetEngineers();
@@ -32,7 +33,8 @@ export const EngineersPage = () => {
   const [surname, setSurname] = useState('');
   const [fromHireDate, setFromHireDate] = useState('');
   const [toHireDate, setToHireDate] = useState('');
-  const user = useApplicationStore((state) => state.user)
+  const user = useApplicationStore((state) => state.user);
+  const { downloadCvByName } = useDownloadCvByName();
 
   useEffect(() => {
     fetchEmployees(0);
@@ -43,11 +45,28 @@ export const EngineersPage = () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const formattedDate = format(tomorrow, 'yyyy-MM-dd');
-      await getEngineers(pageNumber, email, name, surname, '0001-01-01', formattedDate);
+      await getEngineers(
+        pageNumber,
+        email,
+        name,
+        surname,
+        '0001-01-01',
+        formattedDate
+      );
+    } else {
+      await getEngineers(
+        pageNumber,
+        email,
+        name,
+        surname,
+        fromHireDate,
+        toHireDate
+      );
     }
-    else {
-      await getEngineers(pageNumber, email, name, surname, fromHireDate, toHireDate);
-    }
+  };
+
+  const handleDownloadCv = async (cv_name: String) => {
+    await downloadCvByName(cv_name);
   };
 
   const handlePageClick = async (event: any) => {
@@ -57,58 +76,62 @@ export const EngineersPage = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setCurrentPage(0)
-    fetchEmployees(0)
+    setCurrentPage(0);
+    fetchEmployees(0);
   };
 
   return (
-    <> { user?.roles?.includes('ADMIN') && 
-      <form onSubmit={handleSubmit}>
-        <Flex flexDirection={'row'} padding={'15px'}>
-          <FormControl>
-            <FormLabel mb={0}>Email</FormLabel>
-            <Input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel mb={0}>Name</FormLabel>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel mb={0}>Surname</FormLabel>
-            <Input
-              type="text"
-              value={surname}
-              onChange={(e) => setSurname(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel mb={0}>From hire date</FormLabel>
-            <Input
-              type="date"
-              value={fromHireDate}
-              onChange={(e) => setFromHireDate(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel mb={0}>To hire date</FormLabel>
-            <Input
-              type="date"
-              value={toHireDate}
-              onChange={(e) => setToHireDate(e.target.value)}
-            />
-          </FormControl>
-          <Button type="submit" mt={'22px'} padding={'22px'}>Search</Button>
+    <>
+      {' '}
+      {user?.roles?.includes('ADMIN') && (
+        <form onSubmit={handleSubmit}>
+          <Flex flexDirection={'row'} padding={'15px'}>
+            <FormControl>
+              <FormLabel mb={0}>Email</FormLabel>
+              <Input
+                type='text'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel mb={0}>Name</FormLabel>
+              <Input
+                type='text'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel mb={0}>Surname</FormLabel>
+              <Input
+                type='text'
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel mb={0}>From hire date</FormLabel>
+              <Input
+                type='date'
+                value={fromHireDate}
+                onChange={(e) => setFromHireDate(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel mb={0}>To hire date</FormLabel>
+              <Input
+                type='date'
+                value={toHireDate}
+                onChange={(e) => setToHireDate(e.target.value)}
+              />
+            </FormControl>
+            <Button type='submit' mt={'22px'} padding={'22px'}>
+              Search
+            </Button>
           </Flex>
         </form>
-      }
+      )}
       <TableContainer flex={1}>
         <Table variant='striped' colorScheme='teal'>
           <TableCaption>Engineers</TableCaption>
@@ -141,14 +164,8 @@ export const EngineersPage = () => {
                   <Td>{engineer.seniority}</Td>
                   <Td>{engineer.hireDate.toString()}</Td>
                   <Td>
-                    <Button>
-                      <a
-                        href={engineer.cv_url}
-                        target='_blank'
-                        rel='noreferrer'
-                      >
-                        CV
-                      </a>
+                    <Button onClick={() => handleDownloadCv(engineer.cvName)}>
+                      CV
                     </Button>
                   </Td>
                 </Tr>

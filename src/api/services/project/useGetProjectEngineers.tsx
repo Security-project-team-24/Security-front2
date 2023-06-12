@@ -1,6 +1,5 @@
 import { useAxios } from '../../useAxios';
 import { useResponseState } from '../../useResponseState';
-import { ProjectEmployee } from './types/projectEmployee.type';
 import { ProjectEngineer } from './types/projectEngineer.type';
 
 export const useGetProjectEngineers = () => {
@@ -16,6 +15,7 @@ export const useGetProjectEngineers = () => {
     try {
       setLoading();
       const res = await axios.get(`/project-employee/${projectId}/engineers`);
+      console.log(res.data);
       setSuccess(res.data);
     } catch (e) {
       setError();

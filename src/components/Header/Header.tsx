@@ -4,7 +4,7 @@ import { useApplicationStore } from '../../store/application.store';
 import { CvForm } from '../CvForm/CvForm';
 import { SkillForm } from '../SkillForm/SkillForm';
 import { useEffect } from 'react';
-import { useGetEngineerSkills } from '../../api/services/user/useGetEngineerSkills';
+import { useDownloadCv } from '../../api/services/user/useDownloadCv';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ export const Header = () => {
   const logout = useApplicationStore((state) => state.logout);
   const token = useApplicationStore((state) => state.loginStateRes.data);
   const fetchLoggedUser = useApplicationStore((state) => state.fetchLoggedUser);
+  const { downloadCv } = useDownloadCv();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -24,10 +25,10 @@ export const Header = () => {
     logout();
     navigate('/login');
   };
-
-  useEffect(() => {
-    fetchLoggedUser(token ?? '');
-  }, [isOpenCv]);
+  const handleDownloadCv = () => {
+    console.log('dosao!');
+    downloadCv();
+  };
 
   return (
     <>
@@ -105,10 +106,8 @@ export const Header = () => {
             <Button onClick={() => navigate('/engineer/skills')}>
               My skills
             </Button>
-            <Button>
-              <a href={user.engineer?.cv_url} target='_blank'>
-                My cv
-              </a>
+            <Button onClick={() => handleDownloadCv()} mr='5px'>
+              My cv
             </Button>
           </Flex>
         )}

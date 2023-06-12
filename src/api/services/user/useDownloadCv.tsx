@@ -2,35 +2,31 @@ import { toast } from 'react-toastify';
 import { useAxios } from '../../useAxios';
 import { useResponseState } from '../../useResponseState';
 import { ResponseState } from '../../../store/response-state.type';
+import { saveAs } from 'file-saver';
 
-export const useUploadCv = () => {
+export const useDownloadCv = () => {
   const { axios } = useAxios();
   const {
     setError,
     setLoading,
-    setSuccess,
-    state: uploadCvRes,
+    state: downloadCvRes,
   } = useResponseState<any>(null);
 
-  const fileListToFormData = (cv: FileList) => {
-    const formData = new FormData();
-    Array.from(cv).forEach((cv) => {
-      formData.append('file', cv);
-    });
-    return formData;
-  };
-
-  const uploadCv = async (cv: FileList): Promise<ResponseState<null>> => {
+  const downloadCv = async (): Promise<ResponseState<null>> => {
     try {
       setLoading();
-      const data = fileListToFormData(cv);
-      const res = await axios.post(`/user/cv/upload`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setSuccess(res.data);
-      toast.success('CV successfully uploaded!');
+      await axios
+        .get(`/user/cv/download`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: 'application/xml' });
+          saveAs(blob, 'cv.xml');
+        });
+
+      toast.success('CV successfully downloaded!');
       return {
         data: null,
         error: null,
@@ -48,7 +44,7 @@ export const useUploadCv = () => {
   };
 
   return {
-    uploadCvRes,
-    uploadCv,
+    downloadCvRes,
+    downloadCv,
   };
 };
