@@ -144,7 +144,9 @@ export const EngineersPage = () => {
               <Th>Phone number</Th>
               <Th>Seniority</Th>
               <Th>Hire date</Th>
+              { user?.roles.includes("HR_MANAGER" || "PROJECT_MANAGER") &&
               <Th>CV</Th>
+              }
             </Tr>
           </Thead>
           <Tbody>
@@ -163,11 +165,13 @@ export const EngineersPage = () => {
                   <Td>{engineer.user.phoneNumber}</Td>
                   <Td>{engineer.seniority}</Td>
                   <Td>{engineer.hireDate.toString()}</Td>
+                  { user?.roles.includes("HR_MANAGER" || "PROJECT_MANAGER") &&
                   <Td>
                     <Button onClick={() => handleDownloadCv(engineer.cvName)}>
                       CV
                     </Button>
                   </Td>
+                  }
                 </Tr>
               ))}
           </Tbody>
