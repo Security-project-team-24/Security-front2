@@ -20,16 +20,21 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSendLoginMail } from '../../api/services/auth/useSendLoginMail';
 import { ForgotPasswordForm } from '../../components/ForgotPasswordForm/ForgotPasswordForm';
+import { useStore } from 'zustand';
 
 export type FormValues = {
   email: string;
   password: string;
+  code: string;
 };
 
 export const LoginPage = () => {
   const login = useApplicationStore((state) => state.login);
   const loginStateRes = useApplicationStore((state) => state.loginStateRes);
   const { sendLoginMail, sendLoginMailRes } = useSendLoginMail();
+  const twoFactorAuthenticationLogin = useApplicationStore(
+    (state) => state.twoFactorAuthenticationLogin
+  );
   const {
     register,
     handleSubmit,
@@ -74,6 +79,15 @@ export const LoginPage = () => {
     await sendLoginMail(getValues('email'));
   };
 
+  const handleOnTwoFactorAuthenticationLogin = async () => {
+    setCanNavigate(true);
+    await twoFactorAuthenticationLogin({
+      email: getValues('email'),
+      password: getValues('password'),
+      code: getValues('code'),
+    });
+  };
+
   return (
     <Flex alignItems='center' justifyContent='center' height='80vh'>
       <Box width='30%' boxShadow={'md'} padding={'30px'}>
@@ -92,6 +106,13 @@ export const LoginPage = () => {
           <Input type='password' {...register('password')} />
           {errors.password && (
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+          )}
+        </FormControl>
+        <FormControl isInvalid={errors.code != null} h={'100px'}>
+          <FormLabel>Code</FormLabel>
+          <Input type='text' {...register('code')} />
+          {errors.code && (
+            <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
           )}
         </FormControl>
         <Button
@@ -121,6 +142,20 @@ export const LoginPage = () => {
           color={'white'}
         >
           Login with mail
+        </Button>
+        <Button
+          onClick={() => handleOnTwoFactorAuthenticationLogin()}
+          mt={'4'}
+          fontWeight={'bold'}
+          bg={'#003b95'}
+          _hover={{
+            bg: '#136ed1',
+          }}
+          w='100%'
+          mx={'auto'}
+          color={'white'}
+        >
+          Login with two factor authentication
         </Button>
         <Text
           align={'end'}

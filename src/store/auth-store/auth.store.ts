@@ -7,6 +7,7 @@ import { ResponseState } from '../response-state.type';
 import { toast } from 'react-toastify';
 import { mainInstance } from '../../api/useAxios';
 import axios from 'axios';
+import { TwoFactorLogin } from './types/twoFactorLogin.type';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -22,6 +23,7 @@ export type AuthActions = {
   logout: () => void;
   fetchLoggedUser: (token: string) => Promise<void>;
   setLoginData: (token: string) => void;
+  twoFactorAuthenticationLogin: (data: TwoFactorLogin) => Promise<void>;
 };
 
 export const state: AuthStoreState = {
@@ -150,5 +152,36 @@ export const authStoreSlice: StateCreator<AppStore, [], [], AuthStore> = (
         return state;
       })
     );
+  },
+  twoFactorAuthenticationLogin: async (login: TwoFactorLogin) => {
+    set(
+      produce((state: AuthStoreState) => {
+        state.loginStateRes.status = 'LOADING';
+        return state;
+      })
+    );
+    try {
+      const resp = await mainInstance.post(`/auth/twofactor/login`, login);
+      await get().fetchLoggedUser(resp.data.accessToken);
+      set(
+        produce((state: AuthStoreState) => {
+          state.loginStateRes.status = 'SUCCESS';
+          state.loginStateRes.data = resp.data.accessToken;
+          return state;
+        })
+      );
+      toast.success('Successfully logged in!');
+    } catch (e: any) {
+      console.log(e);
+      set(
+        produce((state: AuthStoreState) => {
+          state.loginStateRes.status = 'ERROR';
+          state.loginStateRes.data = null;
+          state.loginStateRes.error = e.response.data.message;
+          return state;
+        })
+      );
+      toast.error(e.response.data.message);
+    }
   },
 });
