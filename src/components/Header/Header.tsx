@@ -1,10 +1,13 @@
 import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
+import { useDownloadCv } from '../../api/services/user/useDownloadCv';
 import { useApplicationStore } from '../../store/application.store';
 import { CvForm } from '../CvForm/CvForm';
 import { SkillForm } from '../SkillForm/SkillForm';
-import { useEffect } from 'react';
-import { useDownloadCv } from '../../api/services/user/useDownloadCv';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -20,6 +23,26 @@ export const Header = () => {
     onOpen: onOpenCv,
     onClose: onCloseCv,
   } = useDisclosure();
+
+  const openConnection = () => {
+    let ws = new SockJS('https://localhost:8000/socket');
+    let stompClient = Stomp.over(ws);
+
+    stompClient.connect({}, function (frame: any) {
+      console.log(frame);
+      stompClient.subscribe('/topic/notification', function (message: any) {
+        console.log('message has came', message.body);
+        toast.success(message.body);
+      });
+    });
+  };
+
+  useEffect(() => {
+    const isAdmin = user?.roles.some((role) => role === 'ADMIN');
+    if (isAdmin) {
+      openConnection();
+    }
+  }, [user]);
 
   const handleLogout = () => {
     logout();
@@ -91,7 +114,9 @@ export const Header = () => {
             >
               Permissions
             </Button>
-            <Button mr='5px' onClick={() => navigate('engineers')}>Engineers</Button>
+            <Button mr='5px' onClick={() => navigate('engineers')}>
+              Engineers
+            </Button>
           </>
         )}
         {user?.roles?.includes('ENGINEER') && (
@@ -118,7 +143,7 @@ export const Header = () => {
             </Button>
           </Flex>
         )}
-        {(user?.roles?.includes('HR_MANAGER')) && (
+        {user?.roles?.includes('HR_MANAGER') && (
           <Flex gap='15px'>
             <Button onClick={() => navigate('engineers')}>Engineers</Button>
           </Flex>
