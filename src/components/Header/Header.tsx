@@ -35,13 +35,26 @@ export const Header = () => {
         toast.success(message.body);
       });
     });
+
+    return stompClient;
   };
 
   useEffect(() => {
     const isAdmin = user?.roles.some((role) => role === 'ADMIN');
+    let client: Stomp.Client | null = null;
     if (isAdmin) {
-      openConnection();
+      client = openConnection();
     }
+
+    const disconnectClientCallback = () => console.log('client disconnected');
+
+    if (!isAdmin && client) {
+      client.disconnect(disconnectClientCallback);
+    }
+
+    return () => {
+      if (client) client.disconnect(disconnectClientCallback);
+    };
   }, [user]);
 
   const handleLogout = () => {
